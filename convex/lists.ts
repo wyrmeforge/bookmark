@@ -1,156 +1,59 @@
 import { mutation, query } from './_generated/server';
 import { v } from 'convex/values';
 import { getUserId } from './helpers';
-
-// query
+import { Filters } from './enums';
 
 export const getList = query({
-  handler: async (ctx) => {
-    const userId = await getUserId(ctx);
-
-    return await ctx.db
-      .query('lists')
-      .withIndex('by_user', (q) => q.eq('user', userId))
-      .collect();
-  },
-});
-
-export const getListModules = query({
-  args: { module: v.string() },
-  handler: async (ctx, args) => {
-    const userId = await getUserId(ctx);
-
-    const allLists = await ctx.db
-      .query('lists')
-      .withIndex('by_user', (q) => q.eq('user', userId))
-      .filter((q) => q.eq(q.field('module'), args.module))
-      .collect();
-
-    const inProgress = allLists.filter((list) => list.status === 'in_progress');
-    const abandoned = allLists.filter((list) => list.status === 'abandoned');
-    const complete = allLists.filter((list) => list.status === 'completed');
-    const favorite = allLists.filter((list) => !!list.is_favorite);
-
-    return {
-      all: allLists.length,
-      is_favorite: favorite.length,
-      in_progress: inProgress.length,
-      abandoned: abandoned.length,
-      complete: complete.length,
-    };
-  },
-});
-
-export const addItemToList = mutation({
   args: {
-    name: v.string(),
     module: v.string(),
-    is_favorite: v.boolean(),
-    rate: v.float64(),
     status: v.string(),
-    viewed_count: v.float64(),
-    imageUrl: v.string(),
-    id: v.string(),
-    episode: v.string(),
-    season: v.string(),
+    sortBy: v.object({
+      value: v.string(),
+      direction: v.string(),
+    }),
   },
   handler: async (ctx, args) => {
+    const { status, module, sortBy } = args;
     const userId = await getUserId(ctx);
 
-    await ctx.db.insert('lists', { ...args, user: userId });
-  },
-});
-
-export const getListByStatus = query({
-  args: { module: v.string(), status: v.string() },
-  handler: async (ctx, args) => {
-    const userId = await getUserId(ctx);
-
-    if (args.status === 'all') {
-      return await ctx.db
-        .query('lists')
-        .withIndex('by_user', (q) => q.eq('user', userId))
-        .filter((q) => q.eq(q.field('module'), args.module))
-        .collect();
-    }
-
-    if (args.status === 'favorite') {
-      return await ctx.db
-        .query('lists')
-        .withIndex('by_user', (q) => q.eq('user', userId))
-        .filter((q) =>
-          q.and(
-            q.eq(q.field('module'), args.module),
-            q.eq(q.field('is_favorite'), true)
-          )
-        )
-        .collect();
-    }
-
-    return await ctx.db
+    let query = ctx.db
       .query('lists')
       .withIndex('by_user', (q) => q.eq('user', userId))
-      .filter((q) =>
-        q.and(
-          q.eq(q.field('module'), args.module),
-          q.eq(q.field('status'), args.status)
-        )
-      )
-      .collect();
-  },
-});
+      .filter((q) => q.eq(q.field('module'), module));
 
-export const deleteListItem = mutation({
-  args: { id: v.id('lists') },
-  handler: async (ctx, args) => {
-    await ctx.db.delete(args.id);
-  },
-});
-
-export const sortListBy = query({
-  args: { module: v.string(), status: v.string(), sortBy: v.string() },
-  handler: async (ctx, args) => {
-    const userId = await getUserId(ctx);
-
-    let list;
-
-    if (args.status === 'all') {
-      list = await ctx.db
-        .query('lists')
-        .withIndex('by_user', (q) => q.eq('user', userId))
-        .filter((q) => q.eq(q.field('module'), args.module))
-        .collect();
-    } else if (args.status === 'favorite') {
-      list = await ctx.db
-        .query('lists')
-        .withIndex('by_user', (q) => q.eq('user', userId))
-        .filter((q) =>
-          q.and(
-            q.eq(q.field('module'), args.module),
-            q.eq(q.field('is_favorite'), true)
-          )
-        )
-        .collect();
-    } else {
-      list = await ctx.db
-        .query('lists')
-        .withIndex('by_user', (q) => q.eq('user', userId))
-        .filter((q) =>
-          q.and(
-            q.eq(q.field('module'), args.module),
-            q.eq(q.field('status'), args.status)
-          )
-        )
-        .collect();
+    if (status !== 'all') {
+      query = query.filter((q) =>
+        status === 'favorite'
+          ? q.eq(q.field('is_favorite'), true)
+          : q.eq(q.field('status'), status)
+      );
     }
 
-    if (args.sortBy === 'desc') {
-      return list.sort((a, b) => b._creationTime - a._creationTime);
+    const list = await query.collect();
+
+    const validSortKeys: (keyof (typeof list)[0])[] = [
+      '_creationTime',
+      'rate',
+      'viewed_count',
+    ];
+
+    if (validSortKeys.includes(sortBy.value as keyof (typeof list)[0])) {
+      const sortKey = sortBy.value as keyof (typeof list)[0];
+      list.sort((a, b) => {
+        const aValue = a[sortKey] ?? (sortBy.direction === 'desc' ? -1 : 1);
+        const bValue = b[sortKey] ?? (sortBy.direction === 'desc' ? -1 : 1);
+
+        return sortBy.direction === 'desc'
+          ? bValue > aValue
+            ? 1
+            : -1
+          : aValue > bValue
+            ? 1
+            : -1;
+      });
     }
 
-    if (args.sortBy === 'asc') {
-      return list.sort((a, b) => a._creationTime - b._creationTime);
-    }
+    return list;
   },
 });
 
@@ -167,11 +70,88 @@ export const getListItem = query({
   },
 });
 
-export const updateList = mutation({
+export const createListItem = mutation({
+  args: {
+    name: v.string(),
+    module: v.string(),
+    is_favorite: v.boolean(),
+    rate: v.optional(v.string()),
+    status: v.string(),
+    viewed_count: v.optional(v.string()),
+    imageUrl: v.string(),
+    unity_id: v.string(),
+    episode: v.optional(v.string()),
+    season: v.optional(v.string()),
+  },
+  handler: async (ctx, args) => {
+    const userId = await getUserId(ctx);
+
+    await ctx.db.insert('lists', { ...args, user: userId });
+  },
+});
+
+export const updateListItem = mutation({
   args: { id: v.id('lists'), newData: v.any() },
   handler: async (ctx, args) => {
     const { id, newData } = args;
 
     await ctx.db.patch(id, { ...newData });
+  },
+});
+
+export const deleteListItem = mutation({
+  args: { id: v.id('lists') },
+  handler: async (ctx, args) => {
+    await ctx.db.delete(args.id);
+  },
+});
+
+export const getListModules = query({
+  args: { module: v.string() },
+  handler: async (ctx, args) => {
+    const userId = await getUserId(ctx);
+
+    const allLists = await ctx.db
+      .query('lists')
+      .withIndex('by_user', (q) => q.eq('user', userId))
+      .filter((q) => q.eq(q.field('module'), args.module))
+      .collect();
+
+    const statusCounts = allLists.reduce(
+      (counts, list) => {
+        counts.all++;
+
+        switch (list.status) {
+          case Filters.Favorite:
+            counts.is_favorite++;
+            break;
+          case Filters.InProgress:
+            counts.in_progress++;
+            break;
+          case Filters.InFuture:
+            counts.in_future++;
+            break;
+          case Filters.Abandoned:
+            counts.abandoned++;
+            break;
+          case Filters.Completed:
+            counts.complete++;
+            break;
+          default:
+            break;
+        }
+        return counts;
+      },
+      {
+        all: 0,
+        is_favorite: 0,
+        in_progress: 0,
+        in_future: 0,
+        abandoned: 0,
+        complete: 0,
+      }
+    );
+
+    return statusCounts;
   },
 });

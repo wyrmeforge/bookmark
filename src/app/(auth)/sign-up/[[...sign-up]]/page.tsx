@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 
 import Link from 'next/link';
 
@@ -10,89 +10,38 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import Image from 'next/image';
 
-import { useSignUp } from '@clerk/nextjs';
-import { useRouter } from 'next/navigation';
-
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { useRegistration } from './use-registration';
 
 const SignUp = () => {
-  const { isLoaded, signUp, setActive } = useSignUp();
-  const [emailAddress, setEmailAddress] = React.useState('');
-  const [password, setPassword] = React.useState('');
-  const [verifying, setVerifying] = React.useState(false);
-  const [code, setCode] = React.useState('');
-  const router = useRouter();
+  const [emailAddress, setEmailAddress] = useState('');
+  const [password, setPassword] = useState('');
+
+  const {
+    registerWithCredentials,
+    registerWithGoogle,
+    verifyAccount,
+    setVerifying,
+    verifying,
+    setCode,
+  } = useRegistration();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!isLoaded) return;
-
-    // Start the sign-up process using the email and password provided
-    try {
-      await signUp.create({
-        emailAddress,
-        password,
-      });
-
-      // Send the user an email with the verification code
-      await signUp.prepareEmailAddressVerification({
-        strategy: 'email_code',
-      });
-
-      // Set 'verifying' true to display second form
-      // and capture the OTP code
-      setVerifying(true);
-    } catch (err: any) {
-      // See https://clerk.com/docs/custom-flows/error-handling
-      // for more info on error handling
-      console.error(JSON.stringify(err, null, 2));
-    }
+    registerWithCredentials(emailAddress, password);
   };
 
   const handleVerify = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!isLoaded) return;
-
-    try {
-      // Use the code the user provided to attempt verification
-      const completeSignUp = await signUp.attemptEmailAddressVerification({
-        code,
-      });
-
-      // If verification was completed, set the session to active
-      // and redirect the user
-      if (completeSignUp.status === 'complete') {
-        await setActive({ session: completeSignUp.createdSessionId });
-        router.push('/');
-      } else {
-        // If the status is not complete, check why. User may need to
-        // complete further steps.
-        console.error(JSON.stringify(completeSignUp, null, 2));
-      }
-    } catch (err: any) {
-      // See https://clerk.com/docs/custom-flows/error-handling
-      // for more info on error handling
-      console.error('Error:', JSON.stringify(err, null, 2));
-    }
-  };
-
-  const signUpWith = (strategy: OAuthStrategy) => {
-    if (!signUp) return null;
-
-    return signUp.authenticateWithRedirect({
-      strategy,
-      redirectUrl: '/sign-up/sso-callback',
-      redirectUrlComplete: '/',
-    });
+    verifyAccount();
   };
 
   if (verifying) {
@@ -176,7 +125,7 @@ const SignUp = () => {
               Створити аккаунт
             </Button>
             <Button
-              onClick={() => signUpWith('oauth_google')}
+              onClick={registerWithGoogle}
               variant='outline'
               className='w-full'
             >

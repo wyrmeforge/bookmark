@@ -5,7 +5,7 @@ import { useMutation } from 'convex/react';
 import { Id } from '../../convex/_generated/dataModel';
 import { api } from '../../convex/_generated/api';
 
-export function useStoreUserEffect() {
+export function useStoreUser() {
   const { isLoading, isAuthenticated } = useConvexAuth();
   const { user } = useUser();
 

@@ -3,13 +3,13 @@ import { v } from 'convex/values';
 
 export default defineSchema({
   lists: defineTable({
-    id: v.string(),
+    unity_id: v.string(),
     module: v.string(),
     is_favorite: v.optional(v.boolean()),
     name: v.string(),
-    rate: v.optional(v.float64()),
+    rate: v.optional(v.string()),
     status: v.string(),
-    viewed_count: v.optional(v.float64()),
+    viewed_count: v.optional(v.string()),
     imageUrl: v.string(),
     episode: v.optional(v.string()),
     season: v.optional(v.string()),

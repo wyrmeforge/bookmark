@@ -3,7 +3,7 @@ import useSWR from 'swr';
 
 export const useSearchAnime = (query: string | null) => {
   const { data, isLoading } = useSWR(
-    query ? `https://kitsu.io/api/edge/anime?filter[text]=${query}` : null,
+    query ? `${process.env.NEXT_PUBLIC_ANIME_URL}?filter[text]=${query}` : null,
     fetcher
   );
 

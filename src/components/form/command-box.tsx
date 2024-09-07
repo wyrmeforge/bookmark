@@ -45,6 +45,7 @@ const FormCommandBox = ({
     <FormField
       control={control}
       name={name}
+      rules={{ required: true }}
       render={({ field }) => {
         return (
           <FormItem className='flex flex-col'>
@@ -55,6 +56,7 @@ const FormCommandBox = ({
                   <Button
                     variant='outline'
                     role='combobox'
+                    aria-required
                     className={cn(
                       'justify-between truncate',
                       !field.value && 'text-muted-foreground'
@@ -72,6 +74,7 @@ const FormCommandBox = ({
                       placeholder='Почніть вводити назву'
                       value={searchValue}
                       onValueChange={setSearchValue}
+                      required
                     />
                     <CommandEmpty>Нічого не знайдено.</CommandEmpty>
                     <CommandGroup>

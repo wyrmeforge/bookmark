@@ -8,8 +8,9 @@ interface IFormInputProps<T extends FieldValues> {
   control: Control<T>;
   name: FieldPath<T>;
   label: string;
-  placeholder: string;
+  placeholder?: string;
   disabled?: boolean;
+  required?: boolean;
 }
 
 const FormInput = <T extends FieldValues>({
@@ -18,17 +19,25 @@ const FormInput = <T extends FieldValues>({
   label,
   placeholder,
   disabled,
+  required,
 }: IFormInputProps<T>) => (
   <FormField
     control={control}
     name={name}
+    rules={{ required }}
     render={({ field }) => (
       <FormItem className='flex  w-full flex-col'>
-        <FormLabel className={cn({ 'text-muted': disabled })}>
+        <FormLabel htmlFor={name} className={cn({ 'text-muted': disabled })}>
           {label}
         </FormLabel>
         <FormControl>
-          <Input disabled={disabled} placeholder={placeholder} {...field} />
+          <Input
+            className={cn({ 'border-red-300': required })}
+            required={required}
+            disabled={disabled}
+            placeholder={placeholder}
+            {...field}
+          />
         </FormControl>
       </FormItem>
     )}

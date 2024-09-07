@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
@@ -11,21 +11,15 @@ import {
   Sword,
 } from 'lucide-react';
 import { useQuery } from 'convex/react';
-import { api } from '../../../../../convex/_generated/api';
 import { Module } from '@/enums/modules';
 import { Filters } from '@/enums/filters';
+import { UnityStateContext } from '@/components/providers/unity-state-provider';
+import { api } from '../../../convex/_generated/api';
 
-interface IModuleFiltersProps {
-  currentFilter: Filters;
-  setCurrentFilter: (currentFilter: Filters) => void;
-  currentModule: Module;
-}
+export const ListFilters = () => {
+  const { currentFilter, currentModule, setCurrentFilter } =
+    useContext(UnityStateContext);
 
-const ModuleFilters = ({
-  currentFilter,
-  setCurrentFilter,
-  currentModule,
-}: IModuleFiltersProps) => {
   const moduleList = useQuery(api.lists.getListModules, {
     module: currentModule,
   });
@@ -42,7 +36,7 @@ const ModuleFilters = ({
       key: Filters.InFuture,
       title: 'Буду дивитись',
       icon: <Goal />,
-      value: moduleList?.in_progress,
+      value: moduleList?.in_future,
       isVisible: true,
     },
     {
@@ -78,7 +72,7 @@ const ModuleFilters = ({
   ].filter((item) => !!item.isVisible);
 
   return (
-    <div className='grid auto-cols-fr grid-flow-col-dense grid-rows-1 gap-4 transition-all'>
+    <div className='grid gap-4 transition-all sm:auto-cols-fr sm:grid-flow-col-dense sm:grid-rows-1'>
       {filters?.map(({ key, title, value, icon }) => (
         <Card
           onClick={() => setCurrentFilter(key)}
@@ -97,5 +91,3 @@ const ModuleFilters = ({
     </div>
   );
 };
-
-export default ModuleFilters;
