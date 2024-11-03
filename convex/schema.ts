@@ -4,7 +4,6 @@ import { v } from 'convex/values';
 export default defineSchema({
   lists: defineTable({
     unity_id: v.string(),
-    module: v.string(),
     is_favorite: v.optional(v.boolean()),
     name: v.string(),
     rate: v.optional(v.string()),
@@ -14,9 +13,15 @@ export default defineSchema({
     episode: v.optional(v.string()),
     season: v.optional(v.string()),
     user: v.id('users'),
-  }).index('by_user', ['user']),
+  })
+    .index('by_user', ['user'])
+    .searchIndex('by_name', {
+      searchField: 'name',
+      filterFields: ['user'],
+    }),
   users: defineTable({
     name: v.string(),
+    friends: v.optional(v.array(v.string())),
     tokenIdentifier: v.string(),
   }).index('by_token', ['tokenIdentifier']),
 });

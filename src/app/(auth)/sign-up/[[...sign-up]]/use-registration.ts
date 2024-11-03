@@ -11,7 +11,7 @@ export const useRegistration = () => {
 
   const router = useRouter();
 
-  const registerWithCredentials = async (email: string, password: string) => {
+  const registerWithCredentials = async ({ email, password }) => {
     if (!isLoaded) return null;
 
     try {

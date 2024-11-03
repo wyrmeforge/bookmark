@@ -2,78 +2,54 @@ import { mutation, query } from './_generated/server';
 import { v } from 'convex/values';
 import { getUserId } from './helpers';
 import { Filters } from './enums';
+import { paginationOptsValidator } from 'convex/server';
 
 export const getList = query({
   args: {
-    module: v.string(),
-    status: v.string(),
-    sortBy: v.object({
-      value: v.string(),
-      direction: v.string(),
-    }),
+    filter: v.string(),
+    paginationOpts: paginationOptsValidator,
+    searchValue: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
-    const { status, module, sortBy } = args;
+    const { filter } = args;
     const userId = await getUserId(ctx);
 
-    let query = ctx.db
-      .query('lists')
-      .withIndex('by_user', (q) => q.eq('user', userId))
-      .filter((q) => q.eq(q.field('module'), module));
+    if (!userId) {
+      throw new Error('User not authenticated');
+    }
 
-    if (status !== 'all') {
-      query = query.filter((q) =>
-        status === 'favorite'
+    let lists;
+
+    if (args.searchValue) {
+      lists = ctx.db
+        .query('lists')
+        .withSearchIndex('by_name', (q) =>
+          q.search('name', args.searchValue || '').eq('user', userId)
+        );
+    } else {
+      lists = ctx.db
+        .query('lists')
+        .withIndex('by_user', (q) => q.eq('user', userId))
+        .order('desc');
+    }
+
+    if (filter && filter !== Filters.All) {
+      lists = lists.filter((q) =>
+        filter === Filters.Favorite
           ? q.eq(q.field('is_favorite'), true)
-          : q.eq(q.field('status'), status)
+          : q.eq(q.field('status'), filter)
       );
     }
 
-    const list = await query.collect();
+    const paginatedLists = lists.paginate(args.paginationOpts);
 
-    const validSortKeys: (keyof (typeof list)[0])[] = [
-      '_creationTime',
-      'rate',
-      'viewed_count',
-    ];
-
-    if (validSortKeys.includes(sortBy.value as keyof (typeof list)[0])) {
-      const sortKey = sortBy.value as keyof (typeof list)[0];
-      list.sort((a, b) => {
-        const aValue = a[sortKey] ?? (sortBy.direction === 'desc' ? -1 : 1);
-        const bValue = b[sortKey] ?? (sortBy.direction === 'desc' ? -1 : 1);
-
-        return sortBy.direction === 'desc'
-          ? bValue > aValue
-            ? 1
-            : -1
-          : aValue > bValue
-            ? 1
-            : -1;
-      });
-    }
-
-    return list;
-  },
-});
-
-export const getListItem = query({
-  args: { id: v.id('lists') },
-  handler: async (ctx, args) => {
-    const userId = await getUserId(ctx);
-
-    return await ctx.db
-      .query('lists')
-      .withIndex('by_user', (q) => q.eq('user', userId))
-      .filter((q) => q.eq(q.field('_id'), args.id))
-      .first();
+    return paginatedLists;
   },
 });
 
 export const createListItem = mutation({
   args: {
     name: v.string(),
-    module: v.string(),
     is_favorite: v.boolean(),
     rate: v.optional(v.string()),
     status: v.string(),
@@ -86,7 +62,18 @@ export const createListItem = mutation({
   handler: async (ctx, args) => {
     const userId = await getUserId(ctx);
 
+    const existingItem = await ctx.db
+      .query('lists')
+      .filter((q) => q.eq(q.field('unity_id'), args.unity_id))
+      .first();
+
+    if (existingItem) {
+      return { success: false, error: 'ITEM_ALREADY_EXISTS' };
+    }
+
     await ctx.db.insert('lists', { ...args, user: userId });
+
+    return { success: true };
   },
 });
 
@@ -103,54 +90,51 @@ export const deleteListItem = mutation({
   args: { id: v.id('lists') },
   handler: async (ctx, args) => {
     await ctx.db.delete(args.id);
+    return { success: true };
   },
 });
 
 export const getListModules = query({
-  args: { module: v.string() },
-  handler: async (ctx, args) => {
+  args: {},
+  handler: async (ctx) => {
     const userId = await getUserId(ctx);
 
     const allLists = await ctx.db
       .query('lists')
       .withIndex('by_user', (q) => q.eq('user', userId))
-      .filter((q) => q.eq(q.field('module'), args.module))
       .collect();
 
-    const statusCounts = allLists.reduce(
-      (counts, list) => {
-        counts.all++;
+    const statusCounts = {
+      all: allLists.length,
+      is_favorite: 0,
+      in_progress: 0,
+      in_future: 0,
+      abandoned: 0,
+      complete: 0,
+    };
 
-        switch (list.status) {
-          case Filters.Favorite:
-            counts.is_favorite++;
-            break;
-          case Filters.InProgress:
-            counts.in_progress++;
-            break;
-          case Filters.InFuture:
-            counts.in_future++;
-            break;
-          case Filters.Abandoned:
-            counts.abandoned++;
-            break;
-          case Filters.Completed:
-            counts.complete++;
-            break;
-          default:
-            break;
-        }
-        return counts;
-      },
-      {
-        all: 0,
-        is_favorite: 0,
-        in_progress: 0,
-        in_future: 0,
-        abandoned: 0,
-        complete: 0,
+    for (const list of allLists) {
+      if (list.is_favorite) {
+        statusCounts.is_favorite++;
       }
-    );
+
+      switch (list.status) {
+        case Filters.InProgress:
+          statusCounts.in_progress++;
+          break;
+        case Filters.InFuture:
+          statusCounts.in_future++;
+          break;
+        case Filters.Abandoned:
+          statusCounts.abandoned++;
+          break;
+        case Filters.Completed:
+          statusCounts.complete++;
+          break;
+        default:
+          break;
+      }
+    }
 
     return statusCounts;
   },

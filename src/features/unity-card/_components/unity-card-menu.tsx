@@ -24,26 +24,17 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 
-import { useMutation, useQuery } from 'convex/react';
+import { useMutation } from 'convex/react';
 import { Filters } from '@/enums/filters';
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { Badge } from '../../../components/ui/badge';
 import { api } from '../../../../convex/_generated/api';
 import { cn } from '@/lib/utils';
-import DeleteUnity from '@/features/unity-modify/delete-unity';
 import EditUnity from '@/features/unity-modify/edit-unity';
+import DeleteUnity from '@/features/unity-modify/delete-unity';
 
-const UnityCardMenu = ({ name, id, isFavorite }) => {
+const UnityCardMenu = ({ unityData }) => {
+  const { name, _id: id, is_favorite, status } = unityData;
   const updateItem = useMutation(api.lists.updateListItem);
-
-  const listItem = useQuery(
-    api.lists.getListItem,
-    id
-      ? {
-          id,
-        }
-      : 'skip'
-  );
 
   const statuses = [
     {
@@ -68,71 +59,75 @@ const UnityCardMenu = ({ name, id, isFavorite }) => {
     },
   ];
 
+  const handleChangeFavorite = () => {
+    updateItem({ id, newData: { is_favorite: !is_favorite } });
+  };
+
   return (
-    <Dialog>
-      <DropdownMenu>
-        <DropdownMenuTrigger className='absolute right-3 top-[15px] z-20'>
-          <Badge className='border border-muted-foreground'>
-            <MenuIcon size={16} />
-          </Badge>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent className='w-64 rounded-lg'>
-          <DropdownMenuLabel>{name}</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DialogTrigger className='w-full'>
-            <DropdownMenuItem>
-              <Pen className='mr-2 h-4 w-4' />
-              <span>Редагувати</span>
-            </DropdownMenuItem>
-          </DialogTrigger>
+    <DropdownMenu>
+      <DropdownMenuTrigger className='absolute right-3 top-[15px] z-20'>
+        <Badge className='border border-muted-foreground'>
+          <MenuIcon size={16} />
+        </Badge>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align='end' className='w-64 rounded-lg'>
+        <DropdownMenuLabel className='truncate'>{name}</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <EditUnity listItem={unityData}>
           <DropdownMenuItem
-            onClick={() =>
-              updateItem({ id, newData: { is_favorite: !isFavorite } })
-            }
+            onSelect={(e) => e.preventDefault()}
+            className='cursor-pointer'
           >
-            {isFavorite ? (
-              <HeartCrack className='hover:animate-jump-out mr-2 h-4 w-4' />
-            ) : (
-              <Heart className='animate-jump-out mr-2 h-4 w-4' />
-            )}
-            <span>{isFavorite ? 'Видалити з' : 'Додати до'} улюблених</span>
+            <Pen className='mr-2 h-4 w-4' />
+            <span>Редагувати</span>
           </DropdownMenuItem>
-          <DropdownMenuSub>
-            <DropdownMenuSubTrigger>
-              <Filter className='mr-2 h-4 w-4' />
-              <span>Змінити статус на</span>
-            </DropdownMenuSubTrigger>
-            <DropdownMenuPortal>
-              <DropdownMenuSubContent>
-                {statuses?.map((item) => (
-                  <DropdownMenuItem
-                    key={item.value}
-                    className={cn('flex gap-2', {
-                      'bg-gray-700': item.value == listItem?.status,
-                    })}
-                    onClick={() =>
-                      updateItem({ id, newData: { status: item.value } })
-                    }
-                  >
-                    {item.icon}
-                    <span>{item.label}</span>
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuSubContent>
-            </DropdownMenuPortal>
-          </DropdownMenuSub>
-          <DeleteUnity id={id}>
-            <DropdownMenuItem>
-              <Trash className='mr-2 h-4 w-4 stroke-red-500' />
-              <span className='text-red-500'>Видалити</span>
-            </DropdownMenuItem>
-          </DeleteUnity>
-        </DropdownMenuContent>
-        <DialogContent>
-          <EditUnity unityId={id} listItem={listItem} />
-        </DialogContent>
-      </DropdownMenu>
-    </Dialog>
+        </EditUnity>
+        <DropdownMenuItem
+          className='cursor-pointer'
+          onClick={handleChangeFavorite}
+        >
+          {is_favorite ? (
+            <HeartCrack className='hover:animate-jump-out mr-2 h-4 w-4' />
+          ) : (
+            <Heart className='animate-jump-out mr-2 h-4 w-4' />
+          )}
+          <span>{is_favorite ? 'Видалити з' : 'Додати до'} улюблених</span>
+        </DropdownMenuItem>
+        <DropdownMenuSub>
+          <DropdownMenuSubTrigger>
+            <Filter className='mr-2 h-4 w-4' />
+            <span>Змінити статус на</span>
+          </DropdownMenuSubTrigger>
+          <DropdownMenuPortal>
+            <DropdownMenuSubContent>
+              {statuses?.map((item) => (
+                <DropdownMenuItem
+                  key={item.value}
+                  className={cn('flex gap-2', {
+                    'bg-gray-700': item.value == status,
+                  })}
+                  onClick={() =>
+                    updateItem({ id, newData: { status: item.value } })
+                  }
+                >
+                  {item.icon}
+                  <span>{item.label}</span>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuSubContent>
+          </DropdownMenuPortal>
+        </DropdownMenuSub>
+        <DeleteUnity id={id}>
+          <DropdownMenuItem
+            className='cursor-pointer'
+            onSelect={(e) => e.preventDefault()}
+          >
+            <Trash className='mr-2 h-4 w-4 stroke-red-500' />
+            <span className='text-red-500'>Видалити</span>
+          </DropdownMenuItem>
+        </DeleteUnity>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };
 

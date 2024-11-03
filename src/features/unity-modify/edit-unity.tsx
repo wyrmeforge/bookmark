@@ -4,22 +4,42 @@ import { IListItem } from '@/types/list';
 import UnityModifyForm from './components/unity-modify-form';
 import { FormFields, FormSchema, FormVariant } from './form-config';
 import { useEditUnity } from './hooks/use-edit-unity';
-import { Id } from '../../../convex/_generated/dataModel';
+
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import { ReactNode } from 'react';
 
 const EditUnity = ({
   listItem,
-  unityId,
+  children,
 }: {
   listItem: IListItem;
-  unityId: Id<'lists'>;
+  children: ReactNode;
 }) => {
-  const { name, status, season, rate, is_favorite, episode, viewed_count } =
-    listItem || {};
+  const {
+    name,
+    status,
+    season,
+    _id: id,
+    imageUrl,
+    rate,
+    is_favorite,
+    episode,
+    viewed_count,
+  } = listItem || {};
 
   const editUnity = useEditUnity();
 
   const initialValues: u.infer<typeof FormSchema> = {
-    [FormFields.UnityInfo]: null,
+    [FormFields.UnityInfo]: {
+      id: id,
+      name: name,
+      image: imageUrl,
+    },
     [FormFields.Name]: name,
     [FormFields.ViewedCount]: viewed_count,
     [FormFields.Rate]: rate,
@@ -30,15 +50,24 @@ const EditUnity = ({
   };
 
   function onSubmit(data: u.infer<typeof FormSchema>) {
-    editUnity(unityId, data);
+    editUnity(id, data);
   }
 
   return (
-    <UnityModifyForm
-      initialValues={initialValues}
-      variant={FormVariant.Edit}
-      onSubmit={onSubmit}
-    />
+    <Dialog>
+      <DialogTrigger className='w-full'>{children}</DialogTrigger>
+      <DialogContent
+        aria-description='Anime Edit'
+        onOpenAutoFocus={(e) => e.preventDefault()}
+      >
+        <DialogTitle></DialogTitle>
+        <UnityModifyForm
+          initialValues={initialValues}
+          variant={FormVariant.Edit}
+          onSubmit={onSubmit}
+        />
+      </DialogContent>
+    </Dialog>
   );
 };
 

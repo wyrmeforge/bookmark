@@ -5,7 +5,7 @@ export const useLogin = () => {
   const { isLoaded, signIn, setActive } = useSignIn();
   const router = useRouter();
 
-  const loginWithCredentials = async (email: string, password: string) => {
+  const loginWithCredentials = async ({ email, password }) => {
     if (!isLoaded) return;
 
     try {

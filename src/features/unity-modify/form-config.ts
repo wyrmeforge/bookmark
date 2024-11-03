@@ -1,5 +1,4 @@
 import { Filters } from '@/enums/filters';
-import { Module } from '@/enums/modules';
 import { z as u } from 'zod';
 
 export enum FormFields {
@@ -23,12 +22,26 @@ export const FormSchema = u.object({
     .object({
       id: u.string(),
       name: u.string(),
-      imageUrl: u.string(),
+      image: u.string(),
     })
-    .nullable(),
+    .refine((data) => !!data.id && !!data.name && !!data.image, {
+      message: "Поле обов'язкове",
+    }),
   [FormFields.Name]: u.string().optional(),
   [FormFields.ViewedCount]: u.string().optional(),
-  [FormFields.Rate]: u.string().min(0).max(10).optional(),
+  [FormFields.Rate]: u
+    .string()
+    .refine(
+      (value) => {
+        if (value === '') return true;
+        const num = parseInt(value, 10);
+        return !/^0\d+$/.test(value) && num >= 0 && num <= 10;
+      },
+      {
+        message: 'Оцінка повинна бути числом від 0 до 10!',
+      }
+    )
+    .optional(),
   [FormFields.Status]: u.string(),
   [FormFields.IsFavorite]: u.boolean().optional(),
   [FormFields.Episode]: u.string().optional(),
@@ -36,7 +49,11 @@ export const FormSchema = u.object({
 });
 
 export const DefaultValues: u.infer<typeof FormSchema> = {
-  [FormFields.UnityInfo]: null,
+  [FormFields.UnityInfo]: {
+    id: '',
+    name: '',
+    image: '',
+  },
   [FormFields.Name]: '',
   [FormFields.ViewedCount]: undefined,
   [FormFields.Rate]: undefined,
@@ -44,10 +61,4 @@ export const DefaultValues: u.infer<typeof FormSchema> = {
   [FormFields.IsFavorite]: false,
   [FormFields.Episode]: undefined,
   [FormFields.Season]: undefined,
-};
-
-export const moduleLabel: Record<Module, string> = {
-  [Module.Anime]: 'Аніме',
-  [Module.Movie]: 'Фільм',
-  [Module.Cartoon]: 'Мультфільм',
 };

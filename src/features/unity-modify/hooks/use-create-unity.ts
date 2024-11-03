@@ -1,16 +1,14 @@
 import { useMutation } from 'convex/react';
 import { z as u } from 'zod';
 import { FormSchema } from '../form-config';
-import { useContext } from 'react';
-import { UnityStateContext } from '@/components/providers/unity-state-provider';
 import { api } from '../../../../convex/_generated/api';
 import { toast } from '@/components/ui/use-toast';
+import { ErrorCodes } from '@/enums/errorCodes';
 
 export const useCreateUnity = () => {
-  const { currentModule } = useContext(UnityStateContext);
   const createListItem = useMutation(api.lists.createListItem);
 
-  const createNewUnity = (formData: u.infer<typeof FormSchema>) => {
+  const createNewUnity = async (formData: u.infer<typeof FormSchema>) => {
     const {
       unity_info,
       name: own_name,
@@ -22,26 +20,43 @@ export const useCreateUnity = () => {
       is_favorite,
     } = formData;
 
-    const { id, name, imageUrl } = unity_info || {};
-
-    if (!id || !imageUrl) return;
+    const { id, name, image } = unity_info || {};
 
     const unityData = {
       unity_id: id,
-      module: currentModule,
       is_favorite: !!is_favorite,
-      name: own_name || name || '',
+      name: own_name || name,
       rate,
-      imageUrl,
+      imageUrl: image,
       status,
       episode,
       season,
       viewed_count,
     };
 
-    createListItem(unityData);
+    try {
+      const response = await createListItem(unityData);
 
-    toast({ title: 'Успішно додано!' });
+      if (response.success) {
+        toast({
+          title: 'Успішно додано!',
+          description: own_name || name,
+          variant: 'success',
+        });
+      } else if (response.error === ErrorCodes.ITEM_ALREADY_EXISTS) {
+        toast({
+          title: 'Не вдалось додати!',
+          description: 'Це аніме вже є у вашому списку.',
+          variant: 'destructive',
+        });
+      }
+    } catch (e) {
+      toast({
+        title: 'Не вдалось додати!',
+        description: 'Сталася невідома помилка.',
+        variant: 'destructive',
+      });
+    }
   };
 
   return createNewUnity;

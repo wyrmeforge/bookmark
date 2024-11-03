@@ -10,9 +10,7 @@ export const useSearchAnime = (query: string | null) => {
   const formattedData = data?.data?.map((item: typeof data) => ({
     id: item.id,
     name: item?.attributes?.titles?.en || item?.attributes?.canonicalTitle,
-    image:
-      item?.attributes?.posterImage?.original ||
-      item?.attributes?.coverImage?.original,
+    image: item?.attributes?.posterImage?.large,
   }));
 
   return {

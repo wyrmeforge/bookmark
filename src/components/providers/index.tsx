@@ -1,16 +1,16 @@
-import React from 'react';
+import { ReactNode } from 'react';
 import { ThemeProvider } from './theme-provider';
 import { ConvexClientProvider } from './convex-client-provider';
 import { ClerkProvider } from './clerk-provider';
 import { TooltipProvider } from '../ui/tooltip';
-import UnityStateProvider from './unity-state-provider';
+import AppStateProvider from './app-state-provider';
 
-const Providers = ({ children }: { children: React.ReactNode }) => (
+const Providers = ({ children }: { children: ReactNode }) => (
   <ClerkProvider>
     <ConvexClientProvider>
       <ThemeProvider>
         <TooltipProvider>
-          <UnityStateProvider>{children}</UnityStateProvider>
+          <AppStateProvider>{children}</AppStateProvider>
         </TooltipProvider>
       </ThemeProvider>
     </ConvexClientProvider>

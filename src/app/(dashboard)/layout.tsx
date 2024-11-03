@@ -5,6 +5,7 @@ import Loader from '@/components/loader';
 import { Separator } from '@/components/ui/separator';
 import React from 'react';
 import { useStoreUser } from '@/hooks/use-store-user';
+import { useUnityList } from '@/hooks/use-unity-list';
 
 interface IDashboardLayoutProps {
   children: React.ReactNode;
@@ -19,7 +20,7 @@ const DashboardLayout = ({ children }: IDashboardLayoutProps) => {
     <div className='flex h-full min-h-screen grow flex-col'>
       <Header />
       <Separator className='my-3' />
-      {children}
+      <main>{children}</main>
     </div>
   );
 };

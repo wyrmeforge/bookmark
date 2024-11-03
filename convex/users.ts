@@ -1,4 +1,6 @@
-import { mutation } from './_generated/server';
+import { mutation, query } from './_generated/server';
+import { getUserId } from './helpers';
+import { v } from 'convex/values';
 
 export const store = mutation(async ({ db, auth }) => {
   const identity = await auth.getUserIdentity();
@@ -13,7 +15,7 @@ export const store = mutation(async ({ db, auth }) => {
     )
     .unique();
 
-  const userName = identity.name || identity.nickname;
+  const userName = identity.name || identity.nickname || identity.email;
 
   if (user !== null) {
     if (user.name !== userName) {
@@ -24,6 +26,19 @@ export const store = mutation(async ({ db, auth }) => {
 
   return db.insert('users', {
     name: userName!,
+    friends: [],
     tokenIdentifier: identity.tokenIdentifier,
   });
+});
+
+export const getUserFriends = query({
+  args: {
+    userId: v.id('users'),
+  },
+  handler: async (ctx, args) => {
+    return ctx.db
+      .query('users')
+      .filter((q) => q.eq(q.field('_id'), args.userId))
+      .unique();
+  },
 });

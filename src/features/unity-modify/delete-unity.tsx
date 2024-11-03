@@ -29,7 +29,7 @@ const DeleteUnity = ({
 
   return (
     <AlertDialog>
-      <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
+      <AlertDialogTrigger className='w-full'>{children}</AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Ви впевнені?</AlertDialogTitle>
@@ -39,7 +39,9 @@ const DeleteUnity = ({
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Відмінити</AlertDialogCancel>
-          <AlertDialogAction onClick={handleDelete}>Видалити</AlertDialogAction>
+          <AlertDialogAction className='destructive' onClick={handleDelete}>
+            Видалити
+          </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

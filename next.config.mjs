@@ -1,25 +1,27 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  typescript: {
-    ignoreBuildErrors: true,
-  },
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
   images: {
     minimumCacheTTL: 60,
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'media.kitsu.io', // anime posters
+        hostname: 'i.gifer.com', // anime posters
       },
       {
         protocol: 'https',
-        hostname: 'image.tmdb.org', // movie posters
+        hostname: 'media.kitsu.app', // movie posters
       },
       {
         protocol: 'https',
-        hostname: 'precious-roadrunner-453.convex.cloud',
+        hostname: 'i.pinimg.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'media.kitsu.io',
+      },
+      {
+        protocol: 'https',
+        hostname: 'cdn.myanimelist.net',
       },
     ],
   },
