@@ -59,9 +59,6 @@ const Dashboard = () => {
           <div className='hidden w-full max-w-xl sm:block'>
             <SearchInput />
           </div>
-          <div className=''>
-            <h2>{getFilterTranslation(currentFilter)}</h2>
-          </div>
           <CreateUnity>
             <Button
               variant='secondary'

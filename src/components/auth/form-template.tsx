@@ -6,16 +6,15 @@ import FormInput from '../form/input';
 import Link from 'next/link';
 import { Button, buttonVariants } from '../ui/button';
 import { Form } from '../ui/form';
-import Image from 'next/image';
 import { cn } from '@/lib/utils';
-import { useAnimeQuote } from '@/hooks/use-anime-quote';
+import { Routes } from '@/enums/routes';
 
 const FormSchema = u.object({
   email: u.string({
-    required_error: "Пошта обов'язкова",
+    required_error: "Поле обов'язкове",
   }),
   password: u.string({
-    required_error: "Пароль обов'язковий",
+    required_error: "Поле обов'язкове",
   }),
 });
 
@@ -26,22 +25,13 @@ const AuthFormTemplate = ({
 }) => {
   const isSignUp = variant === 'sign-up';
 
-  const { quote } = useAnimeQuote();
-
-  const {
-    character,
-    character_thumbnail_url,
-    anime,
-    quote: quoteText,
-  } = quote || {};
-
   const form = useForm<u.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
   });
 
-  const title = isSignUp ? 'Створити аккаунт' : 'Увійти';
+  const title = isSignUp ? 'Створити акаунт' : 'Увійти';
   const ctaBottomButtonLabel = isSignUp ? 'Увійти' : 'Зареєструватись';
-  const ctaBottomLink = isSignUp ? '/sign-in' : '/sign-up';
+  const ctaBottomLink = isSignUp ? Routes.SignIn : Routes.SignUp;
 
   return (
     <>
@@ -71,24 +61,6 @@ const AuthFormTemplate = ({
             </svg>
             Bookmark
           </div>
-          <div className='relative z-20 mt-auto flex justify-between rounded-xl bg-zinc-900 p-2'>
-            <blockquote className='flex flex-col justify-between'>
-              <em className='text-lg'>&ldquo;{quoteText}&rdquo;</em>
-              <footer className='text-sm font-bold'>
-                {character} - {anime}
-              </footer>
-            </blockquote>
-            {character_thumbnail_url && (
-              <Image
-                priority
-                className='w-auto rounded-full'
-                alt={quote?.character || 'Anime Character Quote'}
-                width={50}
-                height={50}
-                src={character_thumbnail_url}
-              />
-            )}
-          </div>
         </div>
         <div className='lg:p-8'>
           <div className='mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]'>
@@ -96,7 +68,7 @@ const AuthFormTemplate = ({
               <h1 className='text-2xl font-semibold tracking-tight'>{title}</h1>
               {isSignUp && (
                 <p className='text-sm text-muted-foreground'>
-                  Введіть вашу пошту нижче щоб створити аккаунт
+                  Введіть вашу пошту нижче щоб створити акаунт
                 </p>
               )}
             </div>

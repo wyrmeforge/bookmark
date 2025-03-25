@@ -14,6 +14,7 @@ const CreateUnity = ({ children }) => {
   const createNewUnity = useCreateUnity();
 
   const onSubmit = (data: u.infer<typeof FormSchema>) => {
+    console.log(data);
     createNewUnity(data);
   };
 
@@ -24,6 +25,7 @@ const CreateUnity = ({ children }) => {
         aria-description='Anime Create'
         onOpenAutoFocus={(e) => e.preventDefault()}
       >
+        <DialogTitle>Create Anime Unity</DialogTitle>
         <UnityModifyForm variant={FormVariant.Create} onSubmit={onSubmit} />
       </DialogContent>
     </Dialog>

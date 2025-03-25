@@ -13,12 +13,11 @@ export function useStoreUser() {
   const storeUser = useMutation(api.users.store);
 
   useEffect(() => {
-    if (!isAuthenticated) {
-      return;
-    }
+    if (!isAuthenticated) return;
 
     async function createUser() {
       const id = await storeUser();
+
       setUserId(id);
     }
 

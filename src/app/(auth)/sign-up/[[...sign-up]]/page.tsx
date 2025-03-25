@@ -1,14 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
-
-import Link from 'next/link';
-
 import { Button } from '@/components/ui/button';
 
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import Image from 'next/image';
 
 import {
   Card,
@@ -21,9 +16,6 @@ import { useRegistration } from './use-registration';
 import AuthFormTemplate from '@/components/auth/form-template';
 
 const SignUp = () => {
-  const [emailAddress, setEmailAddress] = useState('');
-  const [password, setPassword] = useState('');
-
   const {
     registerWithCredentials,
     registerWithGoogle,

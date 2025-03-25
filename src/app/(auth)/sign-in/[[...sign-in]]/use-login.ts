@@ -1,11 +1,17 @@
+import { Routes } from '@/enums/routes';
 import { useSignIn } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
+
+type AuthCredentials = {
+  email: string;
+  password: string;
+};
 
 export const useLogin = () => {
   const { isLoaded, signIn, setActive } = useSignIn();
   const router = useRouter();
 
-  const loginWithCredentials = async ({ email, password }) => {
+  const loginWithCredentials = async ({ email, password }: AuthCredentials) => {
     if (!isLoaded) return;
 
     try {
@@ -17,7 +23,7 @@ export const useLogin = () => {
       if (signInAttempt.status === 'complete') {
         await setActive({ session: signInAttempt.createdSessionId });
 
-        router.push('/home');
+        router.push(Routes.Home);
       } else {
         console.error(JSON.stringify(signInAttempt, null, 2));
       }
@@ -31,8 +37,8 @@ export const useLogin = () => {
 
     return signIn.authenticateWithRedirect({
       strategy: 'oauth_google',
-      redirectUrl: '/sign-up/sso-callback',
-      redirectUrlComplete: '/home',
+      redirectUrl: '/sign-up',
+      redirectUrlComplete: Routes.Home,
     });
   };
 

@@ -57,27 +57,6 @@ export const columns: ColumnDef<IListItem>[] = [
     },
   },
   {
-    accessorKey: 'is_favorite',
-    header: '',
-    enableHiding: false,
-    cell: ({ row }) => {
-      const updateItem = useMutation(api.lists.updateListItem);
-
-      const handleChangeFavorite = () => {
-        updateItem({
-          id: row.original._id,
-          newData: { is_favorite: !row.getValue('is_favorite') },
-        });
-      };
-
-      return row.getValue('is_favorite') ? (
-        <HeartIcon onClick={handleChangeFavorite} />
-      ) : (
-        <HeartOffIcon onClick={handleChangeFavorite} />
-      );
-    },
-  },
-  {
     id: 'actions',
     enableHiding: false,
     cell: ({ row }) => {
