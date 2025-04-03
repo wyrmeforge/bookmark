@@ -10,6 +10,7 @@ export enum FormFields {
   IsFavorite = 'is_favorite',
   Episode = 'episode',
   Season = 'season',
+  Comment = 'comment',
 }
 
 export enum FormVariant {
@@ -46,6 +47,7 @@ export const FormSchema = u.object({
   [FormFields.IsFavorite]: u.boolean().optional(),
   [FormFields.Episode]: u.string().optional(),
   [FormFields.Season]: u.string().optional(),
+  [FormFields.Comment]: u.string().optional(),
 });
 
 export const DefaultValues: u.infer<typeof FormSchema> = {
@@ -55,10 +57,11 @@ export const DefaultValues: u.infer<typeof FormSchema> = {
     image: '',
   },
   [FormFields.Name]: '',
-  [FormFields.ViewedCount]: undefined,
-  [FormFields.Rate]: undefined,
+  [FormFields.ViewedCount]: '',
+  [FormFields.Rate]: '',
   [FormFields.Status]: Filters.InFuture,
   [FormFields.IsFavorite]: false,
-  [FormFields.Episode]: undefined,
-  [FormFields.Season]: undefined,
+  [FormFields.Episode]: '',
+  [FormFields.Season]: '',
+  [FormFields.Comment]: '',
 };

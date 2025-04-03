@@ -41,7 +41,7 @@ export const getList = query({
       );
     }
 
-    const paginatedLists = lists.paginate(args.paginationOpts);
+    const paginatedLists = await lists.paginate(args.paginationOpts);
 
     return paginatedLists;
   },
@@ -58,6 +58,7 @@ export const createListItem = mutation({
     unity_id: v.string(),
     episode: v.optional(v.string()),
     season: v.optional(v.string()),
+    comment: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
     const userId = await getUserId(ctx);
@@ -83,6 +84,8 @@ export const updateListItem = mutation({
     const { id, newData } = args;
 
     await ctx.db.patch(id, { ...newData });
+
+    return { success: true };
   },
 });
 

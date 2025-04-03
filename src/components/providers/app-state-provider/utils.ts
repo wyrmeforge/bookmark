@@ -1,7 +1,6 @@
 import { Filters, LayoutViews, SortDirection, SortName } from '@/enums/unity';
 import { ISortModel } from '@/types/sort';
 import { AppStateAction, IAppState } from './types';
-import { IPaginationModel } from '@/types/unity';
 
 const defaultSortModel: ISortModel = {
   label: 'Sort by Creation Time',

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-export const useSearchDebounce = (
+export const useDebounce = (
   searchValue: string,
   debounceMs: number = 500
 ): string => {

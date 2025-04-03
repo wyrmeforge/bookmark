@@ -50,7 +50,11 @@ const FormSelect = <T extends FieldValues>({
           </FormControl>
           <SelectContent>
             {items?.map((item) => (
-              <SelectItem key={item.value} value={item.value}>
+              <SelectItem
+                className='hover:cursor-pointer hover:bg-slate-900'
+                key={item.value}
+                value={item.value}
+              >
                 {item.label}
               </SelectItem>
             ))}

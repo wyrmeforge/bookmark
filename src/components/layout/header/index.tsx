@@ -19,7 +19,7 @@ const Header = () => {
         </Button>
       </div>
       <div className='flex items-center gap-4'>
-        <LayoutViewButton />
+        {/* <LayoutViewButton /> */}
         <UserMenu />
       </div>
     </header>

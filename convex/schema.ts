@@ -12,6 +12,7 @@ export default defineSchema({
     imageUrl: v.string(),
     episode: v.optional(v.string()),
     season: v.optional(v.string()),
+    comment: v.optional(v.string()),
     user: v.id('users'),
   })
     .index('by_user', ['user'])

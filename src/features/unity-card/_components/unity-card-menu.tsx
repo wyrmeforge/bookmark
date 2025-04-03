@@ -1,5 +1,6 @@
 import {
   CheckCheck,
+  Divide,
   Eye,
   Filter,
   Goal,
@@ -31,8 +32,9 @@ import { api } from '../../../../convex/_generated/api';
 import { cn } from '@/lib/utils';
 import EditUnity from '@/features/unity-modify/edit-unity';
 import DeleteUnity from '@/features/unity-modify/delete-unity';
+import { IListItem } from '@/types/list';
 
-const UnityCardMenu = ({ unityData }) => {
+const UnityCardMenu = ({ unityData }: { unityData: IListItem }) => {
   const { name, _id: id, is_favorite, status } = unityData;
   const updateItem = useMutation(api.lists.updateListItem);
 
@@ -64,13 +66,13 @@ const UnityCardMenu = ({ unityData }) => {
   };
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger className='absolute right-3 top-[15px] z-20'>
-        <Badge className='border border-muted-foreground'>
+    <DropdownMenu modal={false}>
+      <DropdownMenuTrigger className='h-5'>
+        <Badge variant='secondary' className='border border-muted-foreground'>
           <MenuIcon size={16} />
         </Badge>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align='end' className='w-64 rounded-lg'>
+      <DropdownMenuContent align='start' className='w-64 rounded-lg'>
         <DropdownMenuLabel className='truncate'>{name}</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <EditUnity listItem={unityData}>

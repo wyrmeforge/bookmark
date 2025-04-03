@@ -42,7 +42,7 @@ const FormInput = <T extends FieldValues>({
         </FormLabel>
         <FormControl>
           <Input
-            id={name}
+            // id={name}
             type={type}
             className={cn({ 'border-red-500': !!error }, 'bg-transparent')}
             required={required}

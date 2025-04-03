@@ -13,39 +13,41 @@ import UnityCardMenu from './_components/unity-card-menu';
 import CardBadges from './_components/card-badges';
 import { IListItem } from '@/types/list';
 
-const UnityCard = ({ unityData }: IListItem) => {
+const EntryCard = ({ unityData }: { unityData: IListItem }) => {
   const {
     imageUrl,
     name,
     _creationTime,
     is_favorite,
     rate,
-    _id,
     season,
     episode,
+    status,
   } = unityData;
 
   return (
-    <div className='sm:width-40 relative rounded-xl  transition-all hover:border-black hover:shadow-xl dark:hover:border-gray-50'>
-      <UnityCardMenu unityData={unityData} />
-      <Card className='w-full shadow hover:border-black hover:shadow-xl dark:hover:border-gray-50'>
-        <CardHeader className='relative  hidden h-[200px] p-0 sm:block sm:h-[400px]'>
-          <Image
-            priority
-            className='h-full w-full rounded-xl rounded-bl-none rounded-br-none sm:block'
-            alt='anime'
-            src={imageUrl}
-            width={400}
-            height={400}
-          />
+    <Card className='relative w-full rounded-xl shadow hover:border-black hover:shadow-xl dark:hover:border-gray-50'>
+      <CardHeader className='absolute top-3 z-10 w-full p-0'>
+        <div className='flex w-full flex-row items-center justify-between px-5'>
           <CardBadges
+            status={status}
             episode={episode}
             season={season}
             isFavorite={is_favorite}
           />
-        </CardHeader>
-        <CardContent className='flex flex-col gap-4 p-4'>
-          <CardTitle className='line-clamp-2 flex h-10 justify-between truncate whitespace-pre-wrap text-sm'>
+          <UnityCardMenu unityData={unityData} />
+        </div>
+      </CardHeader>
+      <CardContent className='flex h-full flex-col gap-4 p-0 pb-5'>
+        <Image
+          className='min-w-100 min-h-100 rounded-xl rounded-bl-none rounded-br-none sm:block'
+          alt='Entry Cover Image'
+          src={imageUrl}
+          width={400}
+          height={400}
+        />
+        <div className='flex h-full flex-col justify-between gap-2 px-5'>
+          <CardTitle className='line-clamp-2 truncate whitespace-pre-wrap text-sm'>
             {name}
           </CardTitle>
           <CardDescription className='flex items-center justify-between'>
@@ -56,10 +58,10 @@ const UnityCard = ({ unityData }: IListItem) => {
               </span>
             )}
           </CardDescription>
-        </CardContent>
-      </Card>
-    </div>
+        </div>
+      </CardContent>
+    </Card>
   );
 };
 
-export default UnityCard;
+export default EntryCard;

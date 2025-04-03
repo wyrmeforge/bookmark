@@ -6,6 +6,7 @@ import { useCreateUnity } from './hooks/use-create-unity';
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
@@ -14,18 +15,15 @@ const CreateUnity = ({ children }) => {
   const createNewUnity = useCreateUnity();
 
   const onSubmit = (data: u.infer<typeof FormSchema>) => {
-    console.log(data);
     createNewUnity(data);
   };
 
   return (
     <Dialog>
-      <DialogTrigger>{children}</DialogTrigger>
-      <DialogContent
-        aria-description='Anime Create'
-        onOpenAutoFocus={(e) => e.preventDefault()}
-      >
-        <DialogTitle>Create Anime Unity</DialogTitle>
+      <DialogTrigger asChild>{children}</DialogTrigger>
+      <DialogContent>
+        <DialogTitle className='hidden'>Create Anime</DialogTitle>
+        <DialogDescription className='hidden'>Create</DialogDescription>
         <UnityModifyForm variant={FormVariant.Create} onSubmit={onSubmit} />
       </DialogContent>
     </Dialog>

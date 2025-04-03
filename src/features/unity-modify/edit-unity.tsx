@@ -8,6 +8,7 @@ import { useEditUnity } from './hooks/use-edit-unity';
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
@@ -30,6 +31,7 @@ const EditUnity = ({
     is_favorite,
     episode,
     viewed_count,
+    comment,
   } = listItem || {};
 
   const editUnity = useEditUnity();
@@ -47,20 +49,26 @@ const EditUnity = ({
     [FormFields.IsFavorite]: is_favorite,
     [FormFields.Episode]: episode,
     [FormFields.Season]: season,
+    [FormFields.Comment]: comment,
   };
 
   function onSubmit(data: u.infer<typeof FormSchema>) {
-    editUnity(id, data);
+    const updatedData = {
+      ...data,
+      imageUrl: data?.unity_info?.image,
+    };
+
+    delete updatedData.unity_info;
+    console.log(updatedData);
+    editUnity(id, updatedData);
   }
 
   return (
     <Dialog>
       <DialogTrigger className='w-full'>{children}</DialogTrigger>
-      <DialogContent
-        aria-description='Anime Edit'
-        onOpenAutoFocus={(e) => e.preventDefault()}
-      >
-        <DialogTitle></DialogTitle>
+      <DialogContent>
+        <DialogDescription>Anime Edit</DialogDescription>
+        <DialogTitle>Редагування</DialogTitle>
         <UnityModifyForm
           initialValues={initialValues}
           variant={FormVariant.Edit}

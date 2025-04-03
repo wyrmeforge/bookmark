@@ -16,6 +16,8 @@ import FormCheckbox from '@/components/form/checkbox';
 import { Button } from '@/components/ui/button';
 import { useEffect } from 'react';
 import FormCommandBox from '@/components/form/command-box';
+import { AlertDialogCancel } from '@/components/ui/alert-dialog';
+import { Close as DialogCloseButton } from '@radix-ui/react-dialog';
 
 interface IUnityModifyFormProps {
   onSubmit: (data: u.infer<typeof FormSchema>) => void;
@@ -30,51 +32,51 @@ const UnityModifyForm = ({
 }: IUnityModifyFormProps) => {
   const form = useForm<u.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
-    defaultValues: initialValues || DefaultValues,
+    defaultValues: { ...DefaultValues, ...initialValues },
     mode: 'all',
   });
 
-  const formStatusFieldValue = form.watch(FormFields.Status);
-
-  const isCompleted = formStatusFieldValue === Filters.Completed;
-  const isInFuture = formStatusFieldValue === Filters.InFuture;
-  const isEditable = !(isCompleted || isInFuture);
-
   const { contentList, setSearchValue } = useSearchUnity();
-
-  const isCreatingForm = variant === FormVariant.Create;
-
   const {
     formState: { errors, isSubmitSuccessful },
+    watch,
+    control,
+    handleSubmit,
+    reset,
   } = form;
 
+  const formStatus = watch(FormFields.Status);
+  const isCreating = variant === FormVariant.Create;
+  const isCompleted = formStatus === Filters.Completed;
+  const isEditable = ![Filters.Completed, Filters.InFuture].includes(
+    formStatus
+  );
+
   useEffect(() => {
-    if (isSubmitSuccessful) {
-      form.reset();
-    }
-  }, [form, isSubmitSuccessful]);
+    if (isSubmitSuccessful) reset();
+  }, [isSubmitSuccessful, reset]);
 
   return (
     <Form {...form}>
-      <form className='space-y-6' onSubmit={form.handleSubmit(onSubmit)}>
-        {isCreatingForm && (
+      <form className='space-y-6' onSubmit={handleSubmit(onSubmit)}>
+        {isCreating && (
           <FormCommandBox
             items={contentList}
             placeholder='Виберіть зі списку'
             name={FormFields.UnityInfo}
             handleSearch={setSearchValue}
-            control={form.control}
+            control={control}
             error={errors?.[FormFields.UnityInfo]?.message}
           />
         )}
         <FormInput
           label='Власна назва'
           placeholder='Введіть власну назву'
-          control={form.control}
+          control={control}
           name={FormFields.Name}
         />
         <FormSelect
-          control={form.control}
+          control={control}
           name={FormFields.Status}
           placeholder='Статус'
           label='Статус'
@@ -107,26 +109,35 @@ const UnityModifyForm = ({
             disabled={!isEditable}
             label='Серія'
             placeholder='Введіть номер'
-            control={form.control}
+            control={control}
             name={FormFields.Episode}
           />
           <FormInput
             disabled={!isEditable}
             label='Сезон'
             placeholder='Введіть сезон'
-            control={form.control}
+            control={control}
             name={FormFields.Season}
           />
         </div>
         <FormCheckbox
           disabled={!isCompleted}
           label='Додати до улюблених'
-          control={form.control}
+          control={control}
           name={FormFields.IsFavorite}
         />
-        <Button className='w-full' type='submit'>
-          {isCreatingForm ? 'Додати' : 'Редагувати'}
-        </Button>
+        <FormInput
+          label='Коментар'
+          // placeholder='Введіть номер'
+          control={control}
+          name={FormFields.Comment}
+        />
+        <div className='flex justify-between gap-4'>
+          <DialogCloseButton className='w-full'>Скасувати</DialogCloseButton>
+          <Button className='w-full' type='submit'>
+            Зберегти
+          </Button>
+        </div>
       </form>
     </Form>
   );

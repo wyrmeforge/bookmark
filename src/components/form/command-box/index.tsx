@@ -22,7 +22,7 @@ import {
 import { CommandList } from 'cmdk';
 import { Check, ChevronsDown, ChevronsUp } from 'lucide-react';
 import clsx from 'clsx';
-import { useSearchDebounce } from '@/hooks/user-search-debounce';
+import { useDebounce } from '@/hooks/user-debounce';
 import { ICommandBoxProps } from './types';
 import { FieldValues } from 'react-hook-form';
 
@@ -37,7 +37,7 @@ const FormCommandBox = <T extends FieldValues>({
   const [searchValue, setSearchValue] = useState('');
   const [open, setOpen] = useState(false);
 
-  const debounceValue = useSearchDebounce(searchValue);
+  const debounceValue = useDebounce(searchValue);
 
   useEffect(() => {
     handleSearch?.(debounceValue);

@@ -26,7 +26,7 @@ const UserMenu = () => {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
+      <DropdownMenuTrigger>
         <Avatar>
           <AvatarImage alt='User Avatar' src={imageUrl} />
         </Avatar>
