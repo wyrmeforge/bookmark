@@ -7,9 +7,15 @@ import { ISortModel } from '@/types/sort';
 import { IAppStateContextProps, IAppStateProviderProps } from './types';
 import { appStateReducer, initialState } from './utils';
 
-export const AppStateContext = createContext<IAppStateContextProps | null>(
-  null
-);
+export const AppStateContext = createContext<IAppStateContextProps>({
+  toggleFilterPanel: () => {},
+  updateFilter: () => {},
+  updateSortModel: () => {},
+  updateList: () => {},
+  updateSearchValue: () => {},
+  toggleLayoutView: () => {},
+  ...initialState,
+});
 
 const AppStateProvider = ({ children }: IAppStateProviderProps) => {
   const [state, dispatch] = useReducer(appStateReducer, initialState);

@@ -10,7 +10,7 @@ const Loader = () => (
       width={150}
       height={70}
       alt='anime'
-      src='/cat-loader.gif'
+      src='https://i.gifer.com/2iFb.gif'
     />
   </div>
 );
