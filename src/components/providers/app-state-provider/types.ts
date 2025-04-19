@@ -6,14 +6,12 @@ import { ReactNode } from 'react';
 export interface IAppState {
   currentFilter: Filters;
   list: IListItem[] | null;
-  isFilterPanelOpen: boolean;
   searchValue: string;
   sortModel: ISortModel;
   layoutView: LayoutViews;
 }
 
 export interface IAppStateContextProps extends IAppState {
-  toggleFilterPanel: () => void;
   updateFilter: (filter: Filters) => void;
   updateSortModel: (sortModel: ISortModel) => void;
   updateList: (list: IListItem[] | null) => void;
@@ -26,7 +24,6 @@ export interface IAppStateProviderProps {
 }
 
 export type AppStateAction =
-  | { type: 'TOGGLE_FILTER_PANEL' }
   | { type: 'UPDATE_FILTER'; payload: Filters }
   | { type: 'UPDATE_SORT_MODEL'; payload: ISortModel }
   | { type: 'UPDATE_LIST'; payload: IListItem[] | null }

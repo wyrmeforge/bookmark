@@ -11,7 +11,6 @@ const defaultSortModel: ISortModel = {
 export const initialState: IAppState = {
   currentFilter: Filters.All,
   list: null,
-  isFilterPanelOpen: false,
   searchValue: '',
   sortModel: defaultSortModel,
   layoutView: LayoutViews.Grid,
@@ -22,8 +21,6 @@ export const appStateReducer = (
   action: AppStateAction
 ): IAppState => {
   switch (action.type) {
-    case 'TOGGLE_FILTER_PANEL':
-      return { ...state, isFilterPanelOpen: !state.isFilterPanelOpen };
     case 'UPDATE_FILTER':
       return { ...state, currentFilter: action.payload };
     case 'UPDATE_SORT_MODEL':

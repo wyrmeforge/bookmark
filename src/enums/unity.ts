@@ -21,3 +21,12 @@ export enum LayoutViews {
   Grid = 'grid',
   Table = 'table',
 }
+
+export enum EntryStatus {
+  All = 'all',
+  InFuture = 'in_future',
+  InProgress = 'in_progress',
+  Abandoned = 'abandoned',
+  Favorite = 'favorite',
+  Completed = 'completed',
+}

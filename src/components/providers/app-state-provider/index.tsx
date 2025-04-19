@@ -8,7 +8,6 @@ import { IAppStateContextProps, IAppStateProviderProps } from './types';
 import { appStateReducer, initialState } from './utils';
 
 export const AppStateContext = createContext<IAppStateContextProps>({
-  toggleFilterPanel: () => {},
   updateFilter: () => {},
   updateSortModel: () => {},
   updateList: () => {},
@@ -22,7 +21,6 @@ const AppStateProvider = ({ children }: IAppStateProviderProps) => {
 
   const contextValue: IAppStateContextProps = {
     ...state,
-    toggleFilterPanel: () => dispatch({ type: 'TOGGLE_FILTER_PANEL' }),
     updateFilter: (filter: Filters) =>
       dispatch({ type: 'UPDATE_FILTER', payload: filter }),
     updateSortModel: (sortModel: ISortModel) =>

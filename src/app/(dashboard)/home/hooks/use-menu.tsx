@@ -9,8 +9,8 @@ import {
   LoaderCircleIcon,
   SwordIcon,
 } from 'lucide-react';
-import { api } from '../../../convex/_generated/api';
 import { AppStateContext } from '@/components/providers/app-state-provider';
+import { api } from '../../../../../convex/_generated/api';
 
 export const useMenu = () => {
   const { currentFilter, updateFilter } = useContext(AppStateContext);

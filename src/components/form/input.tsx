@@ -1,4 +1,4 @@
-import React, { HTMLInputTypeAttribute } from 'react';
+import React, { HTMLInputTypeAttribute, ReactNode } from 'react';
 import {
   FormControl,
   FormField,
@@ -7,18 +7,20 @@ import {
   FormMessage,
 } from '../ui/form';
 import { Input } from '../ui/input';
-import { Control, FieldPath, FieldValues } from 'react-hook-form';
+import { Control, FieldError, FieldPath, FieldValues } from 'react-hook-form';
 import { cn } from '@/lib/utils';
 
 interface IFormInputProps<T extends FieldValues> {
   control: Control<T>;
   name: FieldPath<T>;
-  label: string;
+  label?: string;
   placeholder?: string;
   disabled?: boolean;
   required?: boolean;
   type?: HTMLInputTypeAttribute;
-  error?: string;
+  error?: FieldError;
+  startAdornment?: ReactNode;
+  endAdornment?: ReactNode;
 }
 
 const FormInput = <T extends FieldValues>({
@@ -30,6 +32,8 @@ const FormInput = <T extends FieldValues>({
   required,
   type,
   error,
+  startAdornment,
+  endAdornment,
 }: IFormInputProps<T>) => (
   <FormField
     control={control}
@@ -37,17 +41,21 @@ const FormInput = <T extends FieldValues>({
     rules={{ required }}
     render={({ field }) => (
       <FormItem className='flex w-full flex-col'>
-        <FormLabel htmlFor={name} className={cn({ 'text-muted': disabled })}>
-          {label}
-        </FormLabel>
+        {label && (
+          <FormLabel htmlFor={name} className={cn({ 'text-muted': disabled })}>
+            {label}
+          </FormLabel>
+        )}
         <FormControl>
           <Input
-            // id={name}
+            id={name}
             type={type}
             className={cn({ 'border-red-500': !!error }, 'bg-transparent')}
             required={required}
             disabled={disabled}
             placeholder={placeholder}
+            startAdornment={startAdornment}
+            endAdornment={endAdornment}
             {...field}
           />
         </FormControl>

@@ -1,16 +1,15 @@
 'use client';
 
+import { LoginForm } from '@/features/login-form';
 import { useLogin } from './use-login';
-
-import AuthFormTemplate from '@/components/auth/form-template';
 
 const SignIn = () => {
   const { loginWithCredentials, loginWithGoogle } = useLogin();
 
   return (
-    <AuthFormTemplate
-      loginWithCredentials={loginWithCredentials}
-      loginWithGoogle={loginWithGoogle}
+    <LoginForm
+      handleCredentials={loginWithCredentials}
+      handleOAuth={loginWithGoogle}
     />
   );
 };

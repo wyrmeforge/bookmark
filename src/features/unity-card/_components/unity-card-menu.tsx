@@ -33,6 +33,7 @@ import { cn } from '@/lib/utils';
 import EditUnity from '@/features/unity-modify/edit-unity';
 import DeleteUnity from '@/features/unity-modify/delete-unity';
 import { IListItem } from '@/types/list';
+import { useEntryStatus } from '@/hooks/use-entry-status';
 
 const UnityCardMenu = ({ unityData }: { unityData: IListItem }) => {
   const { name, _id: id, is_favorite, status } = unityData;

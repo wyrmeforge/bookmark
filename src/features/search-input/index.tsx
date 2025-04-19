@@ -4,22 +4,28 @@ import { useDebounce } from '@/hooks/user-debounce';
 import { useContext, useEffect, useState } from 'react';
 
 const SearchInput = () => {
-  // const [inputValue, setInputValue] = useState('');
-
   const { searchValue, updateSearchValue } = useContext(AppStateContext);
 
-  // const debounceValue = useDebounce(inputValue);
+  const [inputValue, setInputValue] = useState(searchValue);
+  const debouncedValue = useDebounce(inputValue, 300);
 
-  // useEffect(() => {
-  //   if (!debounceValue) return;
+  // Sync input with context when debouncedValue changes
+  useEffect(() => {
+    if (debouncedValue !== searchValue) {
+      updateSearchValue(debouncedValue);
+    }
+  }, [debouncedValue, searchValue, updateSearchValue]);
 
-  //   updateSearchValue(debounceValue);
-  // }, [debounceValue, updateSearchValue]);
+  // Optional: sync input when context changes externally
+  useEffect(() => {
+    setInputValue(searchValue);
+  }, [searchValue]);
 
   return (
     <Input
-      value={searchValue}
-      onChange={(e) => updateSearchValue(e.target.value)}
+      className='max-w-[300px]'
+      value={inputValue}
+      onChange={(e) => setInputValue(e.target.value)}
       placeholder='Пошук'
     />
   );

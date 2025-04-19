@@ -15,14 +15,14 @@ export const useUnityList = () => {
   } = usePaginatedQuery(
     api.lists.getList,
     { filter: currentFilter, searchValue },
-    { initialNumItems: 10 }
+    { initialNumItems: 20 }
   );
 
   return {
     list,
     currentFilter,
     layoutView,
-    isListLoading: status === 'LoadingFirstPage',
+    isListLoading: status === 'LoadingFirstPage' || status === 'LoadingMore',
     loadMore,
     isEndOfPages: status === 'Exhausted',
   };

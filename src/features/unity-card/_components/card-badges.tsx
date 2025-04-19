@@ -1,7 +1,6 @@
 import { Badge } from '@/components/ui/badge';
-import { Filters } from '@/enums/unity';
-import { CheckCheck, Eye, Goal, Heart, LoaderCircle } from 'lucide-react';
-import { ReactNode } from 'react';
+import { useEntryStatus } from '@/hooks/use-entry-status';
+import { Heart } from 'lucide-react';
 
 interface ICardBadgesProps {
   episode?: string;
@@ -16,28 +15,36 @@ const CardBadges = ({
   isFavorite,
   status,
 }: ICardBadgesProps) => {
-  const statuses: Partial<Record<string, ReactNode>> = {
-    [Filters.InFuture]: <Goal size={16} />,
-    [Filters.InProgress]: <Eye size={16} />,
-    [Filters.Abandoned]: <LoaderCircle size={16} />,
-    [Filters.Completed]: <CheckCheck size={16} />,
-  };
+  const { icon: statusIcon } = useEntryStatus(status);
+
+  const badges = [
+    {
+      isVisible: !!episode && !!season,
+      value: episode + ' / ' + season,
+    },
+    {
+      value: statusIcon,
+    },
+    {
+      isVisible: isFavorite,
+      value: <Heart fill='white' stroke='red' size={16} />,
+    },
+  ];
 
   return (
-    <div className='flex h-5 items-center justify-center gap-1'>
-      {episode && season && (
-        <Badge className='border border-muted-foreground hover:cursor-default'>
-          {episode} / {season}
-        </Badge>
-      )}
-      <Badge className='border border-muted-foreground hover:cursor-default'>
-        {statuses[status]}
-      </Badge>
-      {isFavorite && (
-        <Badge className='border border-muted-foreground hover:cursor-default'>
-          <Heart fill='white' stroke='red' size={16} />
-        </Badge>
-      )}
+    <div className='flex items-center justify-center gap-1'>
+      {badges.map(({ isVisible = true, value }, key) => {
+        if (!isVisible) return;
+
+        return (
+          <Badge
+            key={key}
+            className='border border-muted-foreground hover:cursor-default'
+          >
+            {value}
+          </Badge>
+        );
+      })}
     </div>
   );
 };

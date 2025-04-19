@@ -9,7 +9,6 @@ import dayjs from 'dayjs';
 import Image from 'next/image';
 import React from 'react';
 import UnityCardMenu from './_components/unity-card-menu';
-
 import CardBadges from './_components/card-badges';
 import { IListItem } from '@/types/list';
 
@@ -25,8 +24,10 @@ const EntryCard = ({ unityData }: { unityData: IListItem }) => {
     status,
   } = unityData;
 
+  const formattedDate = dayjs(_creationTime).format('DD.MM.YYYY');
+
   return (
-    <Card className='relative w-full rounded-xl shadow hover:border-black hover:shadow-xl dark:hover:border-gray-50'>
+    <Card className='relative w-full rounded-xl shadow transition-all hover:cursor-pointer hover:border-black hover:shadow-xl dark:hover:border-gray-50'>
       <CardHeader className='absolute top-3 z-10 w-full p-0'>
         <div className='flex w-full flex-row items-center justify-between px-5'>
           <CardBadges
@@ -40,21 +41,24 @@ const EntryCard = ({ unityData }: { unityData: IListItem }) => {
       </CardHeader>
       <CardContent className='flex h-full flex-col gap-4 p-0 pb-5'>
         <Image
-          className='min-w-100 min-h-100 rounded-xl rounded-bl-none rounded-br-none sm:block'
-          alt='Entry Cover Image'
+          className='rounded-xl rounded-bl-none rounded-br-none'
+          alt={name}
           src={imageUrl}
           width={400}
           height={400}
+          style={{ objectFit: 'cover' }}
+          sizes='(max-width: 768px) 100vw, 33vw'
         />
         <div className='flex h-full flex-col justify-between gap-2 px-5'>
           <CardTitle className='line-clamp-2 truncate whitespace-pre-wrap text-sm'>
             {name}
           </CardTitle>
-          <CardDescription className='flex items-center justify-between'>
-            {dayjs(_creationTime).format('DD.MM.YYYY')}
+          <CardDescription className='flex items-center justify-between text-sm text-muted-foreground'>
+            {formattedDate}
             {!!rate && (
-              <span>
-                {rate} / <span className='text-white'>10</span>
+              <span className='font-medium text-primary'>
+                {rate}
+                <span className='text-muted-foreground'> / 10</span>
               </span>
             )}
           </CardDescription>

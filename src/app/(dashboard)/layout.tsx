@@ -5,21 +5,20 @@ import Loader from '@/components/loader';
 import { Separator } from '@/components/ui/separator';
 import React from 'react';
 import { useStoreUser } from '@/hooks/use-store-user';
+import { Authenticated } from 'convex/react';
 
-interface IDashboardLayoutProps {
-  children: React.ReactNode;
-}
-
-const DashboardLayout = ({ children }: IDashboardLayoutProps) => {
+const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   const { isAuthenticated, isLoading } = useStoreUser();
 
   if (!isAuthenticated && isLoading) return <Loader />;
 
   return (
-    <div className='flex h-full min-h-screen grow flex-col'>
+    <div className='flex h-screen flex-col overflow-hidden'>
       <Header />
       <Separator className='my-3' />
-      <main>{children}</main>
+      <Authenticated>
+        <main className='flex-1 overflow-hidden px-20'>{children}</main>
+      </Authenticated>
     </div>
   );
 };
