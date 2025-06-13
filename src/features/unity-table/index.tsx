@@ -13,10 +13,10 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
+} from '@/shared/ui/table';
 
 import dayjs from 'dayjs';
-import { getFilterTranslation } from '@/lib/helpers';
+import { getFilterTranslation } from '@/shared/lib/helpers';
 
 import EditUnity from '../unity-modify/edit-unity';
 import { useMutation } from 'convex/react';

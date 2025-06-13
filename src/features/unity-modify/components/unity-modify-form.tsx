@@ -9,15 +9,14 @@ import {
   FormVariant,
 } from '../form-config';
 import { useSearchUnity } from '../hooks/use-search-unity';
-import { Form, FormControl } from '@/components/ui/form';
-import FormInput from '@/components/form/input';
-import FormSelect from '@/components/form/select';
-import FormCheckbox from '@/components/form/checkbox';
-import { Button } from '@/components/ui/button';
 import { useEffect } from 'react';
-import FormCommandBox from '@/components/form/command-box';
-import { AlertDialogCancel } from '@/components/ui/alert-dialog';
 import { Close as DialogCloseButton } from '@radix-ui/react-dialog';
+import { FormCheckbox } from '@/features/form/checkbox';
+import { FormInput } from '@/features/form/input';
+import { FormSelect } from '@/features/form/select';
+import { Form } from '@/shared/ui/form';
+import { Button } from '@/shared/ui/button';
+import FormCommandBox from '@/features/form/command-box';
 
 interface IUnityModifyFormProps {
   onSubmit: (data: u.infer<typeof FormSchema>) => void;
@@ -36,6 +35,9 @@ const UnityModifyForm = ({
     mode: 'all',
   });
 
+  const entryData = form.watch(FormFields.UnityInfo);
+  const status = form.watch(FormFields.Status);
+
   const { contentList, setSearchValue } = useSearchUnity();
   const {
     formState: { errors, isSubmitSuccessful },
@@ -51,6 +53,12 @@ const UnityModifyForm = ({
   const isEditable = ![Filters.Completed, Filters.InFuture].includes(
     formStatus
   );
+
+  useEffect(() => {
+    if (status && status === 'completed') {
+      form.setValue(FormFields.Episode, entryData?.episodeCount);
+    }
+  }, [entryData?.episodeCount, form, status]);
 
   useEffect(() => {
     if (isSubmitSuccessful) reset();
@@ -97,7 +105,7 @@ const UnityModifyForm = ({
           />
           <FormInput
             disabled={!isCompleted}
-            label='Рейтинг'
+            label='Оцінка'
             placeholder='Введіть оцінку'
             control={form.control}
             name={FormFields.Rate}
@@ -106,8 +114,8 @@ const UnityModifyForm = ({
         </div>
         <div className='flex gap-3'>
           <FormInput
-            disabled={!isEditable}
-            label='Серія'
+            label='Серій'
+            type='number'
             placeholder='Введіть номер'
             control={control}
             name={FormFields.Episode}

@@ -1,7 +1,7 @@
 import { useMutation } from 'convex/react';
-import { api } from '../../../../convex/_generated/api';
-import { Id } from '../../../../convex/_generated/dataModel';
-import { toast } from '@/components/ui/use-toast';
+import { toast } from '@/shared/ui/use-toast';
+import { api } from '@convex/api';
+import { Id } from '@convex/dataModel';
 
 export const useDeleteUnity = () => {
   const deleteListItem = useMutation(api.lists.deleteListItem);

@@ -23,42 +23,41 @@ const SignUp = () => {
     verifyAccount,
     setVerifying,
     verifying,
+    handleVerify,
     setCode,
   } = useRegistration();
 
-  // if (verifying) {
-  //   return (
-  //     <div className='flex w-full items-center justify-center'>
-  //       <Card className='border-none'>
-  //         <CardHeader className='px-0 text-center'>
-  //           <CardTitle className='text-xl'>Верифікація</CardTitle>
-  //         </CardHeader>
-  //         <form onSubmit={handleVerify}>
-  //           <CardContent className='grid gap-4'>
-  //             <Label htmlFor='code'>Введіть верифікаційний код</Label>
-  //             <Input
-  //               id='code'
-  //               name='code'
-  //               onChange={(e) => setCode(e.target.value)}
-  //             />
-  //           </CardContent>
-  //           <CardFooter className='flex gap-4'>
-  //             <Button
-  //               variant='outline'
-  //               onClick={() => setVerifying(false)}
-  //               className='w-full'
-  //             >
-  //               Назад
-  //             </Button>
-  //             <Button type='submit' className='w-full'>
-  //               Далі
-  //             </Button>
-  //           </CardFooter>
-  //         </form>
-  //       </Card>
-  //     </div>
-  //   );
-  // }
+  if (verifying) {
+    return (
+      <div className='min-h-[450px] w-full max-w-sm md:max-w-4xl'>
+        <Card>
+          <form onSubmit={handleVerify}>
+            <CardContent className='flex w-full gap-4 p-0'>
+              <CardHeader className='px-0 text-center'>
+                <CardTitle className='text-xl'>Верифікація</CardTitle>
+              </CardHeader>
+              <Label htmlFor='code'>Введіть верифікаційний код</Label>
+              <Input
+                id='code'
+                name='code'
+                onChange={(e) => setCode(e.target.value)}
+              />
+              <Button
+                variant='outline'
+                onClick={() => setVerifying(false)}
+                className='w-full'
+              >
+                Назад
+              </Button>
+              <Button type='submit' className='w-full'>
+                Далі
+              </Button>
+            </CardContent>
+          </form>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <LoginForm

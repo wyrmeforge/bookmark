@@ -1,9 +1,9 @@
 import { useMutation } from 'convex/react';
 import { z as u } from 'zod';
 import { FormSchema } from '../form-config';
-import { api } from '../../../../convex/_generated/api';
-import { Id } from '../../../../convex/_generated/dataModel';
-import { toast } from '@/components/ui/use-toast';
+import { toast } from '@/shared/ui/use-toast';
+import { api } from '@convex/api';
+import { Id } from '@convex/dataModel';
 
 export const useEditUnity = () => {
   const updateListItem = useMutation(api.lists.updateListItem);

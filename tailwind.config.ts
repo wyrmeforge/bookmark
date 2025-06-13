@@ -77,7 +77,7 @@ const config = {
         'accordion-up': 'accordion-up 0.2s ease-out',
       },
       gridTemplateColumns: {
-        container: 'repeat(auto-fill, minmax(250px, 1fr))',
+        container: 'repeat(auto-fill, minmax(300px, 1fr))',
       },
     },
   },

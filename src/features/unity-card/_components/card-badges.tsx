@@ -1,4 +1,4 @@
-import { Badge } from '@/components/ui/badge';
+import { Badge } from '@/shared/ui/badge';
 import { useEntryStatus } from '@/hooks/use-entry-status';
 import { Heart } from 'lucide-react';
 

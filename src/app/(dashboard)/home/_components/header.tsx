@@ -13,33 +13,48 @@ import SearchInput from '@/features/search-input';
 import CreateUnity from '@/features/unity-modify/create-unity';
 import { useMenu } from '../hooks/use-menu';
 
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { cn } from '@/shared/lib/utils';
+import { SettingsIcon, SlidersHorizontalIcon, SlidersIcon } from 'lucide-react';
+
 const DashboardHeader = () => {
   const { menu, updateFilter, currentFilter } = useMenu();
 
+  console.log(currentFilter);
+
   return (
-    <div className='flex items-center justify-between p-2'>
-      <div className='flex items-center justify-between gap-4'>
-        <Select onValueChange={updateFilter} value={currentFilter}>
-          <SelectTrigger className='w-[420px] [&>span]:flex [&>span]:w-full [&>span]:justify-between'>
-            <SelectValue className='w-full' placeholder={currentFilter} />
-          </SelectTrigger>
-          <SelectContent className='flex w-full justify-between'>
-            {menu?.map((filter) => (
-              <SelectItem
-                className='flex w-full justify-between [&>span:nth-child(2)]:flex [&>span:nth-child(2)]:w-full [&>span:nth-child(2)]:justify-between'
-                key={filter.key}
-                value={filter.key}
-              >
-                {filter.title} <Badge className='mr-2'>{filter.value}</Badge>
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-        <SearchInput />
+    <div className='mb-2 flex items-center justify-between py-4'>
+      <div className='w-1/2'>
+        {/* <ToggleGroup
+          value={currentFilter}
+          onValueChange={(value) => {
+            console.log(value);
+            updateFilter(value);
+          }}
+          className='z-0 w-full justify-start border-b border-b-gray-500'
+          type='single'
+        >
+          {menu?.map((item) => (
+            <ToggleGroupItem
+              className={cn(
+                'w-full rounded-none text-muted-foreground data-[state=on]:bg-transparent',
+                {
+                  'z-10 border-b-2 border-b-white': currentFilter === item.key,
+                }
+              )}
+              value={item.key}
+              key={item.key}
+              aria-label={item.key}
+            >
+              {item.title}
+            </ToggleGroupItem>
+          ))}
+        </ToggleGroup> */}
       </div>
-      <CreateUnity>
-        <Button className='flex h-9 gap-1 sm:w-[140px]'>Додати</Button>
-      </CreateUnity>
+      <div className='flex flex-row gap-4'>
+        <SettingsIcon />
+      </div>
     </div>
   );
 };

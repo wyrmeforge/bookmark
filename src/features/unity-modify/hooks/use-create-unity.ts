@@ -2,7 +2,7 @@ import { useMutation } from 'convex/react';
 import { z as u } from 'zod';
 import { FormSchema } from '../form-config';
 import { api } from '../../../../convex/_generated/api';
-import { toast } from '@/components/ui/use-toast';
+import { toast } from '@/shared/ui/use-toast';
 import { ErrorCodes } from '@/enums/errorCodes';
 
 export const useCreateUnity = () => {

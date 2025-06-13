@@ -104,6 +104,7 @@ export const useRegistration = () => {
     registerWithGoogle,
     verifyAccount,
     setVerifying,
+    handleVerify: verifyAccount,
     verifying,
   };
 };
