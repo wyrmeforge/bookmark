@@ -9,7 +9,7 @@ import {
   LoaderCircleIcon,
   SwordIcon,
 } from 'lucide-react';
-import { AppStateContext } from '@/components/providers/app-state-provider';
+import { AppStateContext } from '@/app/providers/app-state-provider';
 import { api } from '../../../../../convex/_generated/api';
 
 export const useMenu = () => {
@@ -26,7 +26,7 @@ export const useMenu = () => {
     },
     {
       key: Filters.InFuture,
-      title: 'Буду дивитись',
+      title: 'Заплановано',
       icon: <GoalIcon />,
       value: moduleList?.in_future,
     },
@@ -37,22 +37,28 @@ export const useMenu = () => {
       value: moduleList?.in_progress,
     },
     {
-      key: Filters.Abandoned,
+      key: Filters.Forbidden,
       title: 'Закинуто',
       icon: <LoaderCircleIcon />,
       value: moduleList?.abandoned,
+    },
+    {
+      key: Filters.Abandoned,
+      title: 'Відкладено',
+      icon: <LoaderCircleIcon />,
+      value: moduleList?.abandoned,
+    },
+    {
+      key: Filters.Completed,
+      title: 'Завершено',
+      icon: <CheckCheckIcon />,
+      value: moduleList?.complete,
     },
     {
       key: Filters.Favorite,
       title: 'Улюблені',
       icon: <HeartIcon />,
       value: moduleList?.is_favorite,
-    },
-    {
-      key: Filters.Completed,
-      title: 'Переглянуто',
-      icon: <CheckCheckIcon />,
-      value: moduleList?.complete,
     },
   ];
 

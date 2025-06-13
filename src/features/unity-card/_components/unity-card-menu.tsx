@@ -23,17 +23,17 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+} from '@/shared/ui/dropdown-menu';
 
 import { useMutation } from 'convex/react';
 import { Filters } from '@/enums/filters';
-import { Badge } from '../../../components/ui/badge';
 import { api } from '../../../../convex/_generated/api';
-import { cn } from '@/lib/utils';
+import { cn } from '@/shared/lib/utils';
 import EditUnity from '@/features/unity-modify/edit-unity';
 import DeleteUnity from '@/features/unity-modify/delete-unity';
 import { IListItem } from '@/types/list';
 import { useEntryStatus } from '@/hooks/use-entry-status';
+import { Badge } from '@/shared/ui/badge';
 
 const UnityCardMenu = ({ unityData }: { unityData: IListItem }) => {
   const { name, _id: id, is_favorite, status } = unityData;

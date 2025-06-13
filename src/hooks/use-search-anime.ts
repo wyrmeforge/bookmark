@@ -1,4 +1,4 @@
-import { fetcher } from '@/lib/utils';
+import { fetcher } from '@/shared/lib/utils';
 import useSWR from 'swr';
 
 export const useSearchAnime = (query: string | null) => {
@@ -11,6 +11,7 @@ export const useSearchAnime = (query: string | null) => {
     id: item.id,
     name: item?.attributes?.titles?.en || item?.attributes?.canonicalTitle,
     image: item?.attributes?.posterImage?.large,
+    ...item?.attributes,
   }));
 
   return {

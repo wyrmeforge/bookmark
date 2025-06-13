@@ -1,7 +1,7 @@
 import { usePaginatedQuery } from 'convex/react';
 import { useContext } from 'react';
 import { api } from '../../convex/_generated/api';
-import { AppStateContext } from '@/components/providers/app-state-provider';
+import { AppStateContext } from '@/app/providers/app-state-provider';
 
 export const useUnityList = () => {
   const { currentFilter, layoutView, searchValue } =
@@ -17,6 +17,8 @@ export const useUnityList = () => {
     { filter: currentFilter, searchValue },
     { initialNumItems: 20 }
   );
+
+  console.log(status);
 
   return {
     list,

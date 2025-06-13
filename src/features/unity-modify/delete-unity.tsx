@@ -10,7 +10,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
+} from '@/shared/ui/alert-dialog';
 import { Id } from '../../../convex/_generated/dataModel';
 import { useDeleteUnity } from './hooks/use-delete-unity';
 

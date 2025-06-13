@@ -10,40 +10,39 @@ export const getList = query({
     paginationOpts: paginationOptsValidator,
     searchValue: v.optional(v.string()),
   },
-  handler: async (ctx, args) => {
-    const { filter } = args;
+  handler: async (ctx, { filter, paginationOpts, searchValue }) => {
     const userId = await getUserId(ctx);
+    if (!userId) throw new Error('User not authenticated');
 
-    if (!userId) {
-      throw new Error('User not authenticated');
-    }
+    let listsQuery;
 
-    let lists;
-
-    if (args.searchValue) {
-      lists = ctx.db
+    if (searchValue) {
+      // Use search index when search is active
+      listsQuery = ctx.db
         .query('lists')
         .withSearchIndex('by_name', (q) =>
-          q.search('name', args.searchValue || '').eq('user', userId)
+          q.search('name', searchValue).eq('user', userId)
         );
     } else {
-      lists = ctx.db
+      // Use normal index for user when search is not active
+      listsQuery = ctx.db
         .query('lists')
         .withIndex('by_user', (q) => q.eq('user', userId))
         .order('desc');
     }
 
+    // Apply filter only if it's not "All"
     if (filter && filter !== Filters.All) {
-      lists = lists.filter((q) =>
-        filter === Filters.Favorite
+      const isFavoriteFilter = filter === Filters.Favorite;
+
+      listsQuery = listsQuery.filter((q) =>
+        isFavoriteFilter
           ? q.eq(q.field('is_favorite'), true)
           : q.eq(q.field('status'), filter)
       );
     }
 
-    const paginatedLists = await lists.paginate(args.paginationOpts);
-
-    return paginatedLists;
+    return await listsQuery.paginate(paginationOpts);
   },
 });
 
