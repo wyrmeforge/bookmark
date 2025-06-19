@@ -1,5 +1,5 @@
 import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
-import { Routes } from './enums/routes';
+import { Routes } from './shared/enums/routes';
 
 const isProtectedRoute = createRouteMatcher(['/home(.*)', '/friends(.*)']);
 

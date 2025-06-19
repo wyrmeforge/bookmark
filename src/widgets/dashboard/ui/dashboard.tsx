@@ -7,7 +7,7 @@ const DashboardContent = () => {
   return (
     <div className='flex h-full flex-row'>
       <SidebarLeft />
-      <div className='mx-auto flex h-full w-full  flex-col'>
+      <div className='mx-auto flex h-full w-full flex-col'>
         <MediaToolbar />
         <MediaContent />
       </div>

@@ -1,8 +1,8 @@
 import { MediaStatus } from '@/shared/enums/media';
-import { MediaItem } from '@/shared/types/media';
+import { MediaItem, MediaItemId } from '@/shared/types/media';
 
 export type UseMediaActionsProps = {
-  mediaItemId: MediaItem['_id'];
+  mediaItemId: MediaItemId;
   isFavorite?: MediaItem['isFavorite'];
 };
 

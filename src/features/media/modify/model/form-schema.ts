@@ -2,15 +2,6 @@ import { z as u } from 'zod';
 import { FormFields } from './types';
 import { MediaStatus } from '@/shared/enums/media';
 
-const AllowedStatuses = [
-  MediaStatus.Scheduled,
-  MediaStatus.Watching,
-  MediaStatus.Postponed,
-  MediaStatus.Abandoned,
-  MediaStatus.Completed,
-  MediaStatus.Favorite,
-] as const;
-
 export const ModifyFormSchema = u.object({
   [FormFields.UnityInfo]: u
     .object({
@@ -36,7 +27,13 @@ export const ModifyFormSchema = u.object({
       }
     )
     .optional(),
-  [FormFields.Status]: u.enum(AllowedStatuses),
+  [FormFields.Status]: u.enum([
+    MediaStatus.Abandoned,
+    MediaStatus.Completed,
+    MediaStatus.Postponed,
+    MediaStatus.Scheduled,
+    MediaStatus.Watching,
+  ]),
   [FormFields.IsFavorite]: u.boolean().optional(),
   [FormFields.Episode]: u.string().optional(),
   [FormFields.Season]: u.string().optional(),

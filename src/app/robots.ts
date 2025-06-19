@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: ['/convex', '/_next'], // block common sensitive or internal paths
     },
-    sitemap: 'https://bookmark-seven-peach.vercel.app//sitemap.xml',
+    sitemap: 'https://bookmark-seven-peach.vercel.app/sitemap.xml',
   };
 }

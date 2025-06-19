@@ -4,8 +4,7 @@ import { AppStateContext } from '@/app/providers/app-state-provider';
 import { api } from '@convex/api';
 
 export const useMediaList = () => {
-  const { currentFilter, layoutView, searchValue } =
-    useContext(AppStateContext);
+  const { currentFilter, searchValue } = useContext(AppStateContext);
 
   const {
     results: list,
@@ -20,7 +19,6 @@ export const useMediaList = () => {
   return {
     list,
     currentFilter,
-    layoutView,
     isListLoading: status === 'LoadingFirstPage' || status === 'LoadingMore',
     loadMore,
     isEndOfPages: status === 'Exhausted',

@@ -13,8 +13,7 @@ export default defineSchema({
       v.literal(MediaStatus.Watching),
       v.literal(MediaStatus.Postponed),
       v.literal(MediaStatus.Abandoned),
-      v.literal(MediaStatus.Completed),
-      v.literal(MediaStatus.Favorite)
+      v.literal(MediaStatus.Completed)
     ),
     viewedCount: v.optional(v.string()),
     imageUrl: v.string(),

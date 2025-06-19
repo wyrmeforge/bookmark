@@ -13,7 +13,24 @@ import { MediaItem } from '@/shared/types/media';
 import { FormFields, FormVariant, ModifyFormValues } from '../model/types';
 import { MediaModifyForm } from './media-modify-form';
 import { useEditMedia } from '../model/hooks/use-edit-media';
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+
+function useIsMobile(breakpoint = 768) {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    function onResize() {
+      setIsMobile(window.innerWidth < breakpoint);
+    }
+
+    onResize();
+    window.addEventListener('resize', onResize);
+
+    return () => window.removeEventListener('resize', onResize);
+  }, [breakpoint]);
+
+  return isMobile;
+}
 
 const EditMedia = ({ mediaItem }: { mediaItem: MediaItem }) => {
   const {
@@ -29,6 +46,7 @@ const EditMedia = ({ mediaItem }: { mediaItem: MediaItem }) => {
     comment,
   } = mediaItem || {};
 
+  const isMobile = useIsMobile();
   const editUnity = useEditMedia();
 
   const initialValues: ModifyFormValues = useMemo(
@@ -73,7 +91,10 @@ const EditMedia = ({ mediaItem }: { mediaItem: MediaItem }) => {
           Редагувати
         </DropdownMenuItem>
       </SheetTrigger>
-      <SheetContent className='flex h-full w-1/3 !max-w-none flex-col'>
+      <SheetContent
+        side={isMobile ? 'bottom' : 'right'}
+        className='flex h-full w-full !max-w-none flex-col md:w-1/3'
+      >
         <SheetTitle>Редагувати аніме</SheetTitle>
         <SheetDescription>
           Внесіть зміни до інформації про аніме у вашому списку.

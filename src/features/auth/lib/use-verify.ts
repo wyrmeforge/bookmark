@@ -1,8 +1,6 @@
 import { useSignUp } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
 
-import { Routes } from '@/enums/routes';
-
 import {
   ISignUpStepProps,
   SignUpFlowSteps,
@@ -10,6 +8,7 @@ import {
   UseVerifyReturn,
 } from '../model';
 import { toast } from 'sonner';
+import { Routes } from '@/shared/enums/routes';
 
 export const useVerify = ({
   setFlowStep,

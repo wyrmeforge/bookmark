@@ -5,6 +5,7 @@ import { Loader } from '@/shared/ui/loader';
 import { Button } from '@/shared/ui/button';
 import { EmptyMediaList } from './empty-media-list';
 import { MediaItemContainer } from '@/entities/media';
+import { MediaItemStatus } from '@/shared/types/media';
 
 export const MediaContent = () => {
   const { list, isListLoading, loadMore, currentFilter, isEndOfPages } =
@@ -12,13 +13,14 @@ export const MediaContent = () => {
 
   if (isListLoading) return <Loader variant='absolute' />;
 
-  if (!list?.length) return <EmptyMediaList currentFilter={currentFilter} />;
+  if (!list?.length)
+    return <EmptyMediaList currentFilter={currentFilter as MediaItemStatus} />;
 
   return (
     <>
-      <div className='grid grid-cols-container gap-8'>
-        {list.map((item, idx) => (
-          <MediaItemContainer key={item._id} idx={idx} unityData={item} />
+      <div className='grid grid-cols-container gap-8 overflow-auto pb-4 md:pr-2'>
+        {list.map((item) => (
+          <MediaItemContainer key={item._id} unityData={item} />
         ))}
       </div>
       {!isEndOfPages && (

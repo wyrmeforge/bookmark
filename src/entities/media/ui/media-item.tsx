@@ -12,13 +12,7 @@ import { MediaMenu } from '@/features/media/menu';
 import { MediaBadges } from '@/features/media/badges';
 import { type MediaItem } from '@/shared/types/media';
 
-const MediaItemContainer = ({
-  unityData,
-  idx,
-}: {
-  unityData: MediaItem;
-  idx: number;
-}) => {
+const MediaItemContainer = ({ unityData }: { unityData: MediaItem }) => {
   const {
     imageUrl,
     name,
@@ -33,7 +27,7 @@ const MediaItemContainer = ({
   const formattedDate = dayjs(_creationTime).format('DD.MM.YYYY');
 
   return (
-    <Card className='relative h-full min-h-[600px] w-full rounded-none border shadow transition-all hover:cursor-pointer hover:border-black hover:shadow-xl dark:border-neutral-800 dark:hover:border-white'>
+    <Card className='relative h-full min-h-[450px] w-full rounded-none border shadow transition-all hover:cursor-pointer hover:border-black hover:shadow-xl dark:border-neutral-800 dark:hover:border-white md:min-h-[600px]'>
       <CardHeader className='absolute top-3 z-10 w-full p-0'>
         <div className='flex w-full flex-row items-center justify-between px-5'>
           <MediaBadges
@@ -50,7 +44,7 @@ const MediaItemContainer = ({
           <Image
             alt={name}
             src={imageUrl}
-            priority={idx === 0}
+            priority
             fill
             sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
             className='rounded-none object-cover'

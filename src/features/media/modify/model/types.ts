@@ -2,7 +2,7 @@ import { z as u } from 'zod';
 import { ModifyFormSchema } from './form-schema';
 import { SubmitHandler } from 'react-hook-form';
 import { ReactNode } from 'react';
-import { MediaStatus } from '@/shared/enums/media';
+import { MediaItemStatus } from '@/shared/types/media';
 
 export enum FormFields {
   UnityInfo = 'unity_info',
@@ -33,7 +33,7 @@ export type UseCreateMediaReturn = {
 };
 
 export type CreateMediaProps = {
-  initialStatus?: MediaStatus;
+  initialStatus?: MediaItemStatus;
   customTrigger?: ReactNode;
 };
 
