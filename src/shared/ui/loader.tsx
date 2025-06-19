@@ -13,6 +13,7 @@ const Loader = ({ variant = 'fixed' }) => {
     >
       <Image
         role='status'
+        priority
         className={clsx(
           'left-1/2 top-1/2 inline-block h-40 w-40  -translate-x-1/2 -translate-y-1/2',
           {
@@ -22,7 +23,7 @@ const Loader = ({ variant = 'fixed' }) => {
         )}
         width={150}
         height={70}
-        alt='anime'
+        alt='Cat Running in Circle :D'
         src='https://i.gifer.com/2iFb.gif'
       />
     </div>

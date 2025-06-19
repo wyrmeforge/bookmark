@@ -1,8 +1,8 @@
 import { mutation, query } from './_generated/server';
 import { v } from 'convex/values';
 import { getUserId } from './helpers';
-import { Filters } from './enums';
 import { paginationOptsValidator } from 'convex/server';
+import { MediaStatus } from './enums';
 
 export const getList = query({
   args: {
@@ -32,12 +32,12 @@ export const getList = query({
     }
 
     // Apply filter only if it's not "All"
-    if (filter && filter !== Filters.All) {
-      const isFavoriteFilter = filter === Filters.Favorite;
+    if (filter && filter !== MediaStatus.All) {
+      const isFavoriteFilter = filter === MediaStatus.Favorite;
 
       listsQuery = listsQuery.filter((q) =>
         isFavoriteFilter
-          ? q.eq(q.field('is_favorite'), true)
+          ? q.eq(q.field('isFavorite'), true)
           : q.eq(q.field('status'), filter)
       );
     }
@@ -49,12 +49,19 @@ export const getList = query({
 export const createListItem = mutation({
   args: {
     name: v.string(),
-    is_favorite: v.boolean(),
+    isFavorite: v.boolean(),
     rate: v.optional(v.string()),
-    status: v.string(),
-    viewed_count: v.optional(v.string()),
+    status: v.union(
+      v.literal(MediaStatus.Scheduled),
+      v.literal(MediaStatus.Watching),
+      v.literal(MediaStatus.Postponed),
+      v.literal(MediaStatus.Abandoned),
+      v.literal(MediaStatus.Favorite),
+      v.literal(MediaStatus.Completed)
+    ),
+    viewedCount: v.optional(v.string()),
     imageUrl: v.string(),
-    unity_id: v.string(),
+    media3PartyId: v.string(),
     episode: v.optional(v.string()),
     season: v.optional(v.string()),
     comment: v.optional(v.string()),
@@ -64,7 +71,7 @@ export const createListItem = mutation({
 
     const existingItem = await ctx.db
       .query('lists')
-      .filter((q) => q.eq(q.field('unity_id'), args.unity_id))
+      .filter((q) => q.eq(q.field('media3PartyId'), args.media3PartyId))
       .first();
 
     if (existingItem) {
@@ -108,30 +115,34 @@ export const getListModules = query({
 
     const statusCounts = {
       all: allLists.length,
-      is_favorite: 0,
-      in_progress: 0,
-      in_future: 0,
-      abandoned: 0,
-      complete: 0,
+      [MediaStatus.Scheduled]: 0,
+      [MediaStatus.Watching]: 0,
+      [MediaStatus.Postponed]: 0,
+      [MediaStatus.Abandoned]: 0,
+      [MediaStatus.Completed]: 0,
+      [MediaStatus.Favorite]: 0,
     };
 
     for (const list of allLists) {
-      if (list.is_favorite) {
-        statusCounts.is_favorite++;
+      if (list.isFavorite) {
+        statusCounts[MediaStatus.Favorite]++;
       }
 
       switch (list.status) {
-        case Filters.InProgress:
-          statusCounts.in_progress++;
+        case MediaStatus.Scheduled:
+          statusCounts[MediaStatus.Scheduled]++;
           break;
-        case Filters.InFuture:
-          statusCounts.in_future++;
+        case MediaStatus.Watching:
+          statusCounts[MediaStatus.Watching]++;
           break;
-        case Filters.Abandoned:
-          statusCounts.abandoned++;
+        case MediaStatus.Postponed:
+          statusCounts[MediaStatus.Postponed]++;
           break;
-        case Filters.Completed:
-          statusCounts.complete++;
+        case MediaStatus.Abandoned:
+          statusCounts[MediaStatus.Abandoned]++;
+          break;
+        case MediaStatus.Completed:
+          statusCounts[MediaStatus.Completed]++;
           break;
         default:
           break;

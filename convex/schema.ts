@@ -1,14 +1,22 @@
 import { defineSchema, defineTable } from 'convex/server';
 import { v } from 'convex/values';
+import { MediaStatus } from './enums';
 
 export default defineSchema({
   lists: defineTable({
-    unity_id: v.string(),
-    is_favorite: v.optional(v.boolean()),
+    media3PartyId: v.string(),
+    isFavorite: v.optional(v.boolean()),
     name: v.string(),
     rate: v.optional(v.string()),
-    status: v.string(),
-    viewed_count: v.optional(v.string()),
+    status: v.union(
+      v.literal(MediaStatus.Scheduled),
+      v.literal(MediaStatus.Watching),
+      v.literal(MediaStatus.Postponed),
+      v.literal(MediaStatus.Abandoned),
+      v.literal(MediaStatus.Completed),
+      v.literal(MediaStatus.Favorite)
+    ),
+    viewedCount: v.optional(v.string()),
     imageUrl: v.string(),
     episode: v.optional(v.string()),
     season: v.optional(v.string()),

@@ -4,7 +4,7 @@ import { ConvexClientProvider } from './convex-client-provider';
 import { ClerkProvider } from './clerk-provider';
 import AppStateProvider from './app-state-provider';
 import { TooltipProvider } from '@/shared/ui/tooltip';
-import { Toaster } from '@/shared/ui/toaster';
+import { Toaster } from '@/shared/ui/sonner';
 
 export const Providers = ({ children }: PropsWithChildren) => (
   <ClerkProvider>
@@ -12,7 +12,7 @@ export const Providers = ({ children }: PropsWithChildren) => (
       <ThemeProvider>
         <TooltipProvider>
           <AppStateProvider>
-            <Toaster />
+            <Toaster position='top-center' richColors />
             {children}
           </AppStateProvider>
         </TooltipProvider>

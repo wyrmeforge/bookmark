@@ -1,4 +1,6 @@
-import { FieldValues } from 'react-hook-form';
+'use client';
+
+import { FieldValues, useFormContext } from 'react-hook-form';
 import { cn } from '@/shared/lib/utils';
 import { Input } from '@/shared/ui/input';
 import {
@@ -11,39 +13,49 @@ import {
 import { IFormInputProps } from '../model/types';
 
 const FormInput = <T extends FieldValues>({
-  control,
   name,
   label,
-  error,
   required,
   disabled,
   ...inputProps
-}: IFormInputProps<T>) => (
-  <FormField
-    control={control}
-    name={name}
-    rules={{ required }}
-    render={({ field }) => (
-      <FormItem className='flex w-full flex-col'>
-        {label && (
-          <FormLabel htmlFor={name} className={cn({ 'text-muted': disabled })}>
-            {label}
-          </FormLabel>
-        )}
-        <FormControl>
-          <Input
-            id={name}
-            className={cn({ 'border-red-500': !!error }, 'bg-transparent')}
-            required={required}
-            disabled={disabled}
-            {...field}
-            {...inputProps}
-          />
-        </FormControl>
-        <FormMessage />
-      </FormItem>
-    )}
-  />
-);
+}: IFormInputProps<T>) => {
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext();
+
+  const haveError = !!errors[name];
+
+  return (
+    <FormField
+      control={control}
+      name={name}
+      rules={{ required }}
+      render={({ field }) => (
+        <FormItem className='flex w-full flex-col'>
+          {label && (
+            <FormLabel
+              htmlFor={name}
+              className={cn({ 'text-muted': disabled })}
+            >
+              {label}
+            </FormLabel>
+          )}
+          <FormControl>
+            <Input
+              id={name}
+              className={cn({ 'border-red-500': haveError }, 'bg-transparent')}
+              required={required}
+              disabled={disabled}
+              {...field}
+              {...inputProps}
+            />
+          </FormControl>
+          <FormMessage className='text-destructive' />
+        </FormItem>
+      )}
+    />
+  );
+};
 
 export { FormInput };

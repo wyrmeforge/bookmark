@@ -1,9 +1,9 @@
 import { mutation, query } from './_generated/server';
-import { getUserId } from './helpers';
 import { v } from 'convex/values';
 
 export const store = mutation(async ({ db, auth }) => {
   const identity = await auth.getUserIdentity();
+
   if (!identity) {
     throw new Error('Called storeUser without authentication present');
   }
