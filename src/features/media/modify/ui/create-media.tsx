@@ -18,24 +18,35 @@ import { useCreateMedia } from '../model/hooks/use-create-media';
 import { Button } from '@/shared/ui/button';
 import { SquarePlusIcon } from 'lucide-react';
 import { MediaStatus } from '@/shared/enums/media';
+import { useEffect, useState } from 'react';
+
+function useIsMobile(breakpoint = 768) {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    function onResize() {
+      setIsMobile(window.innerWidth < breakpoint);
+    }
+
+    onResize();
+    window.addEventListener('resize', onResize);
+
+    return () => window.removeEventListener('resize', onResize);
+  }, [breakpoint]);
+
+  return isMobile;
+}
 
 const CreateMedia = ({ initialStatus, customTrigger }: CreateMediaProps) => {
   const { createNewMedia } = useCreateMedia();
+  const isMobile = useIsMobile();
 
   const onSubmit = (data: ModifyFormValues) => {
     createNewMedia(data);
   };
 
-  const isValidStatus = (
-    status?: MediaStatus
-  ): status is Exclude<MediaStatus, MediaStatus.All> => {
-    return status !== MediaStatus.All;
-  };
-
   const initialValues: Partial<ModifyFormValues> = {
-    [FormFields.Status]: isValidStatus(initialStatus)
-      ? initialStatus
-      : MediaStatus.Scheduled,
+    [FormFields.Status]: initialStatus || MediaStatus.Scheduled,
   };
 
   const trigger = customTrigger || (
@@ -51,7 +62,10 @@ const CreateMedia = ({ initialStatus, customTrigger }: CreateMediaProps) => {
   return (
     <Sheet>
       <SheetTrigger asChild>{trigger}</SheetTrigger>
-      <SheetContent className='flex h-full w-1/3 !max-w-none flex-col'>
+      <SheetContent
+        side={isMobile ? 'bottom' : 'right'}
+        className='mt-14 flex h-full w-full !max-w-none flex-col overflow-auto md:w-1/3'
+      >
         <SheetTitle>Додати нове аніме</SheetTitle>
         <SheetDescription>
           Заповніть форму для додавання аніме до вашого списку

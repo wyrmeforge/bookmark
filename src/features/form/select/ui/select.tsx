@@ -11,11 +11,10 @@ import {
   SelectValue,
 } from '@/shared/ui/select';
 
-import { FieldValues } from 'react-hook-form';
+import { FieldValues, useFormContext } from 'react-hook-form';
 import { IFormSelectProps } from '../model/types';
 
 const FormSelect = <T extends FieldValues = FieldValues>({
-  control,
   name,
   label,
   placeholder,
@@ -23,6 +22,8 @@ const FormSelect = <T extends FieldValues = FieldValues>({
   disabled = false,
   className,
 }: IFormSelectProps<T>) => {
+  const { control } = useFormContext();
+
   const id = useId();
 
   const options = useMemo(

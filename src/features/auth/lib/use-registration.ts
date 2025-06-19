@@ -1,6 +1,5 @@
 import { useSignUp } from '@clerk/nextjs';
 
-import { Routes } from '@/enums/routes';
 import { isClerkAPIResponseError } from '@clerk/nextjs/errors';
 
 import {
@@ -11,6 +10,7 @@ import {
   SignUpFormValues,
 } from '../model';
 import { toast } from 'sonner';
+import { Routes } from '@/shared/enums/routes';
 
 const getErrorMessage = (code?: string) =>
   SIGN_UP_ERROR_MESSAGES[code ?? ''] ?? 'Сталася помилка. Спробуйте ще раз.';
@@ -62,7 +62,7 @@ export const useRegistration = ({
 
     return signUp.authenticateWithRedirect({
       strategy: 'oauth_google',
-      redirectUrl: '/sign-up/sso-callback',
+      redirectUrl: '/sign-up',
       redirectUrlComplete: Routes.Home,
     });
   };

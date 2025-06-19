@@ -4,4 +4,4 @@ export type MediaItem = Doc<'lists'>;
 
 export type MediaItemId = Id<'lists'>;
 
-export type MediaItemStatus = Pick<MediaItem, 'status'>;
+export type MediaItemStatus = MediaItem['status'];

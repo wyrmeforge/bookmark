@@ -9,7 +9,7 @@ import {
   SwordIcon,
 } from 'lucide-react';
 
-export const MEDIA_FILTERS = [
+export const MEDIA_STATUS_FILTERS = [
   {
     key: MediaStatus.All,
     label: 'Всі',
