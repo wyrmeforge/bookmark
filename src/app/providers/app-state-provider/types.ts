@@ -1,31 +1,26 @@
-import { Filters, LayoutViews } from '@/enums/unity';
-import { IListItem } from '@/types/list';
-import { ISortModel } from '@/types/unity';
-import { ReactNode } from 'react';
+import { LayoutViews } from '@/enums/unity';
+import { MediaStatus } from '@/shared/enums/media';
+import { MediaItem } from '@/shared/types/media';
 
 export interface IAppState {
-  currentFilter: Filters;
-  list: IListItem[] | null;
+  currentFilter: MediaStatus;
+  list: MediaItem[] | null;
   searchValue: string;
-  sortModel: ISortModel;
+  // sortModel: ISortModel;
   layoutView: LayoutViews;
 }
 
 export interface IAppStateContextProps extends IAppState {
-  updateFilter: (filter: Filters) => void;
-  updateSortModel: (sortModel: ISortModel) => void;
-  updateList: (list: IListItem[] | null) => void;
+  updateFilter: (filter: MediaStatus) => void;
+  // updateSortModel: (sortModel: ISortModel) => void;
+  updateList: (list: MediaItem[] | null) => void;
   updateSearchValue: (value: string) => void;
   toggleLayoutView: () => void;
 }
 
-export interface IAppStateProviderProps {
-  children: ReactNode;
-}
-
 export type AppStateAction =
-  | { type: 'UPDATE_FILTER'; payload: Filters }
-  | { type: 'UPDATE_SORT_MODEL'; payload: ISortModel }
-  | { type: 'UPDATE_LIST'; payload: IListItem[] | null }
+  | { type: 'UPDATE_FILTER'; payload: MediaStatus }
+  // | { type: 'UPDATE_SORT_MODEL'; payload: ISortModel }
+  | { type: 'UPDATE_LIST'; payload: MediaItem[] | null }
   | { type: 'UPDATE_SEARCH_VALUE'; payload: string }
   | { type: 'TOGGLE_LAYOUT_VIEW' };

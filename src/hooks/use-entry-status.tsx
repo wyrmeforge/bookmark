@@ -1,4 +1,4 @@
-import { EntryStatus } from '@/enums/unity';
+import { MediaFilter } from '@/shared/enums/media';
 import { CheckCheck, Eye, Goal, LoaderCircle } from 'lucide-react';
 import { ReactNode } from 'react';
 
@@ -9,19 +9,19 @@ interface IStatusItem {
 
 export const useEntryStatus = (currentStatus: string): IStatusItem => {
   const statuses: Record<string, IStatusItem> = {
-    [EntryStatus.InFuture]: {
+    [MediaFilter.Scheduled]: {
       icon: <Goal size={16} />,
       text: 'Буду дивитись',
     },
-    [EntryStatus.InProgress]: {
+    [MediaFilter.Watching]: {
       icon: <Eye size={16} />,
       text: 'Дивлюсь',
     },
-    [EntryStatus.Abandoned]: {
+    [MediaFilter.Abandoned]: {
       icon: <LoaderCircle size={16} />,
       text: 'Закинуто',
     },
-    [EntryStatus.Completed]: {
+    [MediaFilter.Completed]: {
       icon: <CheckCheck size={16} />,
       text: 'Переглянуто',
     },

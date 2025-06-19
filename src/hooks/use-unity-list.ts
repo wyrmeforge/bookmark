@@ -7,7 +7,6 @@ export const useUnityList = () => {
   const { currentFilter, layoutView, searchValue } =
     useContext(AppStateContext);
 
-  // Api call
   const {
     results: list,
     loadMore,
@@ -17,8 +16,6 @@ export const useUnityList = () => {
     { filter: currentFilter, searchValue },
     { initialNumItems: 20 }
   );
-
-  console.log(status);
 
   return {
     list,

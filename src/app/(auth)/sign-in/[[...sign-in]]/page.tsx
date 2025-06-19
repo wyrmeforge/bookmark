@@ -1,17 +1,13 @@
-'use client';
+import { SignInForm } from '@/features/auth';
+import { Metadata } from 'next';
 
-import { LoginForm } from '@/features/login-form';
-import { useLogin } from './use-login';
+export const metadata: Metadata = {
+  title: 'Вхід | YOOKOSO',
+  description: 'Форма авторизації - YOKOSO',
+};
 
 const SignIn = () => {
-  const { loginWithCredentials, loginWithGoogle } = useLogin();
-
-  return (
-    <LoginForm
-      handleCredentials={loginWithCredentials}
-      handleOAuth={loginWithGoogle}
-    />
-  );
+  return <SignInForm />;
 };
 
 export default SignIn;

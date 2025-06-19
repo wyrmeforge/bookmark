@@ -12,6 +12,7 @@
   },
   "aliases": {
     "components": "@/shared",
-    "utils": "@/lib/utils"
-  }
+    "utils": "@/shared/lib/utils"
+  },
+  "iconLibrary": "lucide"
 }

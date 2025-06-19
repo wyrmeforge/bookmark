@@ -1,18 +1,19 @@
-import { Filters, LayoutViews, SortDirection, SortName } from '@/enums/unity';
-import { ISortModel } from '@/types/sort';
+import { LayoutViews } from '@/enums/unity';
+// import { ISortModel } from '@/types/sort';
 import { AppStateAction, IAppState } from './types';
+import { MediaStatus } from '@/shared/enums/media';
 
-const defaultSortModel: ISortModel = {
-  label: 'Sort by Creation Time',
-  value: SortName.CreationTime,
-  direction: SortDirection.Desc,
-};
+// const defaultSortModel: ISortModel = {
+//   label: 'Sort by Creation Time',
+//   value: SortName.CreationTime,
+//   direction: SortDirection.Desc,
+// };
 
 export const initialState: IAppState = {
-  currentFilter: Filters.All,
+  currentFilter: MediaStatus.All,
   list: null,
   searchValue: '',
-  sortModel: defaultSortModel,
+  // sortModel: defaultSortModel,
   layoutView: LayoutViews.Grid,
 };
 
@@ -23,8 +24,8 @@ export const appStateReducer = (
   switch (action.type) {
     case 'UPDATE_FILTER':
       return { ...state, currentFilter: action.payload };
-    case 'UPDATE_SORT_MODEL':
-      return { ...state, sortModel: action.payload };
+    // case 'UPDATE_SORT_MODEL':
+    //   return { ...state, sortModel: action.payload };
     case 'UPDATE_LIST':
       return { ...state, list: action.payload };
     case 'UPDATE_SEARCH_VALUE':
