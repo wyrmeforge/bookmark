@@ -5,13 +5,13 @@ import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Form } from '@/shared/ui/form';
-import { Routes } from '@/enums/routes';
 import { FormInput } from '@/features/form/input';
 import { FormCheckbox } from '@/features/form/checkbox';
 import { useLogin } from '../lib/use-login';
 import { FormFooter, FormHeader, PasswordInput } from './components';
 
 import { SignInFormFields, SignInFormSchema, SignInFormValues } from '../model';
+import { Routes } from '@/shared/enums/routes';
 
 const SignInForm = () => {
   const { loginWithCredentials, loginWithGoogle } = useLogin();

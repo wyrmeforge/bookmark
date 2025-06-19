@@ -2,13 +2,13 @@ import { useRouter } from 'next/navigation';
 import { useSignIn } from '@clerk/nextjs';
 import { isClerkAPIResponseError } from '@clerk/nextjs/errors';
 
-import { Routes } from '@/enums/routes';
 import {
   SIGN_IN_ERROR_MESSAGES,
   SignInFormValues,
   UseLoginReturn,
 } from '../model';
 import { toast } from 'sonner';
+import { Routes } from '@/shared/enums/routes';
 
 const getErrorMessage = (code?: string) =>
   SIGN_IN_ERROR_MESSAGES[code ?? ''] ?? 'Сталася помилка. Спробуйте ще раз.';
@@ -31,6 +31,7 @@ export const useLogin = (): UseLoginReturn => {
 
       if (signInAttempt.status === 'complete') {
         await setActive({ session: signInAttempt.createdSessionId });
+
         router.push(Routes.Home);
       } else {
         console.error('Unexpected sign-in response:', signInAttempt);

@@ -1,7 +1,7 @@
 import { Badge } from '@/shared/ui/badge';
 import { Heart } from 'lucide-react';
-import { MEDIA_FILTERS } from '@/shared/config/media/media-filters';
 import { MediaItemBadgesProps } from '../model/types';
+import { MEDIA_STATUS_FILTERS } from '@/shared/config/media/media-filters';
 
 const MediaBadges = ({
   episode,
@@ -9,7 +9,7 @@ const MediaBadges = ({
   isFavorite,
   status,
 }: MediaItemBadgesProps) => {
-  const currentMediaStatusConfig = MEDIA_FILTERS.find(
+  const currentMediaStatusConfig = MEDIA_STATUS_FILTERS.find(
     ({ key }) => key === status
   );
 

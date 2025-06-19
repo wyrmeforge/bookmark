@@ -21,6 +21,8 @@ import { ModifyFormSchema } from '../model/form-schema';
 import { formDefaultValues } from '../lib/helpers';
 import { MODIFY_MEDIA_STATUS_ITEMS } from '../config/modify-media-status';
 import { useSearchMedia } from '../model/hooks/use-search-media';
+import { MediaStatus } from '@/shared/enums/media';
+import { SheetClose, SheetFooter } from '@/shared/ui/sheet';
 
 const MediaModifyForm = ({
   onSubmit,
@@ -37,7 +39,7 @@ const MediaModifyForm = ({
 
   const {
     formState: { isSubmitSuccessful },
-    control,
+    watch,
     handleSubmit,
     reset,
   } = form;
@@ -46,9 +48,21 @@ const MediaModifyForm = ({
 
   const submitCtaButtonLabel = isCreating ? 'Додати' : 'Змінити';
 
+  const currentStatus = watch(FormFields.Status);
+
+  const isScheduled = currentStatus === MediaStatus.Scheduled;
+  const isCompleted = currentStatus === MediaStatus.Completed;
+
+  const isSeriesAndSeasonDisable = isScheduled || isCompleted;
+
   useEffect(() => {
     if (isSubmitSuccessful && isCreating) reset();
   }, [isSubmitSuccessful, reset, isCreating]);
+
+  useEffect(() => {
+    // Set viewed count to at least one if 'Completed' status selected
+    form.setValue(FormFields.ViewedCount, isCompleted ? '1' : '');
+  }, [isCompleted, form]);
 
   return (
     <Form {...form}>
@@ -72,7 +86,6 @@ const MediaModifyForm = ({
             name={FormFields.Name}
           />
           <FormSelect
-            control={control}
             name={FormFields.Status}
             placeholder='Статус'
             label='Статус'
@@ -80,12 +93,14 @@ const MediaModifyForm = ({
           />
           <div className='flex gap-3'>
             <FormInput
+              disabled={!isCompleted}
               type='number'
               label='Разів переглянуто'
               placeholder='Введіть к-ть повторних переглядів'
               name={FormFields.ViewedCount}
             />
             <FormInput
+              disabled={!isCompleted}
               type='number'
               label='Оцінка'
               placeholder='Введіть оцінку від 1 до 10'
@@ -94,12 +109,14 @@ const MediaModifyForm = ({
           </div>
           <div className='flex gap-3'>
             <FormInput
+              disabled={isSeriesAndSeasonDisable}
               label='Серій'
               type='number'
               placeholder='Введіть к-ть переглянутих серій'
               name={FormFields.Episode}
             />
             <FormInput
+              disabled={isSeriesAndSeasonDisable}
               type='number'
               label='Сезон'
               placeholder='Введіть к-ть переглянутих сезонів'
@@ -112,14 +129,14 @@ const MediaModifyForm = ({
           />
           <FormTextarea name={FormFields.Comment} placeholder='Коментар' />
         </div>
-        <div className='flex justify-between gap-4'>
-          <Button variant='outline' className='w-full'>
+        <SheetFooter className='flex flex-row justify-between gap-4'>
+          <SheetClose className='h-full w-full rounded-md border border-muted'>
             Скасувати
-          </Button>
+          </SheetClose>
           <Button className='w-full' type='submit'>
             {submitCtaButtonLabel}
           </Button>
-        </div>
+        </SheetFooter>
       </form>
     </Form>
   );

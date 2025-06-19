@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { AppStateContext } from '@/app/providers/app-state-provider';
-import { useDebounce } from '@/hooks/user-debounce';
+import { useDebounce } from '@/shared/lib/hooks/user-debounce';
 
 export const useSearchInput = () => {
   const { searchValue, updateSearchValue } = useContext(AppStateContext);

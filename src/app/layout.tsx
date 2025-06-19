@@ -6,7 +6,7 @@ import { Providers } from './providers';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'YOKOSO',
+  title: 'YOOKOSO',
   description: 'App to store your favorite anime!',
 };
 

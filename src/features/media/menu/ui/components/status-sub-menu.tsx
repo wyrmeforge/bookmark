@@ -9,12 +9,11 @@ import { FilterIcon } from 'lucide-react';
 import { MENU_MEDIA_FILTERS } from '../../config/menu-media-filters';
 import { cn } from '@/shared/lib/utils';
 import { useMediaActions } from '../../model/use-media-actions';
-import { MediaItem } from '@/shared/types/media';
-import { MediaStatus } from '@/shared/enums/media';
+import { MediaItemId, MediaItemStatus } from '@/shared/types/media';
 
 interface IStatusSubMenuProps {
-  mediaItemId: MediaItem['_id'];
-  currentStatus: MediaStatus;
+  mediaItemId: MediaItemId;
+  currentStatus: MediaItemStatus;
 }
 
 const StatusSubMenu = ({ mediaItemId, currentStatus }: IStatusSubMenuProps) => {

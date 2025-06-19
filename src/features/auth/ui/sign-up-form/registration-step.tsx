@@ -2,7 +2,6 @@
 
 import { Button } from '@/shared/ui/button';
 import { useFormContext } from 'react-hook-form';
-import { Routes } from '@/enums/routes';
 import { FormInput } from '@/features/form/input';
 import { FormFooter, FormHeader, PasswordInput } from '../components';
 import { useRegistration } from '../../lib/use-registration';
@@ -12,6 +11,7 @@ import {
   SignUpFormFields,
   SignUpFormValues,
 } from '../../model';
+import { Routes } from '@/shared/enums/routes';
 
 const RegistrationStep = ({ setFlowStep }: ISignUpStepProps) => {
   const { handleSubmit } = useFormContext<SignUpFormValues>();
