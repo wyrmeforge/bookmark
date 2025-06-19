@@ -1,11 +1,25 @@
 import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
+import { Routes } from './enums/routes';
 
-const isProtectedRoute = createRouteMatcher(['/home(.*)']);
+const isProtectedRoute = createRouteMatcher(['/home(.*)', '/friends(.*)']);
 
-export default clerkMiddleware((auth, req) => {
-  if (isProtectedRoute(req)) auth().protect();
+export default clerkMiddleware(async (auth, req) => {
+  const { protect, userId } = await auth();
+
+  if (isProtectedRoute(req)) {
+    await protect();
+  }
+
+  if (userId && !isProtectedRoute(req)) {
+    const url = new URL(Routes.Home, req.url);
+
+    return Response.redirect(url);
+  }
 });
 
 export const config = {
-  matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
+  matcher: [
+    '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
+    '/(api|trpc)(.*)',
+  ],
 };

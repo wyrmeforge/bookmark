@@ -1,5 +1,6 @@
 {
   "trailingComma": "es5",
+  "importOrder": ["^@/convex/(.*)$", "^[./]"],
   "semi": true,
   "tabWidth": 2,
   "singleQuote": true,

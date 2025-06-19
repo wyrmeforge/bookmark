@@ -1,25 +1,19 @@
 'use client';
 
-import Header from '@/components/layout/header';
-import Loader from '@/components/loader';
-import { Separator } from '@/components/ui/separator';
-import React from 'react';
-import { useStoreUser } from '@/hooks/use-store-user';
+import { useStoreUser } from '@/shared/lib/auth/use-store-user';
+import { Loader } from '@/shared/ui/loader';
+import { Header } from '@/widgets/header';
+import { PropsWithChildren } from 'react';
 
-interface IDashboardLayoutProps {
-  children: React.ReactNode;
-}
+const DashboardLayout = ({ children }: PropsWithChildren) => {
+  const { isLoading, isAuthenticated } = useStoreUser();
 
-const DashboardLayout = ({ children }: IDashboardLayoutProps) => {
-  const { isAuthenticated, isLoading } = useStoreUser();
-
-  if (!isAuthenticated && isLoading) return <Loader />;
+  if (isLoading || !isAuthenticated) return <Loader />;
 
   return (
-    <div className='flex h-full min-h-screen grow flex-col'>
+    <div className='relative flex h-screen flex-col overflow-hidden'>
       <Header />
-      <Separator className='my-3' />
-      {children}
+      <main className='flex-1 overflow-hidden px-20'>{children}</main>
     </div>
   );
 };

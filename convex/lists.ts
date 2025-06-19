@@ -1,92 +1,86 @@
 import { mutation, query } from './_generated/server';
 import { v } from 'convex/values';
 import { getUserId } from './helpers';
-import { Filters } from './enums';
+import { paginationOptsValidator } from 'convex/server';
+import { MediaStatus } from './enums';
 
 export const getList = query({
   args: {
-    module: v.string(),
-    status: v.string(),
-    sortBy: v.object({
-      value: v.string(),
-      direction: v.string(),
-    }),
+    filter: v.string(),
+    paginationOpts: paginationOptsValidator,
+    searchValue: v.optional(v.string()),
   },
-  handler: async (ctx, args) => {
-    const { status, module, sortBy } = args;
+  handler: async (ctx, { filter, paginationOpts, searchValue }) => {
     const userId = await getUserId(ctx);
+    if (!userId) throw new Error('User not authenticated');
 
-    let query = ctx.db
-      .query('lists')
-      .withIndex('by_user', (q) => q.eq('user', userId))
-      .filter((q) => q.eq(q.field('module'), module));
+    let listsQuery;
 
-    if (status !== 'all') {
-      query = query.filter((q) =>
-        status === 'favorite'
-          ? q.eq(q.field('is_favorite'), true)
-          : q.eq(q.field('status'), status)
+    if (searchValue) {
+      // Use search index when search is active
+      listsQuery = ctx.db
+        .query('lists')
+        .withSearchIndex('by_name', (q) =>
+          q.search('name', searchValue).eq('user', userId)
+        );
+    } else {
+      // Use normal index for user when search is not active
+      listsQuery = ctx.db
+        .query('lists')
+        .withIndex('by_user', (q) => q.eq('user', userId))
+        .order('desc');
+    }
+
+    // Apply filter only if it's not "All"
+    if (filter && filter !== MediaStatus.All) {
+      const isFavoriteFilter = filter === MediaStatus.Favorite;
+
+      listsQuery = listsQuery.filter((q) =>
+        isFavoriteFilter
+          ? q.eq(q.field('isFavorite'), true)
+          : q.eq(q.field('status'), filter)
       );
     }
 
-    const list = await query.collect();
-
-    const validSortKeys: (keyof (typeof list)[0])[] = [
-      '_creationTime',
-      'rate',
-      'viewed_count',
-    ];
-
-    if (validSortKeys.includes(sortBy.value as keyof (typeof list)[0])) {
-      const sortKey = sortBy.value as keyof (typeof list)[0];
-      list.sort((a, b) => {
-        const aValue = a[sortKey] ?? (sortBy.direction === 'desc' ? -1 : 1);
-        const bValue = b[sortKey] ?? (sortBy.direction === 'desc' ? -1 : 1);
-
-        return sortBy.direction === 'desc'
-          ? bValue > aValue
-            ? 1
-            : -1
-          : aValue > bValue
-            ? 1
-            : -1;
-      });
-    }
-
-    return list;
-  },
-});
-
-export const getListItem = query({
-  args: { id: v.id('lists') },
-  handler: async (ctx, args) => {
-    const userId = await getUserId(ctx);
-
-    return await ctx.db
-      .query('lists')
-      .withIndex('by_user', (q) => q.eq('user', userId))
-      .filter((q) => q.eq(q.field('_id'), args.id))
-      .first();
+    return await listsQuery.paginate(paginationOpts);
   },
 });
 
 export const createListItem = mutation({
   args: {
     name: v.string(),
-    module: v.string(),
-    is_favorite: v.boolean(),
+    isFavorite: v.boolean(),
     rate: v.optional(v.string()),
-    status: v.string(),
-    viewed_count: v.optional(v.string()),
+    status: v.union(
+      v.literal(MediaStatus.Scheduled),
+      v.literal(MediaStatus.Watching),
+      v.literal(MediaStatus.Postponed),
+      v.literal(MediaStatus.Abandoned),
+      v.literal(MediaStatus.Favorite),
+      v.literal(MediaStatus.Completed)
+    ),
+    viewedCount: v.optional(v.string()),
     imageUrl: v.string(),
-    unity_id: v.string(),
+    media3PartyId: v.string(),
     episode: v.optional(v.string()),
     season: v.optional(v.string()),
+    comment: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
     const userId = await getUserId(ctx);
 
+    const existingItem = await ctx.db
+      .query('lists')
+      .filter((q) => q.eq(q.field('media3PartyId'), args.media3PartyId))
+      .first();
+
+    if (existingItem) {
+      return { success: false, error: 'ITEM_ALREADY_EXISTS' };
+    }
+
     await ctx.db.insert('lists', { ...args, user: userId });
+
+    return { success: true };
   },
 });
 
@@ -96,6 +90,8 @@ export const updateListItem = mutation({
     const { id, newData } = args;
 
     await ctx.db.patch(id, { ...newData });
+
+    return { success: true };
   },
 });
 
@@ -103,54 +99,55 @@ export const deleteListItem = mutation({
   args: { id: v.id('lists') },
   handler: async (ctx, args) => {
     await ctx.db.delete(args.id);
+    return { success: true };
   },
 });
 
 export const getListModules = query({
-  args: { module: v.string() },
-  handler: async (ctx, args) => {
+  args: {},
+  handler: async (ctx) => {
     const userId = await getUserId(ctx);
 
     const allLists = await ctx.db
       .query('lists')
       .withIndex('by_user', (q) => q.eq('user', userId))
-      .filter((q) => q.eq(q.field('module'), args.module))
       .collect();
 
-    const statusCounts = allLists.reduce(
-      (counts, list) => {
-        counts.all++;
+    const statusCounts = {
+      all: allLists.length,
+      [MediaStatus.Scheduled]: 0,
+      [MediaStatus.Watching]: 0,
+      [MediaStatus.Postponed]: 0,
+      [MediaStatus.Abandoned]: 0,
+      [MediaStatus.Completed]: 0,
+      [MediaStatus.Favorite]: 0,
+    };
 
-        switch (list.status) {
-          case Filters.Favorite:
-            counts.is_favorite++;
-            break;
-          case Filters.InProgress:
-            counts.in_progress++;
-            break;
-          case Filters.InFuture:
-            counts.in_future++;
-            break;
-          case Filters.Abandoned:
-            counts.abandoned++;
-            break;
-          case Filters.Completed:
-            counts.complete++;
-            break;
-          default:
-            break;
-        }
-        return counts;
-      },
-      {
-        all: 0,
-        is_favorite: 0,
-        in_progress: 0,
-        in_future: 0,
-        abandoned: 0,
-        complete: 0,
+    for (const list of allLists) {
+      if (list.isFavorite) {
+        statusCounts[MediaStatus.Favorite]++;
       }
-    );
+
+      switch (list.status) {
+        case MediaStatus.Scheduled:
+          statusCounts[MediaStatus.Scheduled]++;
+          break;
+        case MediaStatus.Watching:
+          statusCounts[MediaStatus.Watching]++;
+          break;
+        case MediaStatus.Postponed:
+          statusCounts[MediaStatus.Postponed]++;
+          break;
+        case MediaStatus.Abandoned:
+          statusCounts[MediaStatus.Abandoned]++;
+          break;
+        case MediaStatus.Completed:
+          statusCounts[MediaStatus.Completed]++;
+          break;
+        default:
+          break;
+      }
+    }
 
     return statusCounts;
   },

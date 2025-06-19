@@ -4,11 +4,12 @@ export enum Module {
   Cartoon = 'cartoon',
 }
 
-export enum Filters {
+export enum MediaStatus {
   All = 'all',
-  InFuture = 'in_future',
-  InProgress = 'in_progress',
+  Scheduled = 'scheduled',
+  Watching = 'watching',
+  Postponed = 'postponed',
   Abandoned = 'abandoned',
-  Favorite = 'favorite',
   Completed = 'completed',
+  Favorite = 'favorite',
 }
