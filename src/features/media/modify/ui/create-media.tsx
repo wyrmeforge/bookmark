@@ -64,7 +64,7 @@ const CreateMedia = ({ initialStatus, customTrigger }: CreateMediaProps) => {
       <SheetTrigger asChild>{trigger}</SheetTrigger>
       <SheetContent
         side={isMobile ? 'bottom' : 'right'}
-        className='mt-14 flex h-full w-full !max-w-none flex-col overflow-auto md:w-1/3'
+        className='flex h-full w-full !max-w-none flex-col overflow-auto md:w-1/3'
       >
         <SheetTitle>Додати нове аніме</SheetTitle>
         <SheetDescription>
