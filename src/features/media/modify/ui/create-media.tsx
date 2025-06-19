@@ -26,8 +26,16 @@ const CreateMedia = ({ initialStatus, customTrigger }: CreateMediaProps) => {
     createNewMedia(data);
   };
 
+  const isValidStatus = (
+    status?: MediaStatus
+  ): status is Exclude<MediaStatus, MediaStatus.All> => {
+    return status !== MediaStatus.All;
+  };
+
   const initialValues: Partial<ModifyFormValues> = {
-    [FormFields.Status]: initialStatus ?? MediaStatus.Scheduled,
+    [FormFields.Status]: isValidStatus(initialStatus)
+      ? initialStatus
+      : MediaStatus.Scheduled,
   };
 
   const trigger = customTrigger || (
