@@ -30,7 +30,7 @@ const MediaMenu = ({ mediaItem }: { mediaItem: MediaItem }) => {
     <DropdownMenu>
       <DropdownMenuTrigger aria-label='Toggle media menu' className='h-[26px]'>
         <Badge variant='default' className=' border border-muted-foreground'>
-          <MenuIcon color='black' size={20} />
+          <MenuIcon color='black' className='h-4 w-4 md:h-5 md:w-5' />
         </Badge>
       </DropdownMenuTrigger>
       <DropdownMenuContent align='end' className='mt-2 w-64 rounded-lg'>

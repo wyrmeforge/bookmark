@@ -11,19 +11,14 @@ import {
 
 export const MEDIA_STATUS_FILTERS = [
   {
-    key: MediaStatus.All,
-    label: 'Всі',
-    icon: SwordIcon,
+    key: MediaStatus.Watching,
+    label: 'Дивлюсь',
+    icon: EyeIcon,
   },
   {
     key: MediaStatus.Scheduled,
     label: 'Заплановано',
     icon: GoalIcon,
-  },
-  {
-    key: MediaStatus.Watching,
-    label: 'Дивлюсь',
-    icon: EyeIcon,
   },
   {
     key: MediaStatus.Postponed,
@@ -44,5 +39,10 @@ export const MEDIA_STATUS_FILTERS = [
     key: MediaStatus.Favorite,
     label: 'Улюблені',
     icon: HeartIcon,
+  },
+  {
+    key: MediaStatus.All,
+    label: 'Всі',
+    icon: SwordIcon,
   },
 ] as const;

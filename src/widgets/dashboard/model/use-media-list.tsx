@@ -16,10 +16,13 @@ export const useMediaList = () => {
     { initialNumItems: 20 }
   );
 
+  console.log(status);
+
   return {
     list,
     currentFilter,
-    isListLoading: status === 'LoadingFirstPage' || status === 'LoadingMore',
+    isFirstLoading: status === 'LoadingFirstPage',
+    isLoadingMore: status === 'LoadingMore',
     loadMore,
     isEndOfPages: status === 'Exhausted',
   };

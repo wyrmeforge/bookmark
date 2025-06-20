@@ -11,9 +11,9 @@ const DashboardLayout = ({ children }: PropsWithChildren) => {
   if (isLoading || !isAuthenticated) return <Loader />;
 
   return (
-    <div className='relative flex h-screen flex-col overflow-hidden'>
+    <div className='relative flex h-screen flex-col '>
       <Header />
-      <main className='flex-1 overflow-hidden px-4 md:px-20'>{children}</main>
+      <main className='flex-1 px-2 md:px-20'>{children}</main>
     </div>
   );
 };

@@ -22,16 +22,20 @@ const MediaBadges = ({
     },
     {
       isVisible: !!MediaStatusIcon,
-      value: MediaStatusIcon ? <MediaStatusIcon size={20} /> : null,
+      value: MediaStatusIcon ? (
+        <MediaStatusIcon className='h-4 w-4 md:h-5 md:w-5' />
+      ) : null,
     },
     {
       isVisible: isFavorite,
-      value: <Heart fill='white' stroke='red' size={20} />,
+      value: (
+        <Heart fill='white' stroke='red' className='h-4 w-4 md:h-5 md:w-5' />
+      ),
     },
   ];
 
   return (
-    <div className='flex items-center justify-center gap-1'>
+    <div className='flex items-center justify-center gap-1 '>
       {badges.map(({ isVisible = true, value }, key) => {
         if (!isVisible) return null;
 

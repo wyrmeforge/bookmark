@@ -27,9 +27,9 @@ const MediaItemContainer = ({ unityData }: { unityData: MediaItem }) => {
   const formattedDate = dayjs(_creationTime).format('DD.MM.YYYY');
 
   return (
-    <Card className='relative h-full min-h-[450px] w-full rounded-none border shadow transition-all hover:cursor-pointer hover:border-black hover:shadow-xl dark:border-neutral-800 dark:hover:border-white md:min-h-[600px]'>
+    <Card className='relative h-full min-h-[300px] w-full rounded-none border shadow transition-all hover:cursor-pointer hover:border-black hover:shadow-xl dark:border-neutral-800 dark:hover:border-white md:min-h-[450px]'>
       <CardHeader className='absolute top-3 z-10 w-full p-0'>
-        <div className='flex w-full flex-row items-center justify-between px-5'>
+        <div className='flex w-full flex-row items-center justify-between px-2 md:px-5'>
           <MediaBadges
             status={status}
             episode={episode}
@@ -50,7 +50,7 @@ const MediaItemContainer = ({ unityData }: { unityData: MediaItem }) => {
             className='rounded-none object-cover'
           />
         </div>
-        <div className='absolute bottom-0 left-0 right-0 z-20 flex h-[70px] flex-col justify-center gap-2 px-5 backdrop-blur-sm backdrop-brightness-[80%]'>
+        <div className='absolute bottom-0 left-0 right-0 z-20 flex h-[70px] flex-col justify-center gap-2 px-2 backdrop-blur-sm backdrop-brightness-[80%] md:px-5'>
           <CardTitle className='line-clamp-2 truncate whitespace-pre-wrap text-sm text-white'>
             {name}
           </CardTitle>

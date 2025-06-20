@@ -11,6 +11,8 @@ import {
 } from '@/shared/ui/select';
 import { cn } from '@/shared/lib/utils';
 import { useFilters } from '../model/use-filters';
+import { MediaItemStatus } from '@/shared/types/media';
+import { StorageKeys } from '@/shared/enums/storage';
 
 function useIsMobile(breakpoint = 768) {
   const [isMobile, setIsMobile] = useState(false);
@@ -33,10 +35,17 @@ const FiltersToggleGroup = () => {
   const { menu, currentFilter, updateFilter } = useFilters();
   const isMobile = useIsMobile();
 
+  const handleChange = (value: MediaItemStatus) => {
+    if (!value) return;
+
+    updateFilter(value);
+    localStorage.setItem(StorageKeys.LastStatusFilter, value);
+  };
+
   if (isMobile) {
     return (
-      <Select value={currentFilter} onValueChange={updateFilter}>
-        <SelectTrigger className='w-full'>
+      <Select value={currentFilter} onValueChange={handleChange}>
+        <SelectTrigger className='w-[80%]'>
           <SelectValue placeholder='Виберіть фільтр' />
         </SelectTrigger>
         <SelectContent>
@@ -53,22 +62,25 @@ const FiltersToggleGroup = () => {
   return (
     <ToggleGroup
       value={currentFilter}
-      onValueChange={updateFilter}
-      className='scrollbar-hide z-0 w-full justify-start overflow-x-auto whitespace-nowrap border-b border-b-gray-500'
+      onValueChange={handleChange}
+      className='scrollbar-hide z-0 w-full justify-start gap-0 overflow-x-auto whitespace-nowrap border-b border-b-gray-500'
       type='single'
     >
-      {menu.map((item) => (
+      {menu.map(({ title, value, key, icon }) => (
         <ToggleGroupItem
-          key={item.key}
-          value={item.key}
-          aria-label={item.key}
+          key={key}
+          value={key}
+          aria-label={key}
           className={cn(
             'relative w-full justify-around rounded-none text-muted-foreground data-[state=on]:bg-transparent',
-            { 'z-10 border-b-2 border-b-white': currentFilter === item.key }
+            {
+              'z-10 border-b-2 border-b-orange-400': currentFilter === key,
+            }
           )}
         >
-          {item.title}
-          <div className='text-orange-400'>{item.value}</div>
+          {icon}
+          {title}
+          <div className='text-orange-400'>{value}</div>
         </ToggleGroupItem>
       ))}
     </ToggleGroup>

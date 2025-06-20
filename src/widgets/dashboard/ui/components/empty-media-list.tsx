@@ -13,7 +13,7 @@ const EmptyMediaList = ({
     <Image
       src='/empty_list.png'
       alt='Список порожній'
-      className='absolute -left-[16px] bottom-0 top-auto brightness-50 md:bottom-auto md:left-auto md:top-20'
+      className='absolute -left-[16px] bottom-0 brightness-50 md:left-0'
       width={500}
       height={400}
       priority
