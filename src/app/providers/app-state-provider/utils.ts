@@ -2,7 +2,7 @@ import { AppStateAction, IAppState } from './types';
 import { MediaStatus } from '@/shared/enums/media';
 
 export const initialState: IAppState = {
-  currentFilter: MediaStatus.All,
+  currentFilter: MediaStatus.Watching,
   list: null,
   searchValue: '',
 };

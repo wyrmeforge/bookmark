@@ -3,8 +3,8 @@ import { FiltersToggleGroup } from '@/features/media/filters';
 import { SettingsIcon } from 'lucide-react';
 
 export const MediaToolbar = () => (
-  <div className='mb-2 flex items-center justify-between py-4'>
-    <div className='w-1/2'>
+  <div className='flex items-center justify-between py-2 md:py-4'>
+    <div className='w-[80%] overflow-hidden'>
       <FiltersToggleGroup />
     </div>
     <div className='flex flex-row items-center gap-4'>
