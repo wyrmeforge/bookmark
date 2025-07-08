@@ -25,7 +25,7 @@ const VerificationStep = ({ setFlowStep }: ISignUpStepProps) => {
   };
 
   return (
-    <form onSubmit={onSubmit} className='w-full px-10 py-6'>
+    <form onSubmit={onSubmit} className='w-full px-4 py-6 md:px-10'>
       <CardHeader className='px-0 text-center'>
         <CardTitle className='text-2xl'>Верифікація</CardTitle>
         <div className='text-grey flex flex-row items-center justify-center text-center text-sm'>

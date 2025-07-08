@@ -64,7 +64,7 @@ const ForgotPasswordForm = () => {
 
   return (
     <Form {...form}>
-      <form onSubmit={onSubmit} className='w-full px-10 py-6'>
+      <form onSubmit={onSubmit} className='w-full px-4 py-6 md:px-10'>
         <CardHeader className='px-0 text-center'>
           <CardTitle className='text-2xl'>Відновлення паролю</CardTitle>
           <div className='flex flex-row items-center justify-center gap-2'>

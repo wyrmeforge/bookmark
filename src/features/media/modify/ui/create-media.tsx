@@ -66,8 +66,8 @@ const CreateMedia = ({ initialStatus, customTrigger }: CreateMediaProps) => {
         side={isMobile ? 'bottom' : 'right'}
         className='flex h-full w-full !max-w-none flex-col overflow-auto md:w-1/3'
       >
-        <SheetTitle>Додати нове аніме</SheetTitle>
-        <SheetDescription>
+        <SheetTitle className='hidden md:block'>Додати нове аніме</SheetTitle>
+        <SheetDescription className='hidden md:block'>
           Заповніть форму для додавання аніме до вашого списку
         </SheetDescription>
         <MediaModifyForm

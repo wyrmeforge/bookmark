@@ -7,8 +7,7 @@ const Loader = ({ variant = 'fixed' }) => {
   return (
     <div
       className={clsx({
-        'fixed left-0 top-0 z-50 h-screen w-screen bg-stone-950/80':
-          isFixedVariant,
+        'fixed left-0 top-0 z-50 w-screen bg-stone-950/80': isFixedVariant,
       })}
     >
       <Image
