@@ -40,14 +40,14 @@ const MediaItemContainer = ({ unityData }: { unityData: MediaItem }) => {
         </div>
       </CardHeader>
       <CardContent className='relative h-full p-0 '>
-        <div className='relative h-full w-full'>
+        <div className='absolute h-full w-full'>
           <Image
             alt={name}
             src={imageUrl}
             priority
-            fill
-            sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
-            className='rounded-none object-cover'
+            width={500}
+            height={500}
+            className='h-full rounded-none object-cover'
           />
         </div>
         <div className='absolute bottom-0 left-0 right-0 z-20 flex h-[70px] flex-col justify-center gap-2 px-2 backdrop-blur-sm backdrop-brightness-[80%] md:px-5'>
