@@ -27,7 +27,6 @@ export const MediaContent = () => {
       {list.map((item) => (
         <MediaItemContainer key={item._id} unityData={item} />
       ))}
-
       {!isEndOfPages && (
         <div className='my-4 flex w-full justify-center'>
           {isLoadingMore ? (

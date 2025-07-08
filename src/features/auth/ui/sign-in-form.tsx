@@ -29,7 +29,7 @@ const SignInForm = () => {
 
   return (
     <Form {...form}>
-      <form onSubmit={onSubmit} className='w-full px-10 py-6'>
+      <form onSubmit={onSubmit} className='w-full px-4 md:px-10 md:py-6'>
         <FormHeader
           title='З поверненням!'
           question='Не маєте акаунту?'

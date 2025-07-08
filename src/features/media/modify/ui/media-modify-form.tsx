@@ -129,7 +129,7 @@ const MediaModifyForm = ({
           />
           <FormTextarea name={FormFields.Comment} placeholder='Коментар' />
         </div>
-        <SheetFooter className='flex flex-row justify-between gap-4'>
+        <SheetFooter className='mt-4 flex flex-row justify-between gap-4'>
           <SheetClose className='h-full w-full rounded-md border border-muted'>
             Скасувати
           </SheetClose>

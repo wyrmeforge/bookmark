@@ -23,7 +23,7 @@ const RegistrationStep = ({ setFlowStep }: ISignUpStepProps) => {
   const onSubmit = handleSubmit(registerWithCredentials);
 
   return (
-    <form onSubmit={onSubmit} className='w-full px-10 py-6'>
+    <form onSubmit={onSubmit} className='w-full px-4 py-6 md:px-10'>
       <FormHeader
         title='Ласкаво просимо!'
         question='Уже маєте акаунт?'
