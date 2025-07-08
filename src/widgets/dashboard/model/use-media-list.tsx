@@ -16,8 +16,6 @@ export const useMediaList = () => {
     { initialNumItems: 20 }
   );
 
-  console.log(status);
-
   return {
     list,
     currentFilter,

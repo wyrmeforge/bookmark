@@ -33,7 +33,7 @@ const MediaMenu = ({ mediaItem }: { mediaItem: MediaItem }) => {
           <MenuIcon color='black' className='h-4 w-4 md:h-5 md:w-5' />
         </Badge>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align='end' className='mt-2 w-64 rounded-lg'>
+      <DropdownMenuContent className='mt-2 w-64 rounded-lg'>
         <DropdownMenuLabel className='truncate'>{name}</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <EditMedia mediaItem={mediaItem} />
