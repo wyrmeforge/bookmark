@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { Form } from '@/shared/ui/form';
 import { Button } from '@/shared/ui/button';
 import {
@@ -23,12 +23,14 @@ import { MODIFY_MEDIA_STATUS_ITEMS } from '../config/modify-media-status';
 import { useSearchMedia } from '../model/hooks/use-search-media';
 import { MediaStatus } from '@/shared/enums/media';
 import { SheetClose, SheetFooter } from '@/shared/ui/sheet';
+import { AppStateContext } from '@/app/providers/app-state-provider';
 
 const MediaModifyForm = ({
   onSubmit,
   variant,
   initialValues,
 }: MediaModifyFormProps) => {
+  const { updateFilter } = useContext(AppStateContext);
   const form = useForm<ModifyFormValues>({
     resolver: zodResolver(ModifyFormSchema),
     defaultValues: { ...formDefaultValues, ...initialValues },
@@ -56,8 +58,11 @@ const MediaModifyForm = ({
   const isSeriesAndSeasonDisable = isScheduled || isCompleted;
 
   useEffect(() => {
-    if (isSubmitSuccessful && isCreating) reset();
-  }, [isSubmitSuccessful, reset, isCreating]);
+    if (isSubmitSuccessful && isCreating) {
+      updateFilter(currentStatus);
+      reset();
+    }
+  }, [isSubmitSuccessful, currentStatus, updateFilter, reset, isCreating]);
 
   useEffect(() => {
     // Set viewed count to at least one if 'Completed' status selected

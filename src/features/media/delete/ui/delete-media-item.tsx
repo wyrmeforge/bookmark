@@ -32,7 +32,7 @@ const DeleteMediaItem = ({ id }: { id: MediaItemId }) => {
           <span className='text-red-500'>Видалити</span>
         </DropdownMenuItem>
       </AlertDialogTrigger>
-      <AlertDialogContent>
+      <AlertDialogContent className='w-[90%] rounded-md md:w-full'>
         <AlertDialogHeader>
           <AlertDialogTitle>Ви впевнені?</AlertDialogTitle>
           <AlertDialogDescription>

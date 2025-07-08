@@ -12,6 +12,7 @@ const SearchInputUI = ({
     <div className='flex flex-row items-center gap-2'>
       {isSearchVisible && (
         <Input
+          name='search'
           autoFocus
           aria-label='Search'
           value={inputValue}
