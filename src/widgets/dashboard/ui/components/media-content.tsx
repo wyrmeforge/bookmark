@@ -24,11 +24,11 @@ export const MediaContent = () => {
 
   return (
     <div className='grid grid-cols-2 justify-center gap-4 pb-4 md:grid-cols-container md:pr-2'>
-      {list.map((item) => (
-        <MediaItemContainer key={item._id} unityData={item} />
+      {list.map((item, idx) => (
+        <MediaItemContainer itemIdx={idx} key={item._id} unityData={item} />
       ))}
       {!isEndOfPages && (
-        <div className='my-4 flex w-full justify-center'>
+        <div className='col-span-2 flex w-full items-center justify-center border-none md:col-auto md:border-2 md:border-dashed'>
           {isLoadingMore ? (
             <Loader variant='small' />
           ) : (

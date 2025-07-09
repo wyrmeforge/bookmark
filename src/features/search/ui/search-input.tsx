@@ -1,6 +1,7 @@
 import { Input } from '@/shared/ui/input';
-import { SearchIcon } from 'lucide-react';
+import { SearchIcon, XIcon } from 'lucide-react';
 import { SearchInputUIProps } from '../model/types';
+import { Button } from '@/shared/ui/button';
 
 const SearchInputUI = ({
   inputValue,
@@ -18,6 +19,13 @@ const SearchInputUI = ({
           value={inputValue}
           onChange={(e) => onInputChange(e.target.value)}
           placeholder='Пошук'
+          endAdornment={
+            inputValue && (
+              <Button onClick={() => onInputChange('')} variant='ghost'>
+                <XIcon />
+              </Button>
+            )
+          }
         />
       )}
       <SearchIcon

@@ -5,7 +5,7 @@ import { PropsWithChildren } from 'react';
 
 const AuthFormTemplate = ({ children }: PropsWithChildren) => (
   <div className='relative flex min-h-svh flex-row gap-4 overflow-hidden'>
-    <div className='absolute left-4 top-4 z-20 flex flex-row items-center gap-1 text-xl font-bold text-primary md:left-10 md:top-10'>
+    <div className='absolute left-4 top-4 z-20 hidden flex-row items-center gap-1 text-xl font-bold text-primary md:left-10 md:top-10 md:flex'>
       <WebhookIcon size={36} /> YOOKOSO
     </div>
     <div className='flex w-full items-center justify-center'>

@@ -14,6 +14,7 @@ import { useFilters } from '../model/use-filters';
 import { MediaItemStatus } from '@/shared/types/media';
 import { StorageKeys } from '@/shared/enums/storage';
 
+// ToDo: move to shared hooks
 function useIsMobile(breakpoint = 768) {
   const [isMobile, setIsMobile] = useState(false);
 
@@ -45,13 +46,16 @@ const FiltersToggleGroup = () => {
   if (isMobile) {
     return (
       <Select value={currentFilter} onValueChange={handleChange}>
-        <SelectTrigger className='w-[80%]'>
+        <SelectTrigger className='w-auto'>
           <SelectValue placeholder='Виберіть фільтр' />
         </SelectTrigger>
         <SelectContent>
           {menu.map((item) => (
             <SelectItem key={item.key} value={item.key}>
-              {item.title}
+              <div className='flex gap-2'>
+                <span>{item.title}</span>
+                <span className='text-orange-400'>{item.value}</span>
+              </div>
             </SelectItem>
           ))}
         </SelectContent>
