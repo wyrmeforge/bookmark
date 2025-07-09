@@ -1,5 +1,5 @@
-import SearchInput from '@/features/search-input';
 import { FiltersToggleGroup } from '@/features/media/filters';
+import Search from '@/features/search';
 // import { SettingsIcon } from 'lucide-react';
 
 export const MediaToolbar = () => (
@@ -8,7 +8,7 @@ export const MediaToolbar = () => (
       <FiltersToggleGroup />
     </div>
     <div className='flex flex-row items-center gap-4'>
-      <SearchInput />
+      <Search />
       {/* <SettingsIcon
         aria-label='Toggle media settings'
         color='grey'

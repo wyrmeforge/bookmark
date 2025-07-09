@@ -1,7 +1,7 @@
 import { SidebarLeft } from './components/sidebar-left';
 import { SidebarRight } from './components/sidebar-right';
 import { MediaContent } from './components/media-content';
-import { MediaToolbar } from '@/widgets/media-toolbar.tsx';
+import { MediaToolbar } from '@/widgets/media-toolbar';
 
 const DashboardContent = () => {
   return (

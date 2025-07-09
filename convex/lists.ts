@@ -32,7 +32,7 @@ export const getList = query({
     }
 
     // Apply filter only if it's not "All"
-    if (filter && filter !== MediaStatus.All) {
+    if (!searchValue && filter && filter !== MediaStatus.All) {
       const isFavoriteFilter = filter === MediaStatus.Favorite;
 
       listsQuery = listsQuery.filter((q) =>

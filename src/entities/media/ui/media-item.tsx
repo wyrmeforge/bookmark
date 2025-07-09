@@ -10,9 +10,12 @@ import Image from 'next/image';
 import React from 'react';
 import { MediaMenu } from '@/features/media/menu';
 import { MediaBadges } from '@/features/media/badges';
-import { type MediaItem } from '@/shared/types/media';
+import { MediaItemContainerProps } from '../model/types';
 
-const MediaItemContainer = ({ unityData }: { unityData: MediaItem }) => {
+const MediaItemContainer = ({
+  unityData,
+  itemIdx,
+}: MediaItemContainerProps) => {
   const {
     imageUrl,
     name,
@@ -44,10 +47,11 @@ const MediaItemContainer = ({ unityData }: { unityData: MediaItem }) => {
           <Image
             alt={name}
             src={imageUrl}
-            priority
-            width={500}
+            priority={itemIdx < 3}
+            width={640}
             height={500}
             className='h-full rounded-none object-cover'
+            sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
           />
         </div>
         <div className='absolute bottom-0 left-0 right-0 z-20 flex h-[70px] flex-col justify-center gap-2 px-2 backdrop-blur-sm backdrop-brightness-[80%] md:px-5'>

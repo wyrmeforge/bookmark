@@ -3,7 +3,7 @@
 import { useSearchInput } from './model/use-search-input';
 import { SearchInputUI } from './ui/search-input';
 
-const SearchInput = () => {
+const Search = () => {
   const { inputValue, setInputValue, isSearchVisible, setIsSearchVisible } =
     useSearchInput();
 
@@ -17,4 +17,4 @@ const SearchInput = () => {
   );
 };
 
-export default SearchInput;
+export default Search;
