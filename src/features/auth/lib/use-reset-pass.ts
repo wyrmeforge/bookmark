@@ -1,4 +1,5 @@
-import { Routes } from '@/shared/enums/routes';
+import { Routes } from '@/shared/enums';
+
 import { useSignIn } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
 

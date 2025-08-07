@@ -1,5 +1,5 @@
-import { FiltersToggleGroup } from '@/features/media/filters';
 import Search from '@/features/search';
+import { FiltersToggleGroup } from './filters-toggle-group';
 // import { SettingsIcon } from 'lucide-react';
 
 export const MediaToolbar = () => (

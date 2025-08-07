@@ -11,7 +11,7 @@ const Navigation = () => {
   return (
     <nav className='flex items-center gap-6'>
       {navLinks.map(({ labelIcon: Icon, ariaLabel, href }) => {
-        const isActive = pathname === href;
+        const isActive = pathname.startsWith(href) || pathname === href;
 
         return (
           <Link

@@ -46,6 +46,22 @@ export const getList = query({
   },
 });
 
+export const getListItem = query({
+  args: {
+    mediaId: v.number(),
+  },
+  handler: async (ctx, { mediaId }) => {
+    const userId = await getUserId(ctx);
+    if (!userId) throw new Error('User not authenticated');
+
+    return await ctx.db
+      .query('lists')
+      .filter((q) => q.eq(q.field('mediaId'), mediaId))
+      .filter((q) => q.eq(q.field('user'), userId))
+      .first();
+  },
+});
+
 export const createListItem = mutation({
   args: {
     name: v.string(),
@@ -60,23 +76,101 @@ export const createListItem = mutation({
     ),
     viewedCount: v.optional(v.string()),
     imageUrl: v.string(),
-    media3PartyId: v.string(),
+    mediaId: v.number(),
     episode: v.optional(v.string()),
     season: v.optional(v.string()),
     comment: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
     const userId = await getUserId(ctx);
+    const identity = await ctx.auth.getUserIdentity();
+
+    if (!identity) {
+      throw new Error('Unauthenticated call!');
+    }
 
     const existingItem = await ctx.db
       .query('lists')
-      .filter((q) => q.eq(q.field('media3PartyId'), args.media3PartyId))
+      .filter((q) => q.eq(q.field('mediaId'), args.mediaId))
+      .filter((q) => q.eq(q.field('user'), userId))
       .first();
 
     if (existingItem) {
       return { success: false, error: 'ITEM_ALREADY_EXISTS' };
     }
+    const media = await ctx.db
+      .query('media')
+      .withIndex('by_mediaId', (q) => q.eq('mediaId', args.mediaId))
+      .unique();
 
+    const rate = parseInt(args.rate || '', 10);
+    const isValidRate = !isNaN(rate) && rate >= 1 && rate <= 10;
+
+    if (media) {
+      const rateKey = `_${rate}` as keyof typeof media.totalRate;
+
+      await ctx.db.patch(media._id, {
+        users: media.users + 1,
+        totalRate: isValidRate
+          ? {
+              ...media.totalRate,
+              [rateKey]: media.totalRate[rateKey] + 1,
+            }
+          : media.totalRate,
+        totalStatuses: {
+          ...media.totalStatuses,
+          [args.status]: media.totalStatuses[args.status] + 1,
+          ...(args.isFavorite && {
+            [MediaStatus.Favorite]:
+              media.totalStatuses[MediaStatus.Favorite] + 1,
+          }),
+        },
+      });
+    } else {
+      // Create new totalRate from 1 to 10
+      const totalRate: {
+        _1: number;
+        _2: number;
+        _3: number;
+        _4: number;
+        _5: number;
+        _6: number;
+        _7: number;
+        _8: number;
+        _9: number;
+        _10: number;
+      } = {
+        _1: rate === 1 ? 1 : 0,
+        _2: rate === 2 ? 1 : 0,
+        _3: rate === 3 ? 1 : 0,
+        _4: rate === 4 ? 1 : 0,
+        _5: rate === 5 ? 1 : 0,
+        _6: rate === 6 ? 1 : 0,
+        _7: rate === 7 ? 1 : 0,
+        _8: rate === 8 ? 1 : 0,
+        _9: rate === 9 ? 1 : 0,
+        _10: rate === 10 ? 1 : 0,
+      };
+
+      await ctx.db.insert('media', {
+        mediaId: args.mediaId,
+        users: 1,
+        totalRate,
+        totalStatuses: {
+          [MediaStatus.All]: 1,
+          [MediaStatus.Abandoned]:
+            args.status === MediaStatus.Abandoned ? 1 : 0,
+          [MediaStatus.Completed]:
+            args.status === MediaStatus.Completed ? 1 : 0,
+          [MediaStatus.Postponed]:
+            args.status === MediaStatus.Postponed ? 1 : 0,
+          [MediaStatus.Scheduled]:
+            args.status === MediaStatus.Scheduled ? 1 : 0,
+          [MediaStatus.Watching]: args.status === MediaStatus.Watching ? 1 : 0,
+          [MediaStatus.Favorite]: args.isFavorite ? 1 : 0,
+        },
+      });
+    }
     await ctx.db.insert('lists', { ...args, user: userId });
 
     return { success: true };

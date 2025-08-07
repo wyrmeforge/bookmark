@@ -1,5 +1,6 @@
 import { mutation, query } from './_generated/server';
 import { v } from 'convex/values';
+import { getUserId } from './helpers';
 
 export const store = mutation(async ({ db, auth }) => {
   const identity = await auth.getUserIdentity();
@@ -26,19 +27,40 @@ export const store = mutation(async ({ db, auth }) => {
 
   return db.insert('users', {
     name: userName!,
+    nickname: identity.nickname,
     friends: [],
     tokenIdentifier: identity.tokenIdentifier,
   });
 });
 
-export const getUserFriends = query({
-  args: {
-    userId: v.id('users'),
+export const getCurrentUser = query({
+  handler: async (ctx) => {
+    const userId = await getUserId(ctx);
+    return await ctx.db.get(userId);
   },
+});
+
+export const getUserFriends = query({
+  handler: async (ctx) => {
+    const userId = await getUserId(ctx);
+    const user = await ctx.db.get(userId);
+
+    if (!user?.friends || user.friends.length === 0) return [];
+
+    const friends = await Promise.all(
+      user.friends.map((friendId) => ctx.db.get(friendId))
+    );
+
+    return friends.filter(Boolean); // remove nulls
+  },
+});
+
+export const searchUsersByName = query({
+  args: { name: v.string() },
   handler: async (ctx, args) => {
     return ctx.db
       .query('users')
-      .filter((q) => q.eq(q.field('_id'), args.userId))
-      .unique();
+      .withSearchIndex('by_name', (q) => q.search('name', args.name))
+      .collect();
   },
 });

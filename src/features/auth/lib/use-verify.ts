@@ -8,7 +8,7 @@ import {
   UseVerifyReturn,
 } from '../model';
 import { toast } from 'sonner';
-import { Routes } from '@/shared/enums/routes';
+import { Routes } from '@/shared/enums';
 
 export const useVerify = ({
   setFlowStep,

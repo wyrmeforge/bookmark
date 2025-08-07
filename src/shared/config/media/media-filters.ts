@@ -1,4 +1,4 @@
-import { MediaStatus } from '@/shared/enums/media';
+import { MediaStatus } from '@/shared/enums';
 import {
   AlarmClockIcon,
   CalendarXIcon,

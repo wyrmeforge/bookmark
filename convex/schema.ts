@@ -4,7 +4,7 @@ import { MediaStatus } from './enums';
 
 export default defineSchema({
   lists: defineTable({
-    media3PartyId: v.string(),
+    mediaId: v.number(),
     isFavorite: v.optional(v.boolean()),
     name: v.string(),
     rate: v.optional(v.string()),
@@ -29,7 +29,54 @@ export default defineSchema({
     }),
   users: defineTable({
     name: v.string(),
-    friends: v.optional(v.array(v.string())),
+    nickname: v.optional(v.string()),
+    friends: v.optional(v.array(v.id('users'))),
     tokenIdentifier: v.string(),
-  }).index('by_token', ['tokenIdentifier']),
+  })
+    .index('by_token', ['tokenIdentifier'])
+    .searchIndex('by_name', {
+      searchField: 'name',
+      filterFields: ['name'],
+    }),
+  media: defineTable({
+    mediaId: v.number(),
+    users: v.number(),
+    totalRate: v.object({
+      _1: v.number(),
+      _2: v.number(),
+      _3: v.number(),
+      _4: v.number(),
+      _5: v.number(),
+      _6: v.number(),
+      _7: v.number(),
+      _8: v.number(),
+      _9: v.number(),
+      _10: v.number(),
+    }),
+    totalStatuses: v.object({
+      [MediaStatus.All]: v.number(),
+      [MediaStatus.Abandoned]: v.number(),
+      [MediaStatus.Completed]: v.number(),
+      [MediaStatus.Postponed]: v.number(),
+      [MediaStatus.Scheduled]: v.number(),
+      [MediaStatus.Watching]: v.number(),
+      [MediaStatus.Favorite]: v.number(),
+    }),
+  }).index('by_mediaId', ['mediaId']),
+  comments: defineTable({
+    comment: v.string(),
+    replyTo: v.optional(
+      v.object({
+        userId: v.string(),
+        nickname: v.string(),
+        commentId: v.id('comments'),
+      })
+    ),
+    mediaId: v.number(),
+    user: v.object({
+      id: v.string(),
+      nickname: v.string(),
+      picture: v.string(),
+    }),
+  }).index('by_mediaId', ['mediaId']),
 });

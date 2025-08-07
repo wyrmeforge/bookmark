@@ -1,5 +1,9 @@
-import { DashboardContent } from '@/widgets/dashboard';
 import { Metadata } from 'next';
+import { SidebarLeft } from './components/sidebar-left';
+import { MediaToolbar } from '@/widgets/media-toolbar';
+import { SidebarRight } from './components/sidebar-right';
+import { MediaList } from '@/features/media-list';
+import { FloatingMobileMenu } from './components/menu';
 
 export const metadata: Metadata = {
   title: 'Головна | YOOKOSO',
@@ -7,7 +11,17 @@ export const metadata: Metadata = {
 };
 
 const HomePage = () => {
-  return <DashboardContent />;
+  return (
+    <div className='flex h-full flex-row'>
+      <SidebarLeft />
+      <div className='mx-auto flex h-full w-full flex-col'>
+        <MediaToolbar />
+        <MediaList />
+      </div>
+      <SidebarRight />
+      <FloatingMobileMenu />
+    </div>
+  );
 };
 
 export default HomePage;

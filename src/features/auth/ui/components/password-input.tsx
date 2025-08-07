@@ -2,8 +2,7 @@ import { useState, useCallback } from 'react';
 import { EyeIcon, EyeOffIcon } from 'lucide-react';
 
 import { Button } from '@/shared/ui/button';
-
-import { FormInput } from '@/features/form/input';
+import { FormInput } from '@/shared/ui/form-input';
 
 interface IPasswordInputProps {
   name: string;

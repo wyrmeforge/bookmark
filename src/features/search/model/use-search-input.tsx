@@ -1,9 +1,8 @@
-import { useContext, useEffect, useState } from 'react';
-import { AppStateContext } from '@/app/providers/app-state-provider';
-import { useDebounce } from '@/shared/lib/hooks/user-debounce';
+import { useEffect, useState } from 'react';
+import { useAppState, useDebounce } from '@/shared/lib';
 
 export const useSearchInput = () => {
-  const { searchValue, updateSearchValue } = useContext(AppStateContext);
+  const { searchValue, updateSearchValue } = useAppState();
   const [isSearchVisible, setIsSearchVisible] = useState(false);
 
   const [inputValue, setInputValue] = useState(searchValue);
