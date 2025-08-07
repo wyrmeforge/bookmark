@@ -5,7 +5,6 @@ import { useFormContext } from 'react-hook-form';
 
 import { CardHeader, CardTitle } from '@/shared/ui/card';
 import { useVerify } from '../../lib/use-verify';
-import { FormInputOTP } from '@/features/form/input-otp';
 
 import {
   ISignUpStepProps,
@@ -13,6 +12,7 @@ import {
   SignUpFormFields,
   SignUpFormValues,
 } from '../../model';
+import { FormInputOTP } from '@/shared/ui/form-input-otp';
 
 const VerificationStep = ({ setFlowStep }: ISignUpStepProps) => {
   const { handleSubmit } = useFormContext<SignUpFormValues>();

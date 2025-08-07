@@ -1,4 +1,4 @@
-import { Routes } from '@/shared/enums/routes';
+import { Routes } from '@/shared/enums';
 import { CardHeader, CardTitle } from '@/shared/ui/card';
 import Link from 'next/link';
 

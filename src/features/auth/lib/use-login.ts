@@ -8,7 +8,7 @@ import {
   UseLoginReturn,
 } from '../model';
 import { toast } from 'sonner';
-import { Routes } from '@/shared/enums/routes';
+import { Routes } from '@/shared/enums';
 
 const getErrorMessage = (code?: string) =>
   SIGN_IN_ERROR_MESSAGES[code ?? ''] ?? 'Сталася помилка. Спробуйте ще раз.';

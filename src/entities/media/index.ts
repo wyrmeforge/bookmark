@@ -1,1 +1,2 @@
-export { MediaItemContainer } from './ui/media-item';
+export * from './ui';
+export * from './model';

@@ -7,8 +7,7 @@ import { Form } from '@/shared/ui/form';
 import { useForm } from 'react-hook-form';
 import { CardHeader, CardTitle } from '@/shared/ui/card';
 import { Button } from '@/shared/ui/button';
-import { Routes } from '@/shared/enums/routes';
-import { FormInput } from '@/features/form/input';
+import { Routes } from '@/shared/enums';
 import { PasswordInput } from './components';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -19,6 +18,7 @@ import {
   ForgotPasswordStep1Schema,
   ForgotPasswordStep2Schema,
 } from '../model';
+import { FormInput } from '@/shared/ui/form-input';
 
 const ForgotPasswordForm = () => {
   const router = useRouter();

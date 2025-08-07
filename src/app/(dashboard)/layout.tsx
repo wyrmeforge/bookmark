@@ -1,6 +1,6 @@
 'use client';
 
-import { useStoreUser } from '@/shared/lib/auth/use-store-user';
+import { useStoreUser } from '@/shared/lib';
 import { Loader } from '@/shared/ui/loader';
 import { Header } from '@/widgets/header';
 import { PropsWithChildren } from 'react';
@@ -13,7 +13,7 @@ const DashboardLayout = ({ children }: PropsWithChildren) => {
   return (
     <div className='relative flex h-screen flex-col'>
       <Header />
-      <main className='flex-1 px-2 md:px-20'>{children}</main>
+      <main className=' w-full  flex-1 px-2 md:px-20'>{children}</main>
     </div>
   );
 };

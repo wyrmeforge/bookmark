@@ -16,11 +16,11 @@ const nextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'media.kitsu.io',
+        hostname: 'img.clerk.com',
       },
       {
         protocol: 'https',
-        hostname: 'cdn.myanimelist.net',
+        hostname: 's4.anilist.co',
       },
     ],
   },
