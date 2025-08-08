@@ -67,7 +67,7 @@ const FormInput = <T extends FieldValues>({
           <FormControl>
             <Input
               id={name}
-              className={cn({ 'border-red-500': haveError }, 'bg-transparent')}
+              className={cn({ 'border-red-500': haveError })}
               required={required}
               disabled={disabled}
               {...field}

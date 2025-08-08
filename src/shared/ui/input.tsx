@@ -13,7 +13,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     return (
       <div className='relative w-full'>
         {startAdornment && (
-          <div className='absolute left-1.5 top-1/2 -translate-y-1/2 transform'>
+          <div className='absolute left-3 top-1/2 -translate-y-1/2 transform'>
             {startAdornment}
           </div>
         )}

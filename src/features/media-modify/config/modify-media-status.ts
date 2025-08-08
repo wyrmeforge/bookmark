@@ -10,7 +10,9 @@ export const MODIFY_MEDIA_STATUS_ITEMS = MEDIA_STATUS_FILTERS.filter(
       MediaStatus.Abandoned,
       MediaStatus.Completed,
     ].includes(key)
-).map(({ key, label }) => ({
+).map(({ key, label, icon, color }) => ({
   value: key,
+  icon,
   label,
+  color,
 }));

@@ -19,6 +19,7 @@ export const useSearchMedia = () => {
     id: item.id,
     name: item.title.english || item.title.native,
     image: item.coverImage.extraLarge,
+    bannerImage: item.bannerImage,
     episodes: item.episodes,
   }));
 

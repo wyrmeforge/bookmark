@@ -7,6 +7,7 @@ export const SEARCH_MEDIA_QUERY = `
           english
           native
         }
+        bannerImage
         coverImage {
           extraLarge
         }

@@ -11,11 +11,11 @@ export const createMediaMapper = (formData: ModifyFormValues) => {
     mediaId: unityInfo.id,
     isFavorite: formData.isFavorite ?? false,
     name: formData.name || unityInfo.name,
-    rate: formData.rate,
+    rate: String(formData.rate),
     imageUrl: unityInfo.image,
     status: formData.status,
     episode: formData.episode,
-    season: formData.season,
+    website: formData.website,
     viewedCount: formData.viewedCount,
     comment: formData.comment,
   };

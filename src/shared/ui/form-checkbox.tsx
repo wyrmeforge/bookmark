@@ -3,9 +3,10 @@
 import { cn } from '@/shared/lib/utils';
 import { FieldValues, FieldPath, useFormContext } from 'react-hook-form';
 import { FormControl, FormField, FormItem, FormLabel } from '@/shared/ui/form';
-import { Switch } from '@/shared/ui/switch';
+import { Switch, SwitchProps } from '@/shared/ui/switch';
 
-export interface FormCheckboxProps<T extends FieldValues = FieldValues> {
+export interface FormCheckboxProps<T extends FieldValues = FieldValues>
+  extends SwitchProps {
   name: FieldPath<T>;
   label: string;
   disabled?: boolean;
@@ -17,6 +18,7 @@ const FormCheckbox = <T extends FieldValues = FieldValues>({
   disabled,
   label,
   className,
+  ...rest
 }: FormCheckboxProps<T>) => {
   const { control } = useFormContext();
 
@@ -38,7 +40,7 @@ const FormCheckbox = <T extends FieldValues = FieldValues>({
           <FormItem
             onClick={handleClick}
             className={cn(
-              'flex w-full flex-row items-center justify-between gap-2 rounded-md border p-3 hover:cursor-pointer',
+              'flex w-full flex-row items-center justify-between gap-2 rounded-md border bg-background p-3 hover:cursor-pointer',
               className
             )}
           >
@@ -50,10 +52,11 @@ const FormCheckbox = <T extends FieldValues = FieldValues>({
             </FormLabel>
             <FormControl>
               <Switch
-                className='!m-0'
+                className='!m-0 '
                 id={name}
                 checked={field.value}
                 onCheckedChange={field.onChange}
+                {...rest}
               />
             </FormControl>
           </FormItem>

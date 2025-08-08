@@ -1,20 +1,11 @@
 import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
-import { Routes } from './shared/enums/routes';
 
 const isProtectedRoute = createRouteMatcher(['/home(.*)', '/friends(.*)']);
 
 export default clerkMiddleware(async (auth, req) => {
-  const { protect, userId } = await auth();
+  const { protect } = await auth();
 
-  if (isProtectedRoute(req)) {
-    await protect();
-  }
-
-  if (userId && !isProtectedRoute(req)) {
-    const url = new URL(Routes.Home, req.url);
-
-    return Response.redirect(url);
-  }
+  if (isProtectedRoute(req)) await protect();
 });
 
 export const config = {

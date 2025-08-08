@@ -105,7 +105,9 @@ const FormCommandBox = <T extends FieldValues>({
                   {isLoading ? (
                     <Loader className='animate-spin' />
                   ) : (
-                    <span>Нічого не знайдено.</span>
+                    <span className='animate-pulse text-sm'>
+                      Нічого не знайдено.
+                    </span>
                   )}
                 </CommandEmpty>
                 <CommandGroup>

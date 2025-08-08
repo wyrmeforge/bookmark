@@ -9,6 +9,8 @@ export default defineSchema({
     name: v.string(),
     rate: v.optional(v.string()),
     status: v.union(
+      v.literal(MediaStatus.All),
+      v.literal(MediaStatus.Favorite),
       v.literal(MediaStatus.Scheduled),
       v.literal(MediaStatus.Watching),
       v.literal(MediaStatus.Postponed),
@@ -18,7 +20,7 @@ export default defineSchema({
     viewedCount: v.optional(v.string()),
     imageUrl: v.string(),
     episode: v.optional(v.string()),
-    season: v.optional(v.string()),
+    website: v.optional(v.string()),
     comment: v.optional(v.string()),
     user: v.id('users'),
   })

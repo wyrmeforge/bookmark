@@ -41,11 +41,9 @@ const FormTextarea = <T extends FieldValues>({
           {label && <FormLabel htmlFor={name}>{label}</FormLabel>}
           <FormControl>
             <Textarea
+              maxLength={100}
               id={name}
-              className={cn(
-                { 'border-red-500': haveError },
-                'max-h-[500px] bg-transparent'
-              )}
+              className={cn({ 'border-red-500': haveError }, 'max-h-[100px]')}
               required={required}
               {...field}
               {...inputProps}
