@@ -34,7 +34,7 @@ export const MediaDetails = ({ id }) => {
 
   const { isMediaItemLoading, mediaDetails } = useMediaDetails(id);
 
-  console.log(mediaDetails);
+  console.log(data);
 
   const handleGoBack = () => {
     router.back();
@@ -100,6 +100,7 @@ export const MediaDetails = ({ id }) => {
         genres={mediaDetails?.genres}
         studios={mediaDetails?.studios}
         title={mediaDetails?.title}
+        website={data?.website}
       />
       <div className='mt-6 flex flex-col gap-6 lg:flex-row lg:gap-10'>
         {/* Left: Poster */}

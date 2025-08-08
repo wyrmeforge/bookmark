@@ -11,9 +11,9 @@ const DashboardLayout = ({ children }: PropsWithChildren) => {
   if (isLoading || !isAuthenticated) return <Loader />;
 
   return (
-    <div className='relative flex h-screen flex-col'>
+    <div className='relative flex h-dvh flex-col'>
       <Header />
-      <main className=' w-full  flex-1 px-2 md:px-20'>{children}</main>
+      <main className='w-full flex-1 px-2 md:px-20'>{children}</main>
     </div>
   );
 };

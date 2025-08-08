@@ -1,18 +1,21 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-
 import { useEffect } from 'react';
 import { Form } from '@/shared/ui/form';
 import { Button } from '@/shared/ui/button';
-
-import { SheetClose, SheetFooter } from '@/shared/ui/sheet';
-import { MediaStatus } from '@/shared/enums';
+import {
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetTitle,
+} from '@/shared/ui/sheet';
 import { FormInput } from '@/shared/ui/form-input';
 import { FormCheckbox } from '@/shared/ui/form-checkbox';
 import { FormTextarea } from '@/shared/ui/form-textarea';
-import { FormSelect } from '@/shared/ui/form-select';
 import { FormCommandBox } from '@/shared/ui/form-command-box';
 import { useAppState } from '@/shared/lib';
+import { MediaStatus } from '@/shared/enums';
 import {
   formDefaultValues,
   FormFields,
@@ -23,8 +26,14 @@ import {
   useSearchMedia,
 } from '../model';
 import { MODIFY_MEDIA_STATUS_ITEMS } from '../config';
+import Image from 'next/image';
+import { Popover, PopoverContent, PopoverTrigger } from '@/shared/ui/popover';
+import { cn } from '@/shared/lib/utils';
+import { FormStepperInput } from '@/shared/ui/form-number-input';
+import { Skeleton } from '@/shared/ui/skeleton';
+import { HeartCrackIcon, HeartIcon } from 'lucide-react';
 
-const MediaModifyForm = ({
+export const MediaModifyForm = ({
   onSubmit,
   variant,
   initialValues,
@@ -38,7 +47,6 @@ const MediaModifyForm = ({
   });
 
   const { animeList, setSearchValue, isAnimeListLoading } = useSearchMedia();
-
   const {
     formState: { isSubmitSuccessful },
     watch,
@@ -47,14 +55,10 @@ const MediaModifyForm = ({
   } = form;
 
   const isCreating = variant === FormVariant.Create;
-
-  const currentMedia = watch(FormFields.UnityInfo);
-
-  const submitCtaButtonLabel = isCreating ? 'Додати' : 'Змінити';
-
   const currentStatus = watch(FormFields.Status);
-
   const isCompleted = currentStatus === MediaStatus.Completed;
+
+  const selectedAnime = watch(FormFields.UnityInfo);
 
   useEffect(() => {
     if (isSubmitSuccessful && isCreating) {
@@ -65,81 +69,154 @@ const MediaModifyForm = ({
 
   useEffect(() => {
     form.setValue(FormFields.ViewedCount, isCompleted ? '1' : '0');
-  }, [isCompleted, form, currentMedia]);
+  }, [isCompleted, form]);
+
+  const currentStatusItem = MODIFY_MEDIA_STATUS_ITEMS.find(
+    (item) => item.value === currentStatus
+  );
 
   return (
-    <Form {...form}>
-      <form
-        className='flex h-full w-full flex-col justify-between'
-        onSubmit={handleSubmit(onSubmit)}
-      >
-        <div className='flex flex-col gap-6'>
-          {isCreating && (
-            <FormCommandBox
-              isLoading={isAnimeListLoading}
-              items={animeList}
-              placeholder='Виберіть зі списку'
-              name={FormFields.UnityInfo}
-              onSearchChange={setSearchValue}
-            />
-          )}
-          <FormInput
-            label='Власна назва'
-            placeholder='Введіть власну назву'
-            name={FormFields.Name}
-            tooltipDescription='Введіть назву українською'
+    <SheetContent
+      side='right'
+      withClose={false}
+      className='flex h-full w-full max-w-none flex-col overflow-hidden bg-background p-0 md:w-[620px] md:max-w-none md:rounded-bl-none md:rounded-tl-[64px]'
+    >
+      <div className='relative h-40 shrink-0 border-b md:h-52'>
+        {selectedAnime?.bannerImage ? (
+          <Image
+            src={selectedAnime.bannerImage}
+            alt={selectedAnime.name}
+            fill
+            sizes='(max-width: 768px) 100vw, 50vw'
+            className='object-cover'
           />
-          <FormSelect
-            name={FormFields.Status}
-            placeholder='Статус'
-            label='Статус'
-            items={MODIFY_MEDIA_STATUS_ITEMS}
-          />
-          <div className='flex gap-3'>
-            <FormInput
-              type='number'
-              label='Разів переглянуто'
-              placeholder='Введіть к-ть повторних переглядів'
-              name={FormFields.ViewedCount}
-            />
-            <FormInput
-              type='number'
-              label='Оцінка'
-              placeholder='Введіть оцінку від 1 до 10'
-              name={FormFields.Rate}
-            />
-          </div>
-          <div className='flex gap-3'>
-            <FormInput
-              label='Серія'
-              type='number'
-              placeholder='Введіть к-ть переглянутих серій'
-              name={FormFields.Episode}
-            />
-            <FormInput
-              type='number'
-              label='Сезон'
-              placeholder='Введіть к-ть переглянутих сезонів'
-              name={FormFields.Season}
-            />
-          </div>
-          <FormCheckbox
-            label='Додати до улюблених'
-            name={FormFields.IsFavorite}
-          />
-          <FormTextarea name={FormFields.Comment} placeholder='Коментар' />
-        </div>
-        <SheetFooter className='mt-4 flex flex-row justify-between gap-4'>
-          <SheetClose className='h-full w-full rounded-md border border-muted'>
-            Скасувати
+        ) : (
+          <Skeleton className='absolute inset-0 h-full w-full animate-none bg-gradient-to-r from-gray-600 via-gray-500 to-gray-400 ' />
+        )}
+        <div className='absolute inset-0 bg-gradient-to-t from-background/100 via-background/40 to-background/20' />
+        <div className='absolute right-3 top-3 flex items-center gap-2'>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                variant='secondary'
+                className={cn(
+                  'h-auto w-[110px] p-2 transition-colors',
+                  currentStatusItem?.color
+                )}
+              >
+                {currentStatusItem?.label}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent
+              sideOffset={5}
+              align='end'
+              side='bottom'
+              className='w-40 p-1'
+            >
+              {MODIFY_MEDIA_STATUS_ITEMS.map(({ value, icon: Icon, label }) => (
+                <Button
+                  key={value}
+                  type='button'
+                  variant='ghost'
+                  className={cn(
+                    'flex w-full flex-row justify-between rounded px-2 py-1 text-left text-sm',
+                    {
+                      'bg-zinc-700': currentStatusItem?.value === value,
+                    }
+                  )}
+                  onClick={() => form.setValue(FormFields.Status, value)}
+                >
+                  <Icon />
+                  {label}
+                </Button>
+              ))}
+            </PopoverContent>
+          </Popover>
+          <SheetClose className='rounded-xl p-2 px-4 transition-all hover:bg-background'>
+            ✕
           </SheetClose>
-          <Button className='w-full' type='submit'>
-            {submitCtaButtonLabel}
-          </Button>
-        </SheetFooter>
-      </form>
-    </Form>
+        </div>
+        <div className='absolute bottom-4 left-4'>
+          <SheetTitle className='text-lg font-semibold leading-tight'>
+            {isCreating ? 'Додавання нового аніме' : 'Редагування аніме'}
+          </SheetTitle>
+          <SheetDescription className='mt-1 text-sm text-muted-foreground'>
+            {isCreating
+              ? 'Заповніть форму, щоб додати аніме до вашого списку.'
+              : 'Оновіть інформацію про обране аніме.'}
+          </SheetDescription>
+        </div>
+      </div>
+      <Form {...form}>
+        <form
+          className='flex h-full w-full flex-col justify-between'
+          onSubmit={handleSubmit(onSubmit)}
+        >
+          <div className='flex-1 space-y-6 overflow-y-auto p-4 pb-52 md:pb-0'>
+            {isCreating && (
+              <FormCommandBox
+                isLoading={isAnimeListLoading}
+                items={animeList}
+                placeholder='Виберіть зі списку'
+                name={FormFields.UnityInfo}
+                onSearchChange={setSearchValue}
+              />
+            )}
+            <div className='space-y-3 rounded-lg bg-muted/30 p-4 transition-all hover:bg-muted'>
+              <FormInput
+                label='Власна назва'
+                placeholder='Введіть назву українською'
+                name={FormFields.Name}
+              />
+              <FormInput
+                label='Де дивлюсь?'
+                placeholder='Введіть посилання на сайт'
+                name='website'
+              />
+            </div>
+            <div className='space-y-3 rounded-lg bg-muted/30 p-4 transition-all hover:bg-muted'>
+              <div className='grid grid-cols-1 gap-3 md:grid-cols-3'>
+                <FormStepperInput
+                  label='Разів переглянуто'
+                  name={FormFields.ViewedCount}
+                />
+                <FormStepperInput
+                  min={0}
+                  max={10}
+                  label='Оцінка'
+                  name={FormFields.Rate}
+                />
+                <FormStepperInput
+                  tooltipDescription='Введіть серію на якій зупинились'
+                  label='Серія'
+                  name={FormFields.Episode}
+                />
+              </div>
+            </div>
+            <div className='space-y-3 rounded-lg bg-muted/30 p-4 transition-all hover:bg-muted'>
+              <FormCheckbox
+                checkedIcon={<HeartIcon fill='red' />}
+                uncheckedIcon={<HeartCrackIcon />}
+                noThumbAnimation
+                label='Додати до улюблених'
+                name={FormFields.IsFavorite}
+              />
+              <FormTextarea name={FormFields.Comment} placeholder='Примітка' />
+            </div>
+          </div>
+          <SheetFooter className='sticky bottom-0 flex gap-2 border-t border-muted bg-background p-4'>
+            <SheetClose
+              type='button'
+              className='w-full rounded-md border border-muted px-4 py-2 text-sm font-medium'
+            >
+              Скасувати
+            </SheetClose>
+            <Button className='w-full' type='submit'>
+              {isCreating ? 'Додати' : 'Змінити'}
+            </Button>
+          </SheetFooter>
+        </form>
+      </Form>
+    </SheetContent>
   );
 };
-
-export { MediaModifyForm };

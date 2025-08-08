@@ -1,8 +1,8 @@
 import { z as u } from 'zod';
 import { SubmitHandler } from 'react-hook-form';
 import { ReactNode } from 'react';
-import { MediaItemId, MediaItemStatus } from '@/entities/media';
 import { ModifyFormSchema } from '../schema/media-modify.schema';
+import { ListMediaId, ListMediaStatus } from '@/entities/media';
 
 export enum FormFields {
   UnityInfo = 'unity_info',
@@ -12,7 +12,7 @@ export enum FormFields {
   Status = 'status',
   IsFavorite = 'isFavorite',
   Episode = 'episode',
-  Season = 'season',
+  Website = 'website',
   Comment = 'comment',
 }
 
@@ -33,7 +33,7 @@ export type UseCreateMediaReturn = {
 };
 
 export type CreateMediaProps = {
-  initialStatus?: MediaItemStatus;
+  initialStatus?: ListMediaStatus;
   customTrigger?: ReactNode;
 };
 
@@ -46,5 +46,5 @@ export type MediaModifyFormProps = {
 
 // Delete Media
 export type UseDeleteMediaItemReturn = {
-  deleteMedia: (id: MediaItemId) => Promise<void>;
+  deleteMedia: (id: ListMediaId) => Promise<void>;
 };

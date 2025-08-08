@@ -1,12 +1,6 @@
 'use client';
 
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetTitle,
-  SheetTrigger,
-} from '@/shared/ui/sheet';
+import { Sheet, SheetTrigger } from '@/shared/ui/sheet';
 import {
   CreateMediaProps,
   FormFields,
@@ -16,30 +10,11 @@ import {
 import { MediaModifyForm } from './media-modify-form';
 import { Button } from '@/shared/ui/button';
 import { SquarePlusIcon } from 'lucide-react';
-import { useEffect, useState } from 'react';
 import { MediaStatus } from '@/shared/enums';
 import { useCreateMedia } from '../model';
 
-function useIsMobile(breakpoint = 768) {
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    function onResize() {
-      setIsMobile(window.innerWidth < breakpoint);
-    }
-
-    onResize();
-    window.addEventListener('resize', onResize);
-
-    return () => window.removeEventListener('resize', onResize);
-  }, [breakpoint]);
-
-  return isMobile;
-}
-
 const CreateMedia = ({ initialStatus, customTrigger }: CreateMediaProps) => {
   const { createNewMedia } = useCreateMedia();
-  const isMobile = useIsMobile();
 
   const onSubmit = (data: ModifyFormValues) => {
     createNewMedia(data);
@@ -62,20 +37,11 @@ const CreateMedia = ({ initialStatus, customTrigger }: CreateMediaProps) => {
   return (
     <Sheet>
       <SheetTrigger asChild>{trigger}</SheetTrigger>
-      <SheetContent
-        side={isMobile ? 'bottom' : 'right'}
-        className='flex h-full w-full !max-w-none flex-col overflow-auto md:w-1/3'
-      >
-        <SheetTitle className='hidden md:block'>Додати нове аніме</SheetTitle>
-        <SheetDescription className='hidden md:block'>
-          Заповніть форму для додавання аніме до вашого списку
-        </SheetDescription>
-        <MediaModifyForm
-          initialValues={initialValues}
-          variant={FormVariant.Create}
-          onSubmit={onSubmit}
-        />
-      </SheetContent>
+      <MediaModifyForm
+        initialValues={initialValues}
+        variant={FormVariant.Create}
+        onSubmit={onSubmit}
+      />
     </Sheet>
   );
 };

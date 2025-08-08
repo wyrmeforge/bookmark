@@ -12,7 +12,6 @@ export const getList = query({
   },
   handler: async (ctx, { filter, paginationOpts, searchValue }) => {
     const userId = await getUserId(ctx);
-    if (!userId) throw new Error('User not authenticated');
 
     let listsQuery;
 
@@ -47,18 +46,15 @@ export const getList = query({
 });
 
 export const getListItem = query({
-  args: {
-    mediaId: v.number(),
-  },
+  args: { mediaId: v.number() },
   handler: async (ctx, { mediaId }) => {
     const userId = await getUserId(ctx);
-    if (!userId) throw new Error('User not authenticated');
 
     return await ctx.db
       .query('lists')
+      .withIndex('by_user', (q) => q.eq('user', userId))
       .filter((q) => q.eq(q.field('mediaId'), mediaId))
-      .filter((q) => q.eq(q.field('user'), userId))
-      .first();
+      .unique();
   },
 });
 
@@ -68,6 +64,8 @@ export const createListItem = mutation({
     isFavorite: v.boolean(),
     rate: v.optional(v.string()),
     status: v.union(
+      v.literal(MediaStatus.All),
+      v.literal(MediaStatus.Favorite),
       v.literal(MediaStatus.Scheduled),
       v.literal(MediaStatus.Watching),
       v.literal(MediaStatus.Postponed),
@@ -76,6 +74,7 @@ export const createListItem = mutation({
     ),
     viewedCount: v.optional(v.string()),
     imageUrl: v.string(),
+    website: v.optional(v.string()),
     mediaId: v.number(),
     episode: v.optional(v.string()),
     season: v.optional(v.string()),
@@ -83,11 +82,6 @@ export const createListItem = mutation({
   },
   handler: async (ctx, args) => {
     const userId = await getUserId(ctx);
-    const identity = await ctx.auth.getUserIdentity();
-
-    if (!identity) {
-      throw new Error('Unauthenticated call!');
-    }
 
     const existingItem = await ctx.db
       .query('lists')

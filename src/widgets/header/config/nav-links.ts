@@ -1,5 +1,5 @@
 import { Routes } from '@/shared/enums';
-import { BookCopyIcon, HomeIcon, Users2Icon } from 'lucide-react';
+import { HomeIcon, Users2Icon } from 'lucide-react';
 
 export const navLinks = [
   {
@@ -9,11 +9,6 @@ export const navLinks = [
   },
   {
     labelIcon: Users2Icon,
-    ariaLabel: 'Friends Page Link',
-    href: Routes.Friends,
-  },
-  {
-    labelIcon: BookCopyIcon,
     ariaLabel: 'Friends Page Link',
     href: Routes.Friends,
   },
