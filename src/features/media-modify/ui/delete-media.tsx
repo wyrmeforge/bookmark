@@ -13,10 +13,10 @@ import {
 } from '@/shared/ui/alert-dialog';
 import { DropdownMenuItem } from '@/shared/ui/dropdown-menu';
 import { TrashIcon } from 'lucide-react';
-import { MediaItemId } from '@/shared/api';
 import { useDeleteMediaItem } from '../model';
+import { ListMediaId } from '@/entities/media';
 
-const DeleteMediaItem = ({ id }: { id: MediaItemId }) => {
+const DeleteMediaItem = ({ id }: { id: ListMediaId }) => {
   const { deleteMedia } = useDeleteMediaItem();
 
   const handleDelete = () => deleteMedia(id);

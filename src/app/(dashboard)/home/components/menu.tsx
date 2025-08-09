@@ -1,103 +1,55 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { Home, PlusIcon, Users2Icon } from 'lucide-react';
+import { useState } from 'react';
+import clsx from 'clsx';
+import { CreateMedia } from '@/features/media-modify';
 import { Button } from '@/shared/ui/button';
-import { Home, Users, Settings, Plus } from 'lucide-react';
+import { UserButton } from '@clerk/nextjs';
 
-export const FloatingMobileMenu = () => {
-  const router = useRouter();
+const navItems = [
+  { id: 'home', icon: Home, label: 'Головна' },
+  { id: 'profile', icon: Users2Icon, label: 'Друзі' },
+];
 
-  const leftItems = [{ label: 'Home', icon: Home, href: '/home' }];
-  const rightItems = [
-    { label: 'Friends', icon: Users, href: '/friends' },
-    { label: 'Settings', icon: Settings, href: '/settings' },
-  ];
+export default function MinimalNav() {
+  const [active, setActive] = useState('home');
 
   return (
-    <nav
-      className='
-        fixed bottom-6 left-1/2 z-50 flex h-10 w-[90vw] max-w-md 
-        -translate-x-1/2 items-center justify-between
-        rounded-2xl border 
-        border-white/20 
-        bg-black/70 shadow-[0_4px_30px_rgba(0,0,0,0.7)]
-        backdrop-blur-md
-        md:hidden
-      '
-      aria-label='Mobile navigation'
-    >
-      {/* Left nav */}
-      <div className='flex space-x-8 px-6 py-3'>
-        {leftItems.map(({ label, icon: Icon, href }) => (
+    <div className='fixed bottom-4 left-1/2 z-40 flex -translate-x-1/2 items-center gap-4'>
+      <div className='flex items-center gap-4 rounded-full border border-white/10 bg-black/70 p-2 shadow-xl backdrop-blur-md'>
+        {navItems.map(({ id, icon: Icon }) => (
           <Button
-            key={label}
+            key={id}
             variant='ghost'
-            className='
-              rounded-full p-3 
-              text-white 
-              transition 
-              duration-200 
-              ease-in-out 
-              hover:bg-white/20
-              active:scale-95
-            '
-            onClick={() => router.push(href)}
-            aria-label={label}
+            onClick={() => setActive(id)}
+            className={clsx(
+              'relative flex items-center gap-2 rounded-full px-4 py-2 transition-all duration-200',
+              active === id
+                ? 'scale-105 bg-white text-black shadow-md'
+                : 'text-gray-400 hover:text-white'
+            )}
           >
-            <Icon className='h-6 w-6' />
+            <Icon size={18} />
           </Button>
         ))}
-      </div>
 
-      {/* Right nav */}
-      <div className='flex space-x-8 px-6 py-3'>
-        {rightItems.map(({ label, icon: Icon, href }) => (
-          <Button
-            key={label}
-            variant='ghost'
-            className='
-              rounded-full p-3 
-              text-white 
-              transition 
-              duration-200 
-              ease-in-out
-              hover:bg-white/20
-              active:scale-95
-            '
-            onClick={() => router.push(href)}
-            aria-label={label}
-          >
-            <Icon className='h-6 w-6' />
-          </Button>
-        ))}
+        <div className='ml-2 flex items-center'>
+          <UserButton />
+        </div>
       </div>
-
-      {/* Big Plus Button centered and lifted */}
-      <Button
-        variant='default'
-        onClick={() => router.push('/add')}
-        aria-label='Add'
-        className='
-          absolute
-          left-1/2 
-          top-1/2
-          h-12
-          -translate-x-1/2 
-          -translate-y-1/2 
-          rounded-full 
-          bg-gradient-to-tr
-          from-pink-600
-          via-red-500 to-yellow-400 p-6 shadow-xl
-          transition
-          duration-300
-          ease-in-out
-          hover:brightness-110
-          active:scale-95
-        '
-        style={{ boxShadow: '0 0 15px 4px rgba(255, 100, 120, 0.7)' }}
-      >
-        <Plus className='h-12 w-12 text-white' />
-      </Button>
-    </nav>
+      <CreateMedia
+        customTrigger={
+          <div className='flex items-center gap-4 rounded-full border border-white/10 bg-black/70 p-2 shadow-xl backdrop-blur-md'>
+            <Button
+              variant='outline'
+              className='relative flex items-center gap-2 rounded-full bg-white px-4 py-2 text-black shadow-md transition-all duration-200'
+            >
+              <PlusIcon size={20} />
+            </Button>
+          </div>
+        }
+      />
+    </div>
   );
-};
+}

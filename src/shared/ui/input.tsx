@@ -34,7 +34,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         {withMaxPlaceholder && (
           <div
             aria-hidden='true'
-            className='pointer-events-none absolute bottom-0 right-[calc(50%-30px)] top-0 flex h-full select-none items-center gap-0.5 py-2 pt-[10px] text-sm text-gray-400 md:right-16'
+            className='pointer-events-none absolute bottom-0 right-[calc(50%-30px)] top-0 flex h-full select-none items-center gap-0.5 py-2 pt-[10px] text-sm text-gray-400 md:right-14'
           >
             <span className='pr-1 text-sm'>/</span> {max}
           </div>

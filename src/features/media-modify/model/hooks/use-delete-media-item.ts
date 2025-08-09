@@ -2,12 +2,12 @@ import { useMutation } from 'convex/react';
 import { api } from '@convex/api';
 import { toast } from 'sonner';
 import { UseDeleteMediaItemReturn } from '../dto/types';
-import { MediaItemId } from '@/entities/media';
+import { ListMediaId } from '@/entities/media';
 
 export const useDeleteMediaItem = (): UseDeleteMediaItemReturn => {
   const deleteListItem = useMutation(api.lists.deleteListItem);
 
-  const deleteMedia = async (id: MediaItemId) => {
+  const deleteMedia = async (id: ListMediaId) => {
     try {
       await deleteListItem({ id });
       toast.success('Видалено успішно');

@@ -7,7 +7,7 @@ export default defineSchema({
     mediaId: v.number(),
     isFavorite: v.optional(v.boolean()),
     name: v.string(),
-    rate: v.optional(v.string()),
+    rate: v.optional(v.number()),
     status: v.union(
       v.literal(MediaStatus.All),
       v.literal(MediaStatus.Favorite),
@@ -18,8 +18,10 @@ export default defineSchema({
       v.literal(MediaStatus.Completed)
     ),
     viewedCount: v.optional(v.number()),
+    bannerImage: v.optional(v.string()),
     imageUrl: v.string(),
     episode: v.optional(v.number()),
+    totalEpisodes: v.optional(v.number()),
     website: v.optional(v.string()),
     comment: v.optional(v.string()),
     user: v.id('users'),

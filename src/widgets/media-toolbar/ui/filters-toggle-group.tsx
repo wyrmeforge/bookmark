@@ -71,52 +71,55 @@ const FiltersToggleGroup = () => {
   }
 
   return (
-    <Carousel
-      opts={{
-        align: 'center',
-        loop: false,
-      }}
-      className='relative w-full px-1'
-      setApi={setCarouselApi}
-    >
-      <ToggleGroup
-        value={currentFilter}
-        onValueChange={handleChange}
-        className='z-0 w-full justify-start gap-0'
-        type='single'
+    <div className='fixed inset-0 z-40 h-11 bg-background p-1 shadow-2xl'>
+      <Carousel
+        opts={{
+          align: 'center',
+          loop: false,
+          dragFree: true,
+        }}
+        className='relative w-full px-1'
+        setApi={setCarouselApi}
       >
-        <CarouselContent className='flex-nowrap'>
-          {menu.map(({ title, value, key }, idx) => (
-            <CarouselItem
-              onClick={() => onSelect(idx)}
-              className='shrink-0 basis-1/2'
-              key={key}
-            >
-              <ToggleGroupItem
-                value={key}
-                aria-label={key}
-                className={cn(
-                  'relative inline-flex w-full cursor-pointer select-none items-center justify-center whitespace-nowrap rounded-none px-0 py-2 text-muted-foreground data-[state=on]:bg-transparent md:px-4',
-                  {
-                    'z-10 before:absolute before:bottom-0 before:left-0 before:w-full before:border-b before:border-b-white':
-                      currentFilter === key,
-                  }
-                )}
+        <ToggleGroup
+          value={currentFilter}
+          onValueChange={handleChange}
+          className='z-0 w-full justify-start gap-0'
+          type='single'
+        >
+          <CarouselContent className='flex-nowrap'>
+            {menu.map(({ title, value, key }, idx) => (
+              <CarouselItem
+                onClick={() => onSelect(idx)}
+                className='shrink-0 basis-1/2'
+                key={key}
               >
-                <span className='ml-2'>{title}</span>
-                <div
-                  className={cn('ml-2 text-muted-foreground', {
-                    'text-white': currentFilter === key,
-                  })}
+                <ToggleGroupItem
+                  value={key}
+                  aria-label={key}
+                  className={cn(
+                    'relative inline-flex w-full cursor-pointer select-none items-center justify-center whitespace-nowrap rounded-none px-0 py-2 text-muted-foreground data-[state=on]:bg-transparent md:px-4',
+                    {
+                      'z-10 before:absolute before:bottom-0 before:left-0 before:w-full before:border-b before:border-b-white':
+                        currentFilter === key,
+                    }
+                  )}
                 >
-                  {value}
-                </div>
-              </ToggleGroupItem>
-            </CarouselItem>
-          ))}
-        </CarouselContent>
-      </ToggleGroup>
-    </Carousel>
+                  <span className='ml-2'>{title}</span>
+                  <div
+                    className={cn('ml-2 text-muted-foreground', {
+                      'text-white': currentFilter === key,
+                    })}
+                  >
+                    {value}
+                  </div>
+                </ToggleGroupItem>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+        </ToggleGroup>
+      </Carousel>
+    </div>
   );
 };
 
