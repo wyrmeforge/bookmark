@@ -3,7 +3,7 @@ import { SidebarLeft } from './components/sidebar-left';
 import { MediaToolbar } from '@/widgets/media-toolbar';
 import { SidebarRight } from './components/sidebar-right';
 import { MediaList } from '@/features/media-list';
-import { FloatingMobileMenu } from './components/menu';
+import MinimalNav from './components/menu';
 
 export const metadata: Metadata = {
   title: 'Головна | YOOKOSO',
@@ -19,7 +19,7 @@ const HomePage = () => {
         <MediaList />
       </div>
       <SidebarRight />
-      <FloatingMobileMenu />
+      <MinimalNav />
     </div>
   );
 };

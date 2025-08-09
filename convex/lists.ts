@@ -62,7 +62,7 @@ export const createListItem = mutation({
   args: {
     name: v.string(),
     isFavorite: v.boolean(),
-    rate: v.optional(v.string()),
+    rate: v.optional(v.number()),
     status: v.union(
       v.literal(MediaStatus.All),
       v.literal(MediaStatus.Favorite),
@@ -72,11 +72,13 @@ export const createListItem = mutation({
       v.literal(MediaStatus.Abandoned),
       v.literal(MediaStatus.Completed)
     ),
-    viewedCount: v.optional(v.string()),
+    viewedCount: v.optional(v.number()),
     imageUrl: v.string(),
     website: v.optional(v.string()),
     mediaId: v.number(),
-    episode: v.optional(v.string()),
+    episode: v.optional(v.number()),
+    bannerImage: v.optional(v.string()),
+    totalEpisodes: v.optional(v.number()),
     season: v.optional(v.string()),
     comment: v.optional(v.string()),
   },
@@ -97,7 +99,7 @@ export const createListItem = mutation({
       .withIndex('by_mediaId', (q) => q.eq('mediaId', args.mediaId))
       .unique();
 
-    const rate = parseInt(args.rate || '', 10);
+    const rate = args.rate || 10;
     const isValidRate = !isNaN(rate) && rate >= 1 && rate <= 10;
 
     if (media) {

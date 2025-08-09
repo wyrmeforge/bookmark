@@ -8,14 +8,14 @@ export const ModifyFormSchema = u.object({
       id: u.number(),
       name: u.string(),
       image: u.string(),
-      bannerImage: u.string(),
+      bannerImage: u.string().optional(),
       episodes: u.number().optional(),
     })
     .refine((data) => !!data.id && !!data.name && !!data.image, {
       message: "Поле обов'язкове",
     }),
   [FormFields.Name]: u.string().optional(),
-  [FormFields.ViewedCount]: u.string().optional(),
+  [FormFields.ViewedCount]: u.number().optional(),
   [FormFields.Website]: u.string().optional(),
   [FormFields.Rate]: u.number().optional(),
   [FormFields.Status]: u.union([

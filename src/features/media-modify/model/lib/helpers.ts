@@ -10,7 +10,7 @@ export const formDefaultValues: ModifyFormValues = {
     episodes: undefined,
   },
   [FormFields.Name]: '',
-  [FormFields.ViewedCount]: '',
+  [FormFields.ViewedCount]: undefined,
   [FormFields.Rate]: undefined,
   [FormFields.Status]: MediaStatus.Scheduled,
   [FormFields.IsFavorite]: false,

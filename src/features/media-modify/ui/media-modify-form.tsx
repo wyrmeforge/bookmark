@@ -40,6 +40,7 @@ export const MediaModifyForm = ({
 }: MediaModifyFormProps) => {
   const { updateFilter } = useAppState();
   const { isMobile } = useMobile();
+
   const form = useForm<ModifyFormValues>({
     resolver: zodResolver(ModifyFormSchema),
     defaultValues: { ...formDefaultValues, ...initialValues },
@@ -72,7 +73,8 @@ export const MediaModifyForm = ({
   }, [isSubmitSuccessful, currentStatus, updateFilter, reset, isCreating]);
 
   useEffect(() => {
-    form.setValue(FormFields.ViewedCount, isCompleted ? '1' : '0');
+    form.setValue(FormFields.ViewedCount, isCompleted ? 1 : 0);
+
     if (selectedAnime.episodes) {
       form.setValue(
         FormFields.Episode,
@@ -181,7 +183,7 @@ export const MediaModifyForm = ({
               <FormInput
                 label='Де дивлюсь?'
                 placeholder='Введіть посилання на сайт'
-                name='website'
+                name={FormFields.Website}
               />
             </div>
             <div className='space-y-3 rounded-lg bg-muted/30 p-4 transition-all hover:bg-muted'>
