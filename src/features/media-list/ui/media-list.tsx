@@ -5,7 +5,6 @@ import { Button } from '@/shared/ui/button';
 import { useMediaList } from '../model';
 import { EmptyListPlaceholder } from './components/empty-list-placeholder';
 import { MediaCard } from './media-card';
-import { MediaItemStatus } from '@/entities/media';
 
 const MediaList = () => {
   const {
@@ -20,12 +19,10 @@ const MediaList = () => {
   if (isFirstLoading) return <Loader variant='absolute' />;
 
   if (!list?.length)
-    return (
-      <EmptyListPlaceholder currentFilter={currentFilter as MediaItemStatus} />
-    );
+    return <EmptyListPlaceholder currentFilter={currentFilter} />;
 
   return (
-    <div className='flex flex-col justify-center gap-4 pb-4 md:grid md:grid-cols-container md:pr-2'>
+    <div className='flex flex-col justify-center gap-4 pb-[100px] md:grid md:grid-cols-container md:pb-4 md:pr-2'>
       {list.map((item, idx) => (
         <MediaCard itemIdx={idx} key={item._id} mediaData={item} />
       ))}

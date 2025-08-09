@@ -1,99 +1,122 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import { ToggleGroup, ToggleGroupItem } from '@/shared/ui/toggle-group';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/shared/ui/select';
 import { cn } from '@/shared/lib/utils';
 import { StorageKeys } from '@/shared/enums';
 import { useFilters } from '../model';
-import { MediaItemStatus } from '@/entities/media';
+import { ListMediaStatus } from '@/entities/media';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  type CarouselApi,
+} from '@/shared/ui/carousel';
 
-// ToDo: move to shared hooks
-function useIsMobile(breakpoint = 768) {
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    function onResize() {
-      setIsMobile(window.innerWidth < breakpoint);
-    }
-
-    onResize();
-    window.addEventListener('resize', onResize);
-
-    return () => window.removeEventListener('resize', onResize);
-  }, [breakpoint]);
-
-  return isMobile;
-}
+import { useMobile } from '@/shared/lib';
+import { useState } from 'react';
 
 const FiltersToggleGroup = () => {
   const { menu, currentFilter, updateFilter } = useFilters();
-  const isMobile = useIsMobile();
+  const { isMobile } = useMobile();
 
-  const handleChange = (value: MediaItemStatus) => {
+  const [carouselApi, setCarouselApi] = useState<CarouselApi | null>(null);
+
+  const onSelect = (idx: number) => {
+    if (!carouselApi) return null;
+
+    carouselApi?.scrollTo(idx);
+  };
+
+  const handleChange = (value: ListMediaStatus) => {
     if (!value) return;
 
     updateFilter(value);
     localStorage.setItem(StorageKeys.LastStatusFilter, value);
   };
 
-  if (isMobile) {
+  if (!isMobile) {
     return (
-      <Select value={currentFilter} onValueChange={handleChange}>
-        <SelectTrigger className='w-auto'>
-          <SelectValue placeholder='Виберіть фільтр' />
-        </SelectTrigger>
-        <SelectContent>
-          {menu.map((item) => (
-            <SelectItem key={item.key} value={item.key}>
-              <div className='flex gap-2'>
-                <span>{item.title}</span>
-                <span className='text-orange-400'>{item.value}</span>
-              </div>
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+      <ToggleGroup
+        value={currentFilter}
+        onValueChange={handleChange}
+        className='z-0 w-full justify-start gap-0 border-b border-b-gray-500'
+        type='single'
+      >
+        {menu.map(({ title, value, key, icon }) => (
+          <ToggleGroupItem
+            key={key}
+            value={key}
+            aria-label={key}
+            className={cn(
+              'relative inline-flex w-full items-center justify-center whitespace-nowrap rounded-none px-4 py-2 text-muted-foreground data-[state=on]:bg-transparent',
+              {
+                'z-10 before:absolute before:-bottom-[1px] before:left-0 before:w-full before:border-b before:border-b-white':
+                  currentFilter === key,
+              }
+            )}
+          >
+            {icon}
+            <span className='ml-2'>{title}</span>
+            <div
+              className={cn('ml-2 text-muted-foreground', {
+                'text-white': currentFilter === key,
+              })}
+            >
+              {value}
+            </div>
+          </ToggleGroupItem>
+        ))}
+      </ToggleGroup>
     );
   }
 
   return (
-    <ToggleGroup
-      value={currentFilter}
-      onValueChange={handleChange}
-      className='scrollbar-hide z-0 w-full justify-start gap-0 overflow-x-auto whitespace-nowrap border-b border-b-gray-500'
-      type='single'
+    <Carousel
+      opts={{
+        align: 'center',
+        loop: false,
+      }}
+      className='relative w-full px-1'
+      setApi={setCarouselApi}
     >
-      {menu.map(({ title, value, key, icon }) => (
-        <ToggleGroupItem
-          key={key}
-          value={key}
-          aria-label={key}
-          className={cn(
-            'relative w-full justify-around rounded-none text-muted-foreground data-[state=on]:bg-transparent',
-            {
-              'z-10 border-b-2 border-b-white': currentFilter === key,
-            }
-          )}
-        >
-          {icon}
-          {title}
-          <div
-            className={cn('text-white', {
-              'text-orange-400': currentFilter === key,
-            })}
-          >
-            {value}
-          </div>
-        </ToggleGroupItem>
-      ))}
-    </ToggleGroup>
+      <ToggleGroup
+        value={currentFilter}
+        onValueChange={handleChange}
+        className='z-0 w-full justify-start gap-0'
+        type='single'
+      >
+        <CarouselContent className='flex-nowrap'>
+          {menu.map(({ title, value, key }, idx) => (
+            <CarouselItem
+              onClick={() => onSelect(idx)}
+              className='shrink-0 basis-1/2'
+              key={key}
+            >
+              <ToggleGroupItem
+                value={key}
+                aria-label={key}
+                className={cn(
+                  'relative inline-flex w-full cursor-pointer select-none items-center justify-center whitespace-nowrap rounded-none px-0 py-2 text-muted-foreground data-[state=on]:bg-transparent md:px-4',
+                  {
+                    'z-10 before:absolute before:bottom-0 before:left-0 before:w-full before:border-b before:border-b-white':
+                      currentFilter === key,
+                  }
+                )}
+              >
+                <span className='ml-2'>{title}</span>
+                <div
+                  className={cn('ml-2 text-muted-foreground', {
+                    'text-white': currentFilter === key,
+                  })}
+                >
+                  {value}
+                </div>
+              </ToggleGroupItem>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+      </ToggleGroup>
+    </Carousel>
   );
 };
 

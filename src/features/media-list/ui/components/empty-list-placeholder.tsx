@@ -1,11 +1,11 @@
-import { MediaItemStatus } from '@/entities/media';
+import { ListMediaStatus } from '@/entities/media';
 import { CreateMedia } from '@/features/media-modify';
 import { Button } from '@/shared/ui/button';
 import { PlusCircleIcon } from 'lucide-react';
 import Image from 'next/image';
 
 type EmptyListPlaceholderProps = {
-  currentFilter: MediaItemStatus;
+  currentFilter: ListMediaStatus;
 };
 
 const EmptyListPlaceholder = ({ currentFilter }: EmptyListPlaceholderProps) => (

@@ -17,9 +17,9 @@ export default defineSchema({
       v.literal(MediaStatus.Abandoned),
       v.literal(MediaStatus.Completed)
     ),
-    viewedCount: v.optional(v.string()),
+    viewedCount: v.optional(v.number()),
     imageUrl: v.string(),
-    episode: v.optional(v.string()),
+    episode: v.optional(v.number()),
     website: v.optional(v.string()),
     comment: v.optional(v.string()),
     user: v.id('users'),
