@@ -14,7 +14,7 @@ import { FormInput } from '@/shared/ui/form-input';
 import { FormCheckbox } from '@/shared/ui/form-checkbox';
 import { FormTextarea } from '@/shared/ui/form-textarea';
 import { FormCommandBox } from '@/shared/ui/form-command-box';
-import { useAppState } from '@/shared/lib';
+import { useAppState, useMobile } from '@/shared/lib';
 import { MediaStatus } from '@/shared/enums';
 import {
   formDefaultValues,
@@ -39,7 +39,7 @@ export const MediaModifyForm = ({
   initialValues,
 }: MediaModifyFormProps) => {
   const { updateFilter } = useAppState();
-
+  const { isMobile } = useMobile();
   const form = useForm<ModifyFormValues>({
     resolver: zodResolver(ModifyFormSchema),
     defaultValues: { ...formDefaultValues, ...initialValues },
@@ -47,6 +47,7 @@ export const MediaModifyForm = ({
   });
 
   const { animeList, setSearchValue, isAnimeListLoading } = useSearchMedia();
+
   const {
     formState: { isSubmitSuccessful },
     watch,
@@ -55,7 +56,10 @@ export const MediaModifyForm = ({
   } = form;
 
   const isCreating = variant === FormVariant.Create;
+
   const currentStatus = watch(FormFields.Status);
+  const isFavorite = watch(FormFields.IsFavorite);
+
   const isCompleted = currentStatus === MediaStatus.Completed;
 
   const selectedAnime = watch(FormFields.UnityInfo);
@@ -69,7 +73,13 @@ export const MediaModifyForm = ({
 
   useEffect(() => {
     form.setValue(FormFields.ViewedCount, isCompleted ? '1' : '0');
-  }, [isCompleted, form]);
+    if (selectedAnime.episodes) {
+      form.setValue(
+        FormFields.Episode,
+        isCompleted ? selectedAnime.episodes : 0
+      );
+    }
+  }, [isCompleted, form, selectedAnime]);
 
   const currentStatusItem = MODIFY_MEDIA_STATUS_ITEMS.find(
     (item) => item.value === currentStatus
@@ -77,7 +87,7 @@ export const MediaModifyForm = ({
 
   return (
     <SheetContent
-      side='right'
+      side={isMobile ? 'bottom' : 'right'}
       withClose={false}
       className='flex h-full w-full max-w-none flex-col overflow-hidden bg-background p-0 md:w-[620px] md:max-w-none md:rounded-bl-none md:rounded-tl-[64px]'
     >
@@ -91,7 +101,7 @@ export const MediaModifyForm = ({
             className='object-cover'
           />
         ) : (
-          <Skeleton className='absolute inset-0 h-full w-full animate-none bg-gradient-to-r from-gray-600 via-gray-500 to-gray-400 ' />
+          <Skeleton className='absolute inset-0 h-full w-full animate-none bg-gradient-to-r from-gray-700 via-gray-600 to-gray-500 ' />
         )}
         <div className='absolute inset-0 bg-gradient-to-t from-background/100 via-background/40 to-background/20' />
         <div className='absolute right-3 top-3 flex items-center gap-2'>
@@ -101,7 +111,7 @@ export const MediaModifyForm = ({
                 variant='secondary'
                 className={cn(
                   'h-auto w-[110px] p-2 transition-colors',
-                  currentStatusItem?.color
+                  currentStatusItem?.color?.bg
                 )}
               >
                 {currentStatusItem?.label}
@@ -187,8 +197,9 @@ export const MediaModifyForm = ({
                   name={FormFields.Rate}
                 />
                 <FormStepperInput
-                  tooltipDescription='Введіть серію на якій зупинились'
-                  label='Серія'
+                  tooltipDescription='Введіть к-ть переглянутих серій'
+                  label='Серій'
+                  max={selectedAnime?.episodes}
                   name={FormFields.Episode}
                 />
               </div>
@@ -198,13 +209,15 @@ export const MediaModifyForm = ({
                 checkedIcon={<HeartIcon fill='red' />}
                 uncheckedIcon={<HeartCrackIcon />}
                 noThumbAnimation
-                label='Додати до улюблених'
+                label={
+                  isFavorite ? 'Видалити з улюблених' : 'Додати до улюблених'
+                }
                 name={FormFields.IsFavorite}
               />
               <FormTextarea name={FormFields.Comment} placeholder='Примітка' />
             </div>
           </div>
-          <SheetFooter className='sticky bottom-0 flex gap-2 border-t border-muted bg-background p-4'>
+          <SheetFooter className='sticky bottom-0 flex flex-row gap-2 border-t border-muted bg-background p-4'>
             <SheetClose
               type='button'
               className='w-full rounded-md border border-muted px-4 py-2 text-sm font-medium'

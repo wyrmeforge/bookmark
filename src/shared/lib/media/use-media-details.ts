@@ -28,7 +28,7 @@ query ($id: Int) {
       month
       day
     }
-      season
+    season
     episodes
     duration
     chapters

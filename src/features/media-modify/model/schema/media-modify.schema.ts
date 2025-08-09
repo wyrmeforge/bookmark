@@ -9,6 +9,7 @@ export const ModifyFormSchema = u.object({
       name: u.string(),
       image: u.string(),
       bannerImage: u.string(),
+      episodes: u.number().optional(),
     })
     .refine((data) => !!data.id && !!data.name && !!data.image, {
       message: "Поле обов'язкове",
@@ -27,6 +28,6 @@ export const ModifyFormSchema = u.object({
     u.literal(MediaStatus.Watching),
   ]),
   [FormFields.IsFavorite]: u.boolean().optional(),
-  [FormFields.Episode]: u.string().optional(),
+  [FormFields.Episode]: u.number().optional(),
   [FormFields.Comment]: u.string().optional(),
 });

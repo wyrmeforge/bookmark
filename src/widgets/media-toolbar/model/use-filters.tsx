@@ -11,10 +11,11 @@ export const useFilters = (): UseFiltersReturn => {
   const moduleList = useQuery(api.lists.getListModules);
 
   const menu = useMemo(() => {
-    return MEDIA_STATUS_FILTERS.map(({ key, label, icon: Icon }) => ({
+    return MEDIA_STATUS_FILTERS.map(({ key, label, icon: Icon, color }) => ({
       key,
       title: label,
       icon: <Icon size={16} />,
+      color,
       value: moduleList?.[key] ?? 0,
     }));
   }, [moduleList]);
