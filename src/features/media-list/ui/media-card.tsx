@@ -1,13 +1,12 @@
 import { Card, CardContent, CardHeader } from '@/shared/ui/card';
 import { useRouter } from 'next/navigation';
-import { MediaItem, MediaMeta, MediaPoster } from '@/entities/media';
+import { ListMedia, MediaMeta, MediaPoster } from '@/entities/media';
 import { formatDate } from '@/shared/lib';
 import { CardMenu } from './card-menu';
 import { CardBadges } from './card-badges';
-import { useEffect, useState } from 'react';
 
 export type MediaCardProps = {
-  mediaData: MediaItem;
+  mediaData: ListMedia;
   itemIdx: number;
 };
 
@@ -20,7 +19,6 @@ const MediaCard = ({ mediaData, itemIdx }: MediaCardProps) => {
     _creationTime,
     isFavorite,
     rate,
-    season,
     episode,
     status,
     mediaId,
@@ -42,7 +40,6 @@ const MediaCard = ({ mediaData, itemIdx }: MediaCardProps) => {
           <CardBadges
             status={status}
             episode={episode}
-            season={season}
             isFavorite={isFavorite}
           />
           <CardMenu mediaItem={mediaData} />

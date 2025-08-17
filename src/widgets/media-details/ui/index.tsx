@@ -105,7 +105,7 @@ export const MediaDetails = ({ id }) => {
       <div className='mt-6 flex flex-col gap-6 lg:flex-row lg:gap-10'>
         {/* Left: Poster */}
         <div className='flex w-full max-w-[390px] flex-col gap-4'>
-          <div className='relative mx-auto h-[650px] w-full max-w-[390px] overflow-hidden rounded-xl shadow-md'>
+          <div className='relative mx-auto h-[400px] w-full max-w-[390px] overflow-hidden rounded-xl shadow-md md:h-[650px]'>
             <MediaPoster
               src={mediaDetails?.coverImage?.extraLarge}
               alt={data?.name || 'Media Poster'}

@@ -1,19 +1,14 @@
 import { Badge } from '@/shared/ui/badge';
 import { Heart } from 'lucide-react';
 import { MEDIA_STATUS_FILTERS } from '@/shared/config';
-import { type MediaItem } from '@/entities/media';
+import { ListMedia } from '@/entities/media';
 
 export type CardBadgesProps = Pick<
-  MediaItem,
-  'episode' | 'season' | 'isFavorite' | 'status'
+  ListMedia,
+  'episode' | 'isFavorite' | 'status'
 >;
 
-const CardBadges = ({
-  episode,
-  season,
-  isFavorite,
-  status,
-}: CardBadgesProps) => {
+const CardBadges = ({ episode, isFavorite, status }: CardBadgesProps) => {
   const currentMediaStatusConfig = MEDIA_STATUS_FILTERS.find(
     ({ key }) => key === status
   );
@@ -28,8 +23,8 @@ const CardBadges = ({
       ) : null,
     },
     {
-      isVisible: !!episode && !!season,
-      value: episode + ' / ' + season,
+      isVisible: !!episode,
+      value: `${episode}s.`,
     },
     {
       isVisible: isFavorite,
@@ -40,7 +35,7 @@ const CardBadges = ({
   ];
 
   return (
-    <div className='flex items-center justify-center gap-1 '>
+    <div className='hidden items-center justify-center gap-1 md:flex '>
       {badges.map(({ isVisible = true, value }, key) => {
         if (!isVisible) return null;
 
