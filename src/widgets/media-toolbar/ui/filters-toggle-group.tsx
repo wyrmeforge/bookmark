@@ -71,14 +71,14 @@ const FiltersToggleGroup = () => {
   }
 
   return (
-    <div className='fixed inset-0 z-40 h-11 bg-background p-1 shadow-2xl'>
+    <div className='fixed inset-0 z-40 h-16 bg-background p-1 shadow-2xl'>
       <Carousel
         opts={{
-          align: 'center',
+          align: 'end',
           loop: false,
           dragFree: true,
         }}
-        className='relative w-full px-1'
+        className='relative w-full p-2'
         setApi={setCarouselApi}
       >
         <ToggleGroup
@@ -88,31 +88,24 @@ const FiltersToggleGroup = () => {
           type='single'
         >
           <CarouselContent className='flex-nowrap'>
-            {menu.map(({ title, value, key }, idx) => (
+            {menu.map(({ title, key }, idx) => (
               <CarouselItem
                 onClick={() => onSelect(idx)}
-                className='shrink-0 basis-1/2'
+                className='basis-auto pl-2'
                 key={key}
               >
                 <ToggleGroupItem
                   value={key}
                   aria-label={key}
                   className={cn(
-                    'relative inline-flex w-full cursor-pointer select-none items-center justify-center whitespace-nowrap rounded-none px-0 py-2 text-muted-foreground data-[state=on]:bg-transparent md:px-4',
+                    'relative inline-flex cursor-pointer select-none items-center justify-center whitespace-nowrap rounded-none px-0 py-2 text-muted-foreground data-[state=on]:bg-transparent md:px-4',
                     {
-                      'z-10 before:absolute before:bottom-0 before:left-0 before:w-full before:border-b before:border-b-white':
+                      'z-10 before:absolute before:bottom-0 before:left-0 before:w-1/2 before:translate-x-1/2 before:border-b-2 before:border-b-white':
                         currentFilter === key,
                     }
                   )}
                 >
-                  <span className='ml-2'>{title}</span>
-                  <div
-                    className={cn('ml-2 text-muted-foreground', {
-                      'text-white': currentFilter === key,
-                    })}
-                  >
-                    {value}
-                  </div>
+                  {title}
                 </ToggleGroupItem>
               </CarouselItem>
             ))}

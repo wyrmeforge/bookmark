@@ -45,6 +45,46 @@ export const getList = query({
   },
 });
 
+export const getListNoPagination = query({
+  args: {
+    filter: v.string(),
+    searchValue: v.optional(v.string()),
+  },
+  handler: async (ctx, { filter, searchValue }) => {
+    const userId = await getUserId(ctx);
+
+    let listsQuery;
+
+    if (searchValue) {
+      // Use search index when search is active
+      listsQuery = ctx.db
+        .query('lists')
+        .withSearchIndex('by_name', (q) =>
+          q.search('name', searchValue).eq('user', userId)
+        );
+    } else {
+      // Use normal index for user when search is not active
+      listsQuery = ctx.db
+        .query('lists')
+        .withIndex('by_user', (q) => q.eq('user', userId))
+        .order('desc');
+    }
+
+    // Apply filter only if it's not "All"
+    if (!searchValue && filter && filter !== MediaStatus.All) {
+      const isFavoriteFilter = filter === MediaStatus.Favorite;
+
+      listsQuery = listsQuery.filter((q) =>
+        isFavoriteFilter
+          ? q.eq(q.field('isFavorite'), true)
+          : q.eq(q.field('status'), filter)
+      );
+    }
+
+    return await listsQuery.collect();
+  },
+});
+
 export const getListItem = query({
   args: { mediaId: v.number() },
   handler: async (ctx, { mediaId }) => {

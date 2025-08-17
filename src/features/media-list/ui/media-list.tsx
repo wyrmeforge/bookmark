@@ -22,7 +22,7 @@ const MediaList = () => {
     return <EmptyListPlaceholder currentFilter={currentFilter} />;
 
   return (
-    <div className='flex flex-col justify-center gap-4 pb-[100px] pt-[40px] md:grid md:grid-cols-container md:pb-4 md:pr-2 md:pt-0'>
+    <div className='grid grid-cols-2 flex-col justify-center gap-4 pb-[100px] pt-16 md:grid md:grid-cols-container md:pb-4 md:pr-2'>
       {list.map((item, idx) => (
         <MediaCard itemIdx={idx} key={item._id} mediaData={item} />
       ))}

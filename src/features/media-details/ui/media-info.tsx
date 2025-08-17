@@ -112,14 +112,16 @@ const MediaInfo = ({
               {getTranslatedGenre(item)} {idx !== genres.length - 1 && '|'}
             </div>
           ))}
-          <Link
-            href={website}
-            target='_blank'
-            rel='noopener noreferrer'
-            className='transition-colors duration-200 hover:underline'
-          >
-            Перейти на сайт для перегляду
-          </Link>
+          {website && (
+            <Link
+              href={website}
+              target='_blank'
+              rel='noopener noreferrer'
+              className='transition-colors duration-200 hover:underline'
+            >
+              Перейти на сайт для перегляду
+            </Link>
+          )}
         </div>
         <div className='flex items-center gap-6'>
           {infoOptions?.map(({ label, value, last }) => (
