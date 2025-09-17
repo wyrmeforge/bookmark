@@ -2,9 +2,9 @@
 
 import {
   Home,
-  // LibraryIcon,
+  LibraryIcon,
   PlusIcon,
-  // Users2Icon,
+  Users2Icon,
   WebhookIcon,
 } from 'lucide-react';
 import { useState } from 'react';
@@ -16,8 +16,8 @@ import { MediaSearch } from '@/features/media-search';
 
 const navItems = [
   { id: 'home', icon: Home, label: 'Головна' },
-  // { id: 'friends', icon: Users2Icon, label: 'Друзі' },
-  // { id: 'stats', icon: LibraryIcon, label: 'Статистика' },
+  { id: 'friends', icon: Users2Icon, label: 'Друзі' },
+  { id: 'stats', icon: LibraryIcon, label: 'Статистика' },
 ];
 
 export default function MinimalNav() {
@@ -25,13 +25,15 @@ export default function MinimalNav() {
 
   return (
     <div className='fixed bottom-4 left-1/2 z-40 flex -translate-x-1/2 items-center gap-1 md:relative md:bottom-[unset] md:top-4 md:w-full md:justify-between md:gap-4 md:px-20 md:pb-4'>
-      <div className='flex h-14 items-center gap-4 rounded-full border border-white/10 bg-black/70 p-2 px-4 shadow-xl backdrop-blur-md md:flex'>
-        <div className='flex flex-row items-center gap-2'>
-          <WebhookIcon className='h-6 w-6' />
-          <p className='hidden text-sm font-bold md:block'>YOOKOSO</p>
+      {/* <div className='w-[310px]'>
+        <div className='flex h-14 w-fit items-center gap-4 rounded-full border border-white/10 bg-black/70 p-2 px-4 shadow-xl backdrop-blur-md md:flex'>
+          <div className='flex flex-row items-center gap-2'>
+            <WebhookIcon className='h-6 w-6' />
+            <p className='hidden text-sm font-bold md:block'>YOOKOSO</p>
+          </div>
         </div>
-      </div>
-      <div className='flex w-full justify-center'>
+      </div> */}
+      <div className='flex justify-center'>
         <div className='flex items-center gap-1 rounded-full border border-white/10 bg-black/70 p-2 shadow-xl backdrop-blur-md md:gap-4'>
           {navItems.map(({ id, icon: Icon, label }) => (
             <Button
@@ -68,9 +70,10 @@ export default function MinimalNav() {
           </div>
         </div>
       </div>
-
-      <div className='flex flex-row items-center gap-2 rounded-full border border-white/10 bg-black/70 p-2  shadow-xl backdrop-blur-md'>
+      <div>
         <MediaSearch />
+      </div>
+      <div className='flex flex-row items-center gap-2 rounded-full border border-white/10 bg-black/70 p-2  shadow-xl backdrop-blur-md'>
         <CreateMedia
           customTrigger={
             <Button

@@ -24,7 +24,7 @@ const CardBadges = ({ episode, isFavorite, status }: CardBadgesProps) => {
     },
     {
       isVisible: !!episode,
-      value: `${episode}s.`,
+      value: `${episode}`,
     },
     {
       isVisible: isFavorite,
@@ -35,14 +35,14 @@ const CardBadges = ({ episode, isFavorite, status }: CardBadgesProps) => {
   ];
 
   return (
-    <div className='hidden items-center justify-center gap-1 md:flex '>
+    <div className='hidden items-center justify-center gap-1.5 transition-all group-hover:flex '>
       {badges.map(({ isVisible = true, value }, key) => {
         if (!isVisible) return null;
 
         return (
           <Badge
             key={key}
-            className='border border-muted-foreground hover:cursor-default'
+            className='h-full rounded-none  rounded-bl-lg rounded-br-lg border border-muted-foreground px-0.5 hover:cursor-default'
           >
             {value}
           </Badge>

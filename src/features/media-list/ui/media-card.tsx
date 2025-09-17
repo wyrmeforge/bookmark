@@ -33,10 +33,10 @@ const MediaCard = ({ mediaData, itemIdx }: MediaCardProps) => {
   return (
     <Card
       onClick={handleClick}
-      className='relative h-full min-h-[300px] w-full rounded-none border shadow transition-all hover:cursor-pointer hover:border-black hover:shadow-xl dark:border-neutral-800 dark:hover:border-white md:min-h-[600px]'
+      className='group relative h-full min-h-[300px] w-full rounded-none border shadow transition-all hover:cursor-pointer hover:border-black hover:shadow-xl dark:border-neutral-800 dark:hover:border-white md:min-h-[600px]'
     >
-      <CardHeader className='absolute top-3 z-10 w-full p-0'>
-        <div className='flex w-full flex-row items-center justify-between px-2 md:px-5'>
+      <CardHeader className='absolute -top-[1px] z-10 w-full p-0'>
+        <div className='flex w-full flex-row justify-between pl-2'>
           <CardBadges
             status={status}
             episode={episode}
