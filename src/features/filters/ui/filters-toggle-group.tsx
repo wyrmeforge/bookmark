@@ -11,8 +11,7 @@ import {
 } from '@/shared/ui/select';
 import { cn } from '@/shared/lib/utils';
 import { useFilters } from '../model/use-filters';
-import { MediaItemStatus } from '@/shared/api';
-import { StorageKeys } from '@/shared/enums';
+import { MediaStatus, StorageKeys } from '@/shared/enums';
 
 // ToDo: move to shared hooks
 function useIsMobile(breakpoint = 768) {
@@ -36,7 +35,7 @@ const FiltersToggleGroup = () => {
   const { menu, currentFilter, updateFilter } = useFilters();
   const isMobile = useIsMobile();
 
-  const handleChange = (value: MediaItemStatus) => {
+  const handleChange = (value: MediaStatus) => {
     if (!value) return;
 
     updateFilter(value);

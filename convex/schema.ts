@@ -26,7 +26,7 @@ export default defineSchema({
     comment: v.optional(v.string()),
     user: v.id('users'),
   })
-    .index('by_user', ['user'])
+    .index('by_user', ['user', 'status'])
     .searchIndex('by_name', {
       searchField: 'name',
       filterFields: ['user'],

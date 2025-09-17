@@ -2,13 +2,10 @@ import { useRouter } from 'next/navigation';
 import { useSignIn } from '@clerk/nextjs';
 import { isClerkAPIResponseError } from '@clerk/nextjs/errors';
 
-import {
-  SIGN_IN_ERROR_MESSAGES,
-  SignInFormValues,
-  UseLoginReturn,
-} from '../model';
+import { SignInFormValues, UseLoginReturn } from '../model';
 import { toast } from 'sonner';
 import { Routes } from '@/shared/enums';
+import { SIGN_IN_ERROR_MESSAGES } from '../config';
 
 const getErrorMessage = (code?: string) =>
   SIGN_IN_ERROR_MESSAGES[code ?? ''] ?? 'Сталася помилка. Спробуйте ще раз.';

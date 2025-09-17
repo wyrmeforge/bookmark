@@ -1,26 +1,25 @@
-import { usePaginatedQuery } from 'convex/react';
 import { api } from '@convex/api';
-import { useAppState } from '@/shared/lib';
+import { useAppState, useStablePaginatedQuery } from '@/shared/lib';
 
 export const useMediaList = () => {
-  const { currentFilter, searchValue } = useAppState();
+  const { currentFilter } = useAppState();
 
   const {
     results: list,
     loadMore,
     status,
-  } = usePaginatedQuery(
+  } = useStablePaginatedQuery(
     api.lists.getList,
-    { filter: currentFilter, searchValue },
-    { initialNumItems: 20 }
+    { filter: currentFilter },
+    { initialNumItems: 10 }
   );
 
   return {
     list,
+    loadMore,
     currentFilter,
     isFirstLoading: status === 'LoadingFirstPage',
     isLoadingMore: status === 'LoadingMore',
-    loadMore,
     isEndOfPages: status === 'Exhausted',
   };
 };
