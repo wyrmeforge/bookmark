@@ -13,9 +13,9 @@ import { Badge } from '@/shared/ui/badge';
 import { useMediaActions } from '../model';
 import { StatusSubMenu } from './components/status-sub-menu';
 import { DeleteMediaItem, EditMedia } from '@/features/media-modify';
-import { MediaItem } from '@/entities/media';
+import { ListMedia } from '@/entities/media';
 
-const CardMenu = ({ mediaItem }: { mediaItem: MediaItem }) => {
+const CardMenu = ({ mediaItem }: { mediaItem: ListMedia }) => {
   const { name, _id: id, isFavorite, status } = mediaItem;
 
   const { toggleFavorite } = useMediaActions({ mediaItemId: id, isFavorite });
@@ -29,7 +29,7 @@ const CardMenu = ({ mediaItem }: { mediaItem: MediaItem }) => {
     <DropdownMenu>
       <DropdownMenuTrigger
         onClick={(e) => e.stopPropagation()}
-        aria-label='Toggle media menu'
+        aria-label='Toggle media card menu'
         className='h-[26px]'
       >
         <Badge variant='default' className=' border border-muted-foreground'>

@@ -4,13 +4,13 @@ import { isClerkAPIResponseError } from '@clerk/nextjs/errors';
 
 import {
   ISignUpStepProps,
-  SIGN_UP_ERROR_MESSAGES,
   SignUpFlowSteps,
   UseRegistrationReturn,
   SignUpFormValues,
 } from '../model';
 import { toast } from 'sonner';
 import { Routes } from '@/shared/enums';
+import { SIGN_UP_ERROR_MESSAGES } from '../config';
 
 const getErrorMessage = (code?: string) =>
   SIGN_UP_ERROR_MESSAGES[code ?? ''] ?? 'Сталася помилка. Спробуйте ще раз.';

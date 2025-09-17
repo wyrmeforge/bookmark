@@ -8,30 +8,18 @@ export const getList = query({
   args: {
     filter: v.string(),
     paginationOpts: paginationOptsValidator,
-    searchValue: v.optional(v.string()),
   },
-  handler: async (ctx, { filter, paginationOpts, searchValue }) => {
+  handler: async (ctx, { filter, paginationOpts }) => {
     const userId = await getUserId(ctx);
 
     let listsQuery;
 
-    if (searchValue) {
-      // Use search index when search is active
-      listsQuery = ctx.db
-        .query('lists')
-        .withSearchIndex('by_name', (q) =>
-          q.search('name', searchValue).eq('user', userId)
-        );
-    } else {
-      // Use normal index for user when search is not active
-      listsQuery = ctx.db
-        .query('lists')
-        .withIndex('by_user', (q) => q.eq('user', userId))
-        .order('desc');
-    }
+    listsQuery = ctx.db
+      .query('lists')
+      .withIndex('by_user', (q) => q.eq('user', userId))
+      .order('desc');
 
-    // Apply filter only if it's not "All"
-    if (!searchValue && filter && filter !== MediaStatus.All) {
+    if (filter !== MediaStatus.All) {
       const isFavoriteFilter = filter === MediaStatus.Favorite;
 
       listsQuery = listsQuery.filter((q) =>
@@ -45,43 +33,21 @@ export const getList = query({
   },
 });
 
-export const getListNoPagination = query({
+export const searchMedia = mutation({
   args: {
-    filter: v.string(),
-    searchValue: v.optional(v.string()),
+    value: v.optional(v.string()),
   },
-  handler: async (ctx, { filter, searchValue }) => {
+  handler: async (ctx, { value }) => {
     const userId = await getUserId(ctx);
 
-    let listsQuery;
+    const result = await ctx.db
+      .query('lists')
+      .withSearchIndex('by_name', (q) =>
+        q.search('name', value || '').eq('user', userId)
+      )
+      .take(5);
 
-    if (searchValue) {
-      // Use search index when search is active
-      listsQuery = ctx.db
-        .query('lists')
-        .withSearchIndex('by_name', (q) =>
-          q.search('name', searchValue).eq('user', userId)
-        );
-    } else {
-      // Use normal index for user when search is not active
-      listsQuery = ctx.db
-        .query('lists')
-        .withIndex('by_user', (q) => q.eq('user', userId))
-        .order('desc');
-    }
-
-    // Apply filter only if it's not "All"
-    if (!searchValue && filter && filter !== MediaStatus.All) {
-      const isFavoriteFilter = filter === MediaStatus.Favorite;
-
-      listsQuery = listsQuery.filter((q) =>
-        isFavoriteFilter
-          ? q.eq(q.field('isFavorite'), true)
-          : q.eq(q.field('status'), filter)
-      );
-    }
-
-    return await listsQuery.collect();
+    return result;
   },
 });
 
@@ -213,6 +179,7 @@ export const createListItem = mutation({
   },
 });
 
+// Update
 export const updateListItem = mutation({
   args: { id: v.id('lists'), newData: v.any() },
   handler: async (ctx, args) => {
@@ -224,6 +191,7 @@ export const updateListItem = mutation({
   },
 });
 
+// Delete
 export const deleteListItem = mutation({
   args: { id: v.id('lists') },
   handler: async (ctx, args) => {

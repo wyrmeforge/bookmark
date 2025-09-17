@@ -15,7 +15,6 @@ import { ListMedia } from '@/entities/media';
 const AppStateContext = createContext<IAppStateContextProps>({
   updateFilter: () => {},
   updateList: () => {},
-  updateSearchValue: () => {},
   ...initialState,
 });
 
@@ -28,8 +27,6 @@ const AppStateProvider = ({ children }: PropsWithChildren) => {
       dispatch({ type: 'UPDATE_FILTER', payload: filter }),
     updateList: (list: ListMedia[] | null) =>
       dispatch({ type: 'UPDATE_LIST', payload: list }),
-    updateSearchValue: (value: string) =>
-      dispatch({ type: 'UPDATE_SEARCH_VALUE', payload: value }),
   };
 
   return (

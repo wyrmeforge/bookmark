@@ -1,9 +1,9 @@
+import { ListMediaId } from '@/entities/media';
 import { MediaStatus } from '@/shared/enums';
-import { MediaItem, MediaItemId } from '@/shared/api';
 
 export type UseMediaActionsProps = {
-  mediaItemId: MediaItemId;
-  isFavorite?: MediaItem['isFavorite'];
+  mediaItemId: ListMediaId;
+  isFavorite?: boolean;
 };
 
 export type UseMediaActionsReturn = {
