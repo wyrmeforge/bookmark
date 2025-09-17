@@ -30,13 +30,17 @@ const CardMenu = ({ mediaItem }: { mediaItem: ListMedia }) => {
       <DropdownMenuTrigger
         onClick={(e) => e.stopPropagation()}
         aria-label='Toggle media card menu'
-        className='h-[26px]'
+        className='ml-auto h-[36px]'
       >
-        <Badge variant='default' className=' border border-muted-foreground'>
-          <MenuIcon color='black' className='h-4 w-4 md:h-5 md:w-5' />
+        <Badge
+          variant='default'
+          className='  rounded-none rounded-bl-lg bg-white/20 hover:!bg-white/90 group-hover:bg-white'
+        >
+          <MenuIcon color='black' className='h-4 w-4 md:h-6 md:w-6' />
         </Badge>
       </DropdownMenuTrigger>
       <DropdownMenuContent
+        align='end'
         onClick={(e) => e.stopPropagation()}
         className='mt-2 w-64 rounded-lg'
       >
