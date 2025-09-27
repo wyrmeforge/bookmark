@@ -15,6 +15,7 @@ import { ListMedia } from '@/entities/media';
 const AppStateContext = createContext<IAppStateContextProps>({
   updateFilter: () => {},
   updateList: () => {},
+  toggleCreateSheet: () => {},
   ...initialState,
 });
 
@@ -27,6 +28,11 @@ const AppStateProvider = ({ children }: PropsWithChildren) => {
       dispatch({ type: 'UPDATE_FILTER', payload: filter }),
     updateList: (list: ListMedia[] | null) =>
       dispatch({ type: 'UPDATE_LIST', payload: list }),
+    toggleCreateSheet: () =>
+      dispatch({
+        type: 'TOGGLE_CREATE_SHEET',
+        payload: !state.isCreateSheetOpen,
+      }),
   };
 
   return (

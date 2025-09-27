@@ -4,7 +4,7 @@ import { MediaStatus } from '@/shared/enums';
 export const initialState: IAppState = {
   currentFilter: MediaStatus.All,
   list: null,
-  searchValue: '',
+  isCreateSheetOpen: false,
 };
 
 export const appStateReducer = (
@@ -16,8 +16,8 @@ export const appStateReducer = (
       return { ...state, currentFilter: action.payload };
     case 'UPDATE_LIST':
       return { ...state, list: action.payload };
-    case 'UPDATE_SEARCH_VALUE':
-      return { ...state, searchValue: action.payload };
+    case 'TOGGLE_CREATE_SHEET':
+      return { ...state, isCreateSheetOpen: action.payload };
     default:
       return state;
   }
