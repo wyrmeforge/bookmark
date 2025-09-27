@@ -1,12 +1,13 @@
 'use client';
 
-import { useStoreUser } from '@/shared/lib';
+import { useCreateMediaShortcut, useStoreUser } from '@/shared/lib';
 import { Loader } from '@/shared/ui/loader';
 import { PropsWithChildren } from 'react';
 import MinimalNav from './home/components/menu';
 
 const DashboardLayout = ({ children }: PropsWithChildren) => {
   const { isLoading, isAuthenticated } = useStoreUser();
+  useCreateMediaShortcut();
 
   if (isLoading || !isAuthenticated) return <Loader />;
 

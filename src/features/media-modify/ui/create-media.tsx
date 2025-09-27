@@ -12,8 +12,10 @@ import { Button } from '@/shared/ui/button';
 import { SquarePlusIcon } from 'lucide-react';
 import { MediaStatus } from '@/shared/enums';
 import { useCreateMedia } from '../model';
+import { useAppState } from '@/shared/lib';
 
 const CreateMedia = ({ initialStatus, customTrigger }: CreateMediaProps) => {
+  const { isCreateSheetOpen, toggleCreateSheet } = useAppState();
   const { createNewMedia } = useCreateMedia();
 
   const onSubmit = (data: ModifyFormValues) => {
@@ -35,7 +37,7 @@ const CreateMedia = ({ initialStatus, customTrigger }: CreateMediaProps) => {
   );
 
   return (
-    <Sheet>
+    <Sheet open={isCreateSheetOpen} onOpenChange={toggleCreateSheet}>
       <SheetTrigger asChild>{trigger}</SheetTrigger>
       <MediaModifyForm
         initialValues={initialValues}

@@ -19,7 +19,7 @@ const RecentItems = ({ recent, onRecentSelect }: RecentItemsProps) => (
           key={item._id}
           tabIndex={0}
           onSelect={() => onRecentSelect(item.mediaId)}
-          className='flex items-center gap-2 rounded-md p-2 hover:bg-muted/50'
+          className='flex items-center gap-2 rounded-md p-2 hover:cursor-pointer hover:bg-muted/50'
         >
           {item.imageUrl && (
             <Image

@@ -25,6 +25,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui/tabs';
 import { ScrollArea } from '@/shared/ui/scroll-area';
 import { Card, CardContent } from '@/shared/ui/card';
 import { Scrollbar } from '@radix-ui/react-scroll-area';
+import { Routes } from '@/shared/enums';
 
 export const MediaDetails = ({ id }) => {
   const router = useRouter();
@@ -37,7 +38,7 @@ export const MediaDetails = ({ id }) => {
   console.log(data);
 
   const handleGoBack = () => {
-    router.back();
+    router.push(Routes.Home);
   };
 
   if (isMediaItemLoading) return <Loader />;

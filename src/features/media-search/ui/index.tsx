@@ -13,7 +13,10 @@ import {
   Command,
   CommandGroup,
   CommandInput,
+  CommandItem,
   CommandList,
+  CommandSeparator,
+  CommandShortcut,
 } from '@/shared/ui/command';
 import { useMediaSearch } from '../model';
 import {
@@ -22,8 +25,10 @@ import {
   SearchCommandItem,
   SearchEmptyStates,
 } from './components';
+import { useAppState } from '@/shared/lib';
 
 export const MediaSearch = () => {
+  const { toggleCreateSheet } = useAppState();
   const {
     searchValue,
     setSearchValue,
@@ -41,7 +46,7 @@ export const MediaSearch = () => {
   } = useMediaSearch();
 
   return (
-    <Dialog open={isSearchOpen} onOpenChange={setIsSearchOpen}>
+    <Dialog modal={false} open={isSearchOpen} onOpenChange={setIsSearchOpen}>
       <DialogTrigger asChild>
         <Button
           variant='outline'
@@ -85,6 +90,18 @@ export const MediaSearch = () => {
                     handleClick={() => handleSelect(item)}
                   />
                 ))}
+              </CommandGroup>
+            )}
+            <CommandSeparator />
+            {!showResults && !isLoading && (
+              <CommandGroup heading='Швидкі дії'>
+                <CommandItem
+                  onSelect={toggleCreateSheet}
+                  className='flex w-full justify-between rounded-md px-2 py-1 hover:cursor-pointer hover:bg-gray-100'
+                >
+                  <div>Додати аніме</div>
+                  <CommandShortcut>Ctrl+D</CommandShortcut>
+                </CommandItem>
               </CommandGroup>
             )}
           </CommandList>
