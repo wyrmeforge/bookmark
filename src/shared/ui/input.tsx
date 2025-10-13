@@ -7,10 +7,22 @@ export interface InputProps
   startAdornment?: React.ReactNode;
   endAdornment?: React.ReactNode;
   max?: number;
+  hideMaxValue?: boolean;
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type, startAdornment, endAdornment, max, ...props }, ref) => {
+  (
+    {
+      className,
+      type,
+      startAdornment,
+      endAdornment,
+      max,
+      hideMaxValue,
+      ...props
+    },
+    ref
+  ) => {
     const withMaxPlaceholder = typeof max === 'number' && max !== Infinity;
     return (
       <div className='relative w-full'>
@@ -25,13 +37,13 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             'flex h-10 w-full rounded-md border border-input bg-background px-4 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-0 disabled:cursor-not-allowed disabled:opacity-50',
             { 'pr-8': endAdornment },
             { 'pl-8': startAdornment },
-            { 'pr-14': withMaxPlaceholder },
+            { 'pr-14': withMaxPlaceholder && !hideMaxValue },
             className
           )}
           ref={ref}
           {...props}
         />
-        {withMaxPlaceholder && (
+        {withMaxPlaceholder && !hideMaxValue && (
           <div
             aria-hidden='true'
             className='pointer-events-none absolute bottom-0 right-[calc(50%-30px)] top-0 flex h-full select-none items-center gap-0.5 py-2 pt-[10px] text-sm text-gray-400 md:right-14'

@@ -8,17 +8,35 @@ export const getList = query({
   args: {
     filter: v.string(),
     paginationOpts: paginationOptsValidator,
+    genre: v.optional(v.string()),
+    sortBy: v.optional(v.union(v.literal('date'), v.literal('year'))),
+    sortOrder: v.optional(v.union(v.literal('asc'), v.literal('desc'))),
   },
-  handler: async (ctx, { filter, paginationOpts }) => {
+  handler: async (
+    ctx,
+    { filter, paginationOpts, genre, sortBy, sortOrder }
+  ) => {
     const userId = await getUserId(ctx);
 
     let listsQuery;
 
-    listsQuery = ctx.db
-      .query('lists')
-      .withIndex('by_user', (q) => q.eq('user', userId))
-      .order('desc');
+    if (sortBy === 'date') {
+      listsQuery = ctx.db
+        .query('lists')
+        .withIndex('by_user', (q) => q.eq('user', userId))
+        .order(sortOrder ?? 'desc'); // сортування по _creationTime
+    } else if (sortBy === 'year') {
+      listsQuery = ctx.db
+        .query('lists')
+        .withIndex('by_user_seasonYear', (q) => q.eq('user', userId))
+        .order(sortOrder ?? 'desc');
+    } else {
+      listsQuery = ctx.db
+        .query('lists')
+        .withIndex('by_user', (q) => q.eq('user', userId));
+    }
 
+    // 🔹 Фільтр по статусу
     if (filter !== MediaStatus.All) {
       const isFavoriteFilter = filter === MediaStatus.Favorite;
 
@@ -29,7 +47,15 @@ export const getList = query({
       );
     }
 
-    return await listsQuery.paginate(paginationOpts);
+    // 🔹 Пагінація
+    const result = await listsQuery.paginate(paginationOpts);
+
+    // 🔹 Фільтр по жанру (масив жанрів)
+    if (genre) {
+      result.page = result.page.filter((item) => item.genres?.includes(genre));
+    }
+
+    return result;
   },
 });
 
@@ -82,6 +108,8 @@ export const createListItem = mutation({
     imageUrl: v.string(),
     website: v.optional(v.string()),
     mediaId: v.number(),
+    genres: v.array(v.string()),
+    seasonYear: v.string(),
     episode: v.optional(v.number()),
     bannerImage: v.optional(v.string()),
     totalEpisodes: v.optional(v.number()),

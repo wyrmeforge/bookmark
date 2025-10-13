@@ -10,6 +10,8 @@ export const ModifyFormSchema = u.object({
       image: u.string(),
       bannerImage: u.string().optional(),
       episodes: u.number().optional(),
+      genres: u.array(u.string()),
+      seasonYear: u.number(),
     })
     .refine((data) => !!data.id && !!data.name && !!data.image, {
       message: "Поле обов'язкове",

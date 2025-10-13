@@ -22,6 +22,7 @@ export const addComment = mutation({
   args: {
     mediaId: v.number(),
     comment: v.string(),
+    mention: v.optional(v.array(v.id('users'))),
     user: v.object({
       nickname: v.string(),
       picture: v.string(),
@@ -43,6 +44,7 @@ export const addComment = mutation({
       mediaId: args.mediaId,
       comment: args.comment,
       user: args.user,
+      mention: args.mention,
       replyTo: args.replyTo ?? undefined,
     });
   },

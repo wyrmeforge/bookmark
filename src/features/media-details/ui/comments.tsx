@@ -1,97 +1,269 @@
-import { Button } from '@/shared/ui/button';
-import { Input } from '@/shared/ui/input';
+'use client';
+
+import { useCallback, useState, useRef } from 'react';
+import { MentionsInput, Mention } from 'react-mentions';
 import { useUser } from '@clerk/nextjs';
-import { DeleteIcon, ReplyIcon, XIcon } from 'lucide-react';
-import { useState } from 'react';
+import { useComments } from '../model';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import { useComments } from '../model';
-import Image from 'next/image';
+import dynamic from 'next/dynamic';
+import { GiphyFetch } from '@giphy/js-fetch-api';
+import { useQuery } from 'convex/react';
+import { api } from '@convex/api';
+import { Id } from '@convex/dataModel';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/shared/ui/tooltip';
 
 dayjs.extend(relativeTime);
 
-const Comments = ({ id }: { id: number | string }) => {
+const GiphyGrid = dynamic(
+  () => import('@giphy/react-components').then((m) => m.Grid),
+  { ssr: false }
+);
+
+const gf = new GiphyFetch(
+  process.env.NEXT_PUBLIC_GIPHY_API_KEY || 'JjqYLJ1TVlFiC3WbFWqQdbvCBJdW1nr8'
+);
+
+// helper for inserting text at caret position
+const insertAtCaret = (value: string, insert: string, inputRef: any) => {
+  const input = inputRef.current;
+  if (!input) return value;
+  const { selectionStart, selectionEnd } = input;
+  return value.slice(0, selectionStart) + insert + value.slice(selectionEnd);
+};
+
+export const Comments = ({ id }: { id: number | string }) => {
+  const [gifOpen, setGifOpen] = useState(false);
+  const [gifSearch, setGifSearch] = useState('');
+  const inputRef = useRef<any>(null);
+  const [selectedMention, setSelectedMention] = useState<Id<'users'> | null>(
+    null
+  );
+
+  const fetchGifs = useCallback(
+    (offset: number) =>
+      gifSearch
+        ? gf.search(gifSearch, { offset, limit: 9 })
+        : gf.trending({ offset, limit: 9 }),
+    [gifSearch]
+  );
+
+  const mentionUsers = useQuery(api.users.getUsersNicknames);
+  const mentionUser = useQuery(
+    api.users.getUserById,
+    selectedMention ? { id: selectedMention } : 'skip'
+  );
+
   const { user } = useUser();
-  const { commentsList, addComment, deleteComment } = useComments(+id);
+  const { commentsList, addComment } = useComments(+id);
+  const [text, setText] = useState('');
 
-  const [newComment, setNewComment] = useState('');
-  const [replyTo, setReplyTo] = useState<null | {
-    id: string;
-    nickname: string;
-    commentId: string;
-  }>(null);
+  const handleSubmit = () => {
+    if (!text.trim()) return;
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!newComment.trim()) return;
+    const mentionIds = Array.from(text.matchAll(/@\[(.+?)\]\((.+?)\)/g)).map(
+      ([, _display, id]) => id
+    );
 
     addComment({
       mediaId: +id,
-      comment: newComment,
+      comment: text,
+      mention: mentionIds,
       user: {
         id: user?.id || '',
         nickname: user?.username || user?.firstName || '',
         picture: user?.imageUrl || '',
       },
-      replyTo: replyTo
-        ? {
-            userId: replyTo.id,
-            nickname: replyTo.nickname,
-            commentId: replyTo.commentId,
-          }
-        : undefined,
     });
 
-    setNewComment('');
-    setReplyTo(null);
+    setText('');
   };
 
   return (
-    <div className='space-y-6'>
-      {replyTo && (
-        <div className='flex items-center justify-between rounded-md bg-muted px-4 py-2 text-sm text-foreground'>
-          <div>
-            Відповідь до{' '}
-            <span className='font-semibold'>{replyTo.nickname}</span>
-          </div>
-          <Button
-            size='icon'
-            variant='ghost'
-            onClick={() => setReplyTo(null)}
-            aria-label='Скасувати відповідь'
+    <TooltipProvider delayDuration={100}>
+      <div className='space-y-6'>
+        {/* Editor */}
+        <div className='flex flex-col rounded-xl bg-background p-4 text-white'>
+          <MentionsInput
+            inputRef={inputRef}
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            placeholder='Коментар... (Максимум 500 символів)'
+            className='mentions'
+            style={{
+              control: {
+                backgroundColor: '#1c1c1e',
+                fontSize: 14,
+                color: '#fff',
+                border: '1px solid #2c2c2e',
+                borderRadius: '0.5rem',
+                minHeight: 63,
+                fontFamily: 'inherit',
+              },
+              '&multiLine': {
+                control: { fontFamily: 'inherit', minHeight: 63 },
+                highlighter: { padding: 9 },
+                input: {
+                  padding: 9,
+                  border: '1px solid #2c2c2e',
+                  backgroundColor: 'transparent',
+                  color: '#fff',
+                },
+              },
+              suggestions: {
+                list: {
+                  backgroundColor: '#2c2c2e',
+                  border: '1px solid #3a3a3c',
+                  fontSize: 14,
+                  maxHeight: 200,
+                  overflowY: 'auto',
+                },
+                item: {
+                  padding: '5px 15px',
+                  borderBottom: '1px solid #3a3a3c',
+                  color: '#fff',
+                  '&focused': { backgroundColor: '#3b82f6', color: '#fff' },
+                },
+              },
+            }}
           >
-            <XIcon className='h-5 w-5' />
-          </Button>
-        </div>
-      )}
-      <form onSubmit={handleSubmit} className='flex flex-col gap-3 sm:flex-row'>
-        <Input
-          placeholder='Напишіть коментар...'
-          value={newComment}
-          onChange={(e) => setNewComment(e.target.value)}
-          className='flex-1'
-          autoFocus={!!replyTo}
-        />
-        <Button type='submit' size='sm' className='sm:w-auto'>
-          Надіслати
-        </Button>
-      </form>
-      <div
-        className='space-y-4 overflow-y-auto rounded-xl border bg-muted p-4 shadow-inner'
-        style={{ maxHeight: '800px' }}
-      >
-        {commentsList?.map((item) => {
-          const canDelete = item.user.id === user?.id;
-          const createdAt = dayjs(item._creationTime).fromNow();
+            <Mention
+              trigger='@'
+              data={mentionUsers}
+              displayTransform={(id, display) => `@${display}`}
+              style={{ backgroundColor: '#3b82f6', borderRadius: '0.25rem' }}
+            />
+          </MentionsInput>
 
-          return (
-            <div
-              key={item._id}
-              className='rounded-xl border border-border bg-background p-4 transition-shadow hover:shadow-md'
-            >
-              <div className='mb-2 flex items-center justify-between'>
-                <div className='flex items-center gap-3'>
-                  <Image
+          <button
+            className='mt-2 w-fit rounded bg-blue-500 px-3 py-1 text-white'
+            onClick={() => setGifOpen(true)}
+          >
+            GIF
+          </button>
+
+          {gifOpen && (
+            <div className='mt-2 max-h-80 w-full overflow-y-auto rounded-lg border bg-background p-2 shadow-lg'>
+              <input
+                type='text'
+                placeholder='Search GIFs...'
+                value={gifSearch}
+                onChange={(e) => setGifSearch(e.target.value)}
+                className='mb-2 w-full rounded border px-2 py-1 text-black'
+              />
+              <GiphyGrid
+                width={400}
+                columns={3}
+                fetchGifs={fetchGifs}
+                noLink
+                onGifClick={(gif) => {
+                  const gifTag = `[GIF:${gif.images.fixed_height.url}]`;
+                  setText((t) => insertAtCaret(t, gifTag + ' ', inputRef));
+                  setGifOpen(false);
+                }}
+              />
+            </div>
+          )}
+
+          <button
+            className='mt-2 w-fit rounded bg-green-500 px-3 py-1 text-white'
+            onClick={handleSubmit}
+          >
+            Надіслати
+          </button>
+        </div>
+
+        {/* Comments list */}
+        <div className='space-y-4 overflow-y-auto rounded-xl border bg-muted p-4 shadow-inner'>
+          {commentsList?.map((item) => {
+            const createdAt = dayjs(item._creationTime).locale('uk').fromNow();
+            const regex = /(@\[(.+?)\]\((.+?)\))|(\[GIF:(.+?)\])/g;
+
+            const parts: JSX.Element[] = [];
+            let lastIndex = 0;
+            let match;
+
+            while ((match = regex.exec(item.comment)) !== null) {
+              if (match.index > lastIndex) {
+                parts.push(
+                  <span key={lastIndex}>
+                    {item.comment.slice(lastIndex, match.index)}
+                  </span>
+                );
+              }
+
+              if (match[1]) {
+                const display = match[2];
+                const userId = match[3];
+
+                // Local open state per mention
+                const MentionWithTooltip = () => {
+                  const [open, setOpen] = useState(false);
+                  const userData = useQuery(
+                    api.users.getUserById,
+                    open ? { id: userId } : 'skip'
+                  );
+
+                  return (
+                    <Tooltip open={open} onOpenChange={setOpen}>
+                      <TooltipTrigger asChild>
+                        <span
+                          className='cursor-pointer text-blue-400'
+                          onMouseEnter={() => setOpen(true)}
+                          onMouseLeave={() => setOpen(false)}
+                        >
+                          @{display}
+                        </span>
+                      </TooltipTrigger>
+                      {userData && (
+                        <TooltipContent className='flex items-center gap-2'>
+                          {userData.avatar && (
+                            <img
+                              src={userData.avatar}
+                              alt={userData.nickname}
+                              className='h-6 w-6 rounded-full'
+                            />
+                          )}
+                          <span>{userData.nickname}</span>
+                        </TooltipContent>
+                      )}
+                    </Tooltip>
+                  );
+                };
+
+                parts.push(<MentionWithTooltip key={match.index} />);
+              } else if (match[4]) {
+                const url = match[5];
+                parts.push(
+                  <img
+                    key={match.index}
+                    src={url}
+                    className='inline max-h-40 rounded'
+                  />
+                );
+              }
+
+              lastIndex = regex.lastIndex;
+            }
+
+            if (lastIndex < item.comment.length) {
+              parts.push(
+                <span key={lastIndex}>{item.comment.slice(lastIndex)}</span>
+              );
+            }
+
+            return (
+              <div
+                key={item._id}
+                className='rounded-xl border border-border bg-background p-4 transition-shadow hover:shadow-md'
+              >
+                <div className='mb-2 flex items-center gap-3'>
+                  <img
                     width={32}
                     height={32}
                     src={item.user.picture}
@@ -107,67 +279,14 @@ const Comments = ({ id }: { id: number | string }) => {
                     </span>
                   </div>
                 </div>
-
-                <div className='flex items-center gap-2'>
-                  <Button
-                    size='icon'
-                    variant='ghost'
-                    onClick={() =>
-                      setReplyTo({
-                        id: item.user.id,
-                        nickname: item.user.nickname,
-                        commentId: item._id,
-                      })
-                    }
-                    aria-label='Відповісти'
-                    title='Відповісти'
-                  >
-                    <ReplyIcon className='h-5 w-5' />
-                  </Button>
-
-                  {canDelete && (
-                    <Button
-                      size='icon'
-                      variant='ghost'
-                      className='text-destructive hover:bg-destructive/10'
-                      onClick={() => deleteComment({ id: item._id })}
-                      aria-label='Видалити'
-                      title='Видалити'
-                    >
-                      <DeleteIcon className='h-5 w-5' />
-                    </Button>
-                  )}
+                <div className='break-words text-sm text-muted-foreground'>
+                  {parts}
                 </div>
               </div>
-              {item.replyTo &&
-                (() => {
-                  const parentComment = commentsList?.find(
-                    (c) => c._id === item.replyTo?.commentId
-                  );
-
-                  if (!parentComment) return null;
-
-                  return (
-                    <div className='mb-3 rounded-md border border-border bg-muted px-4 py-2 text-sm text-muted-foreground'>
-                      <div className='flex items-center gap-2'>
-                        <span className='font-semibold'>
-                          {parentComment.user.nickname}
-                        </span>
-                      </div>
-                      <p className='mt-1 text-xs italic text-muted-foreground'>
-                        {parentComment.comment}
-                      </p>
-                    </div>
-                  );
-                })()}
-
-              <p className='text-sm text-muted-foreground'>{item.comment}</p>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
-    </div>
+    </TooltipProvider>
   );
 };
-
-export { Comments };

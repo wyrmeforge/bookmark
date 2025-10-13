@@ -9,11 +9,24 @@ const MediaRateStats = ({ totalRate, users }: MediaRateStatsProps) => {
     (a, b) => Number(formatRateKey(a[0])) - Number(formatRateKey(b[0]))
   );
 
+  const averageRate = users
+    ? Object.entries(totalRate).reduce((acc, [key, count]) => {
+        const score = Number(formatRateKey(key));
+        return acc + score * count;
+      }, 0) / users
+    : 0;
+
   return (
     <section className='rounded-2xl border border-border bg-card p-6 shadow-sm transition-shadow hover:shadow-lg'>
       <h5 className='mb-4 text-sm font-semibold uppercase tracking-wide text-muted-foreground'>
         Оцінки
       </h5>
+      <div className='mb-6 flex items-center justify-between rounded-md bg-muted/30 px-4 py-3'>
+        <span className='text-sm text-muted-foreground'>Середня оцінка:</span>
+        <span className='text-base font-bold text-foreground'>
+          {averageRate}
+        </span>
+      </div>
 
       <div className='space-y-2'>
         {rates.map(([key, count]) => {

@@ -6,6 +6,7 @@ import {
   CommandGroup,
   CommandInput,
   CommandItem,
+  CommandList,
 } from '@/shared/ui/command';
 import {
   FormControl,
@@ -19,7 +20,7 @@ import { Check, ChevronsDown, ChevronsUp, Loader } from 'lucide-react';
 import clsx from 'clsx';
 import { FieldValues, FieldPath, useFormContext } from 'react-hook-form';
 import { Button } from '@/shared/ui/button';
-import { useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 
 type ListItem = {
   id: string;
@@ -57,6 +58,18 @@ const FormCommandBox = <T extends FieldValues>({
     onSearchChange?.(val);
   };
 
+  // Open command box after popover render
+  useLayoutEffect(() => {
+    const popoverTimeout = setTimeout(() => {
+      setOpen(true);
+    }, 500);
+
+    return () => {
+      clearTimeout(popoverTimeout);
+      setInputValue('');
+    };
+  }, []);
+
   return (
     <FormField
       control={control}
@@ -65,7 +78,7 @@ const FormCommandBox = <T extends FieldValues>({
       render={({ field }) => (
         <FormItem className='z-40 flex flex-col'>
           <FormLabel>Аніме</FormLabel>
-          <Popover defaultOpen open={open} onOpenChange={setOpen}>
+          <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
               <Button
                 variant='outline'
@@ -94,42 +107,53 @@ const FormCommandBox = <T extends FieldValues>({
               <FormControl>
                 <Command shouldFilter={false} className='w-full'>
                   <CommandInput
+                    autoFocus
                     placeholder='Почніть вводити назву'
                     value={inputValue}
                     onValueChange={handleInputChange}
                     required
                   />
-                  <CommandEmpty className='flex items-center justify-center py-2'>
-                    {isLoading ? (
-                      <Loader className='animate-spin' />
-                    ) : (
-                      <span className='animate-pulse text-sm'>
-                        Нічого не знайдено.
-                      </span>
-                    )}
-                  </CommandEmpty>
-                  <CommandGroup>
-                    {items?.map((item) => (
-                      <CommandItem
-                        key={item.id}
-                        onSelect={() => {
-                          field.onChange(item);
-                          setOpen(false);
-                        }}
-                        className='gap-2'
-                      >
-                        <>
-                          <Check
-                            size={20}
-                            className={clsx('opacity-0', {
-                              'opacity-100': item.id == field.value?.id,
-                            })}
-                          />
-                          {item?.name}
-                        </>
-                      </CommandItem>
-                    ))}
-                  </CommandGroup>
+                  <CommandList>
+                    <CommandEmpty className='flex items-center justify-center py-2'>
+                      {!inputValue && (
+                        <span className='animate-pulse text-sm'>
+                          Почніть вводити назву аніме.
+                        </span>
+                      )}
+                      {inputValue && isLoading && (
+                        <Loader className='animate-spin' />
+                      )}
+                      {inputValue &&
+                        Array.isArray(items) &&
+                        items.length === 0 && (
+                          <span className='animate-pulse text-sm'>
+                            Нічого не знайдено.
+                          </span>
+                        )}
+                    </CommandEmpty>
+                    <CommandGroup>
+                      {items?.map((item) => (
+                        <CommandItem
+                          key={item.id}
+                          onSelect={() => {
+                            field.onChange(item);
+                            setOpen(false);
+                          }}
+                          className='gap-2'
+                        >
+                          <>
+                            <Check
+                              size={20}
+                              className={clsx('opacity-0', {
+                                'opacity-100': item.id == field.value?.id,
+                              })}
+                            />
+                            {item?.name}
+                          </>
+                        </CommandItem>
+                      ))}
+                    </CommandGroup>
+                  </CommandList>
                 </Command>
               </FormControl>
             </PopoverContent>
