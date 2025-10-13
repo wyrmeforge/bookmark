@@ -31,14 +31,14 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/shared/ui/popover';
 import { cn } from '@/shared/lib/utils';
 import { FormStepperInput } from '@/shared/ui/form-number-input';
 import { Skeleton } from '@/shared/ui/skeleton';
-import { HeartCrackIcon, HeartIcon } from 'lucide-react';
+import { HeartIcon } from 'lucide-react';
 
 export const MediaModifyForm = ({
   onSubmit,
   variant,
   initialValues,
 }: MediaModifyFormProps) => {
-  const { updateFilter } = useAppState();
+  const { updateFilter, isCreateSheetOpen } = useAppState();
   const { isMobile } = useMobile();
 
   const form = useForm<ModifyFormValues>({
@@ -82,6 +82,13 @@ export const MediaModifyForm = ({
       );
     }
   }, [isCompleted, form, selectedAnime]);
+
+  useEffect(() => {
+    if (!isCreateSheetOpen) {
+      setSearchValue('');
+      reset();
+    }
+  }, [isCreateSheetOpen, setSearchValue, reset]);
 
   const currentStatusItem = MODIFY_MEDIA_STATUS_ITEMS.find(
     (item) => item.value === currentStatus
@@ -190,6 +197,9 @@ export const MediaModifyForm = ({
               <div className='grid grid-cols-1 gap-3 md:grid-cols-3'>
                 <FormStepperInput
                   label='Разів переглянуто'
+                  min={0}
+                  max={100}
+                  hideMaxValue
                   name={FormFields.ViewedCount}
                 />
                 <FormStepperInput
@@ -209,14 +219,14 @@ export const MediaModifyForm = ({
             <div className='space-y-3 rounded-lg bg-muted/30 p-4 transition-all hover:bg-muted'>
               <FormCheckbox
                 checkedIcon={<HeartIcon fill='red' />}
-                uncheckedIcon={<HeartCrackIcon />}
+                uncheckedIcon={<HeartIcon />}
                 noThumbAnimation
                 label={
                   isFavorite ? 'Видалити з улюблених' : 'Додати до улюблених'
                 }
                 name={FormFields.IsFavorite}
               />
-              <FormTextarea name={FormFields.Comment} placeholder='Примітка' />
+              <FormTextarea name={FormFields.Comment} placeholder='Нотатка' />
             </div>
           </div>
           <SheetFooter className='sticky bottom-0 flex flex-row gap-2 border-t border-muted bg-background p-4'>

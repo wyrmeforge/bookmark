@@ -27,6 +27,7 @@ export const store = mutation(async ({ db, auth }) => {
 
   return db.insert('users', {
     name: userName!,
+    avatar: identity.pictureUrl || identity?.profileUrl,
     nickname: identity.nickname,
     friends: [],
     tokenIdentifier: identity.tokenIdentifier,
@@ -62,5 +63,29 @@ export const searchUsersByName = query({
       .query('users')
       .withSearchIndex('by_name', (q) => q.search('name', args.name))
       .collect();
+  },
+});
+
+export const getUserById = query({
+  args: { id: v.id('users') },
+  handler: async (ctx, args) => {
+    if (!args.id) return;
+
+    return ctx.db
+      .query('users')
+      .filter((q) => q.eq(q.field('_id'), args.id))
+      .unique();
+  },
+});
+
+export const getUsersNicknames = query({
+  handler: async ({ db }) => {
+    const data = await db.query('users').collect();
+
+    return data.map((item) => ({
+      id: item._id,
+      avatar: item.avatar,
+      display: item.nickname || item.name,
+    }));
   },
 });

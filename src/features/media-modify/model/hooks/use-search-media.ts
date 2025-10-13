@@ -7,11 +7,10 @@ import { SearchMediaResponse } from '../dto';
 export const useSearchMedia = () => {
   const [searchValue, setSearchValue] = useState('');
 
-  const shouldFetch = !!searchValue?.trim();
   const debouncedSearch = useDebounce(searchValue, 300);
 
   const { data, isLoading } = useSWR<SearchMediaResponse>(
-    shouldFetch ? [SEARCH_MEDIA_QUERY, { search: debouncedSearch }] : null,
+    [SEARCH_MEDIA_QUERY, { search: debouncedSearch }],
     fetcher
   );
 
@@ -21,6 +20,8 @@ export const useSearchMedia = () => {
     image: item.coverImage.extraLarge,
     bannerImage: item.bannerImage,
     episodes: item.episodes,
+    genres: item.genres,
+    seasonYear: item.seasonYear,
   }));
 
   return {

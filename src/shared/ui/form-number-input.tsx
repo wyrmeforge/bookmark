@@ -26,6 +26,7 @@ export interface IFormStepperInputProps<T extends FieldValues>
   required?: boolean;
   step?: number;
   min?: number;
+  hideMaxValue?: boolean;
   tooltipDescription?: string;
   max?: number;
 }
@@ -34,6 +35,7 @@ export function FormStepperInput<T extends FieldValues>({
   name,
   label,
   required,
+  hideMaxValue,
   disabled,
   step = 1,
   tooltipDescription,
@@ -75,8 +77,8 @@ export function FormStepperInput<T extends FieldValues>({
                   {label}
                 </FormLabel>
                 {tooltipDescription && (
-                  <Tooltip>
-                    <TooltipTrigger className='-mt-2'>
+                  <Tooltip delayDuration={300}>
+                    <TooltipTrigger type='button' className='-mt-2'>
                       <InfoIcon size={16} />
                     </TooltipTrigger>
                     <TooltipContent side='top' align='end'>
@@ -91,6 +93,7 @@ export function FormStepperInput<T extends FieldValues>({
                 value={value}
                 onChange={(v) => field.onChange(clampValue(v))}
                 min={min}
+                hideMaxValue={hideMaxValue}
                 max={max}
                 step={step}
                 disabled={disabled}

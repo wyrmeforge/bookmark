@@ -99,3 +99,10 @@
     background-color: rgba(100, 100, 100, 0.5);
   }
 }
+
+.EmojiPickerReact {
+  max-width: 100%;
+  --epr-header-padding: 8px 4px !important;
+  --epr-emoji-size: 26px !important;
+  --epr-category-label-height: 24;
+}

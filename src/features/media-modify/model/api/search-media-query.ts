@@ -12,6 +12,8 @@ export const SEARCH_MEDIA_QUERY = `
         coverImage {
           extraLarge
         }
+        genres
+        seasonYear
       }
     }
   }

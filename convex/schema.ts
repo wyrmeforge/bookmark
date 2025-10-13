@@ -20,13 +20,16 @@ export default defineSchema({
     viewedCount: v.optional(v.number()),
     bannerImage: v.optional(v.string()),
     imageUrl: v.string(),
+    genres: v.array(v.string()),
     episode: v.optional(v.number()),
     totalEpisodes: v.optional(v.number()),
     website: v.optional(v.string()),
     comment: v.optional(v.string()),
+    seasonYear: v.string(),
     user: v.id('users'),
   })
     .index('by_user', ['user', 'status'])
+    .index('by_user_seasonYear', ['user', 'seasonYear'])
     .searchIndex('by_name', {
       searchField: 'name',
       filterFields: ['user'],
@@ -34,6 +37,7 @@ export default defineSchema({
   users: defineTable({
     name: v.string(),
     nickname: v.optional(v.string()),
+    avatar: v.optional(v.string()),
     friends: v.optional(v.array(v.id('users'))),
     tokenIdentifier: v.string(),
   })
@@ -69,6 +73,7 @@ export default defineSchema({
   }).index('by_mediaId', ['mediaId']),
   comments: defineTable({
     comment: v.string(),
+    mention: v.optional(v.array(v.id('users'))),
     replyTo: v.optional(
       v.object({
         userId: v.string(),

@@ -15,7 +15,9 @@ import { ListMedia } from '@/entities/media';
 const AppStateContext = createContext<IAppStateContextProps>({
   updateFilter: () => {},
   updateList: () => {},
+  updateGenreFilter: () => {},
   toggleCreateSheet: () => {},
+  updateSort: () => {},
   ...initialState,
 });
 
@@ -28,6 +30,11 @@ const AppStateProvider = ({ children }: PropsWithChildren) => {
       dispatch({ type: 'UPDATE_FILTER', payload: filter }),
     updateList: (list: ListMedia[] | null) =>
       dispatch({ type: 'UPDATE_LIST', payload: list }),
+    updateGenreFilter: (genre: string | undefined) =>
+      dispatch({ type: 'UPDATE_GENRE_FILTER', payload: genre }),
+    updateSort: (sortBy: 'date' | 'year', sortOrder: 'asc' | 'desc') =>
+      dispatch({ type: 'UPDATE_SORT', payload: { sortBy, sortOrder } }),
+
     toggleCreateSheet: () =>
       dispatch({
         type: 'TOGGLE_CREATE_SHEET',

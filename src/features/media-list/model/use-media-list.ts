@@ -2,7 +2,7 @@ import { api } from '@convex/api';
 import { useAppState, useStablePaginatedQuery } from '@/shared/lib';
 
 export const useMediaList = () => {
-  const { currentFilter } = useAppState();
+  const { currentFilter, genreFilter, sortBy, sortOrder } = useAppState();
 
   const {
     results: list,
@@ -10,7 +10,12 @@ export const useMediaList = () => {
     status,
   } = useStablePaginatedQuery(
     api.lists.getList,
-    { filter: currentFilter },
+    {
+      filter: currentFilter,
+      sortBy,
+      sortOrder,
+      genre: genreFilter,
+    },
     { initialNumItems: 10 }
   );
 
@@ -18,6 +23,9 @@ export const useMediaList = () => {
     list,
     loadMore,
     currentFilter,
+    genreFilter,
+    sortBy,
+    sortOrder,
     isFirstLoading: status === 'LoadingFirstPage',
     isLoadingMore: status === 'LoadingMore',
     isEndOfPages: status === 'Exhausted',

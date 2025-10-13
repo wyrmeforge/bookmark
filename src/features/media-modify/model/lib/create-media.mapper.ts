@@ -20,5 +20,7 @@ export const createMediaMapper = (formData: ModifyFormValues) => {
     website: formData.website,
     viewedCount: formData.viewedCount,
     comment: formData.comment,
+    genres: unityInfo.genres,
+    seasonYear: String(unityInfo.seasonYear),
   };
 };

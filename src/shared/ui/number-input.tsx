@@ -10,6 +10,7 @@ type NumberInputProps = {
   max?: number;
   step?: number;
   label?: string;
+  hideMaxValue?: boolean;
   placeholder?: string;
   disabled?: boolean;
 };
@@ -18,6 +19,7 @@ export function NumberInput({
   value,
   onChange,
   min = 0,
+  hideMaxValue,
   max = Infinity,
   step = 1,
   placeholder = '-',
@@ -35,6 +37,7 @@ export function NumberInput({
     <div className='flex items-center gap-1'>
       <Input
         type='text'
+        hideMaxValue={hideMaxValue}
         max={max}
         startAdornment={
           <Button

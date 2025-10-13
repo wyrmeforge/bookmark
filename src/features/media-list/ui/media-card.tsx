@@ -38,7 +38,7 @@ const MediaCard = ({ mediaData, itemIdx }: MediaCardProps) => {
     <Card
       onClick={handleClick}
       className={cn(
-        'group relative h-full min-h-[300px] w-full rounded-none border shadow transition-all  hover:cursor-pointer hover:border-black hover:shadow-xl dark:border-neutral-800 dark:hover:border-white md:min-h-[600px]',
+        'group relative z-10 h-full min-h-[300px] w-full rounded-none border shadow transition-all   hover:cursor-pointer hover:border-black hover:shadow-xl dark:border-neutral-800 dark:hover:border-white md:min-h-[600px]',
         {
           'dark:border-white': isHovered,
         }
