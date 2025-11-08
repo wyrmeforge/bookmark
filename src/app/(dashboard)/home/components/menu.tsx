@@ -86,13 +86,13 @@ export default function MinimalNav() {
         <MediaSearch />
         <CreateMedia
           customTrigger={
-            <Button
-              variant='outline'
-              className='relative flex items-center gap-2 rounded-full bg-white px-4 py-2 text-black shadow-md transition-all duration-200'
-            >
+            <Button className='relative flex items-center gap-2 rounded-full px-4 py-2 transition-all duration-200'>
               <PlusIcon size={20} />
 
               <span className='hidden text-sm  md:block'>Додати</span>
+              <kbd className='ml-auto hidden rounded border px-1 text-xs sm:inline-block'>
+                Ctrl+D
+              </kbd>
             </Button>
           }
         />

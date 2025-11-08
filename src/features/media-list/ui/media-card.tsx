@@ -1,5 +1,4 @@
 import { Card, CardContent, CardHeader } from '@/shared/ui/card';
-import { useRouter } from 'next/navigation';
 import { ListMedia, MediaMeta, MediaPoster } from '@/entities/media';
 import { formatDate } from '@/shared/lib';
 import { CardMenu } from './card-menu';
@@ -7,13 +6,12 @@ import { CardBadges } from './card-badges';
 import { useState } from 'react';
 import { cn } from '@/shared/lib/utils';
 
-export type MediaCardProps = {
+type MediaCardProps = {
   mediaData: ListMedia;
   itemIdx: number;
 };
 
 const MediaCard = ({ mediaData, itemIdx }: MediaCardProps) => {
-  const router = useRouter();
   const [isHovered, setIsHovered] = useState(false);
 
   const {
@@ -24,21 +22,15 @@ const MediaCard = ({ mediaData, itemIdx }: MediaCardProps) => {
     rate,
     episode,
     status,
-    mediaId,
     totalEpisodes,
   } = mediaData;
-
-  const handleClick = () => {
-    router.push(`/home/${mediaId}`);
-  };
 
   const formattedDate = formatDate(_creationTime);
 
   return (
     <Card
-      onClick={handleClick}
       className={cn(
-        'group relative z-10 h-full min-h-[300px] w-full rounded-none border shadow transition-all   hover:cursor-pointer hover:border-black hover:shadow-xl dark:border-neutral-800 dark:hover:border-white md:min-h-[600px]',
+        'group relative z-10 h-full min-h-[300px] w-full rounded-none border shadow transition-all    dark:border-neutral-800  md:min-h-[600px]',
         {
           'dark:border-white': isHovered,
         }
