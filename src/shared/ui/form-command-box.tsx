@@ -62,7 +62,7 @@ const FormCommandBox = <T extends FieldValues>({
   useLayoutEffect(() => {
     const popoverTimeout = setTimeout(() => {
       setOpen(true);
-    }, 500);
+    }, 0);
 
     return () => {
       clearTimeout(popoverTimeout);

@@ -46,7 +46,7 @@ export const MediaSearch = () => {
   } = useMediaSearch();
 
   return (
-    <Dialog modal={false} open={isSearchOpen} onOpenChange={setIsSearchOpen}>
+    <Dialog open={isSearchOpen} onOpenChange={setIsSearchOpen}>
       <DialogTrigger asChild>
         <Button
           variant='outline'

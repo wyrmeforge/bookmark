@@ -1,6 +1,5 @@
 'use client';
 
-import { Sheet, SheetTrigger } from '@/shared/ui/sheet';
 import { DropdownMenuItem } from '@/shared/ui/dropdown-menu';
 import { PenIcon } from 'lucide-react';
 import { FormFields, FormVariant, ModifyFormValues } from '../model/dto/types';
@@ -8,6 +7,7 @@ import { MediaModifyForm } from './media-modify-form';
 import { useEditMedia } from '../model/hooks/use-edit-media';
 import { useMemo } from 'react';
 import { ListMedia } from '@/entities/media';
+import { Dialog, DialogTrigger } from '@/shared/ui/dialog';
 
 const EditMedia = ({ mediaItem }: { mediaItem: ListMedia }) => {
   const {
@@ -21,7 +21,9 @@ const EditMedia = ({ mediaItem }: { mediaItem: ListMedia }) => {
     episode,
     viewedCount,
     bannerImage,
+    seasonYear,
     totalEpisodes,
+    genres,
     comment,
   } = mediaItem || {};
 
@@ -32,9 +34,11 @@ const EditMedia = ({ mediaItem }: { mediaItem: ListMedia }) => {
       [FormFields.UnityInfo]: {
         id: mediaId,
         name,
+        seasonYear: +seasonYear,
         image: imageUrl,
         bannerImage,
         episodes: totalEpisodes,
+        genres,
       },
       [FormFields.Name]: name,
       [FormFields.ViewedCount]: viewedCount,
@@ -48,7 +52,9 @@ const EditMedia = ({ mediaItem }: { mediaItem: ListMedia }) => {
       bannerImage,
       mediaId,
       name,
+      genres,
       imageUrl,
+      seasonYear,
       totalEpisodes,
       viewedCount,
       rate,
@@ -64,8 +70,8 @@ const EditMedia = ({ mediaItem }: { mediaItem: ListMedia }) => {
   };
 
   return (
-    <Sheet>
-      <SheetTrigger asChild>
+    <Dialog>
+      <DialogTrigger asChild>
         <DropdownMenuItem
           aria-label='Редагувати медіа'
           onSelect={(e) => e.preventDefault()}
@@ -74,13 +80,13 @@ const EditMedia = ({ mediaItem }: { mediaItem: ListMedia }) => {
           <PenIcon className='mr-2 h-4 w-4' />
           Редагувати
         </DropdownMenuItem>
-      </SheetTrigger>
+      </DialogTrigger>
       <MediaModifyForm
         initialValues={initialValues}
         variant={FormVariant.Edit}
         onSubmit={onSubmit}
       />
-    </Sheet>
+    </Dialog>
   );
 };
 
