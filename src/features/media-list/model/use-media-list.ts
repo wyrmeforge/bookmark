@@ -1,22 +1,25 @@
 import { api } from '@convex/api';
-import { useAppState, useStablePaginatedQuery } from '@/shared/lib';
+import { useAppState } from '@/shared/lib';
+import { useItemsPerPage } from './use-items-per-page';
+import { usePaginatedQuery } from 'convex/react';
 
 export const useMediaList = () => {
   const { currentFilter, genreFilter, sortBy, sortOrder } = useAppState();
+
+  const initialNumItems = useItemsPerPage();
 
   const {
     results: list,
     loadMore,
     status,
-  } = useStablePaginatedQuery(
+  } = usePaginatedQuery(
     api.lists.getList,
-    {
-      filter: currentFilter,
-      sortBy,
-      sortOrder,
-      genre: genreFilter,
-    },
-    { initialNumItems: 10 }
+    initialNumItems === 0
+      ? 'skip'
+      : {
+          filter: currentFilter,
+        },
+    { initialNumItems }
   );
 
   return {

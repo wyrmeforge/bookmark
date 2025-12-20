@@ -8,7 +8,7 @@ import { UseFiltersReturn } from './types';
 
 export const useFilters = (): UseFiltersReturn => {
   const { currentFilter, updateFilter } = useAppState();
-  const moduleList = useQuery(api.lists.getListModules);
+  const moduleList = useQuery(api.lists.getListModulesCount);
 
   const menu = useMemo(() => {
     return MEDIA_STATUS_FILTERS.map(({ key, label, icon: Icon, color }) => ({

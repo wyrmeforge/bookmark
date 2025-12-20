@@ -1,8 +1,8 @@
+import { MediaItemStatus } from 'convex/shared/enums';
 import { AppStateAction, IAppState } from './types';
-import { MediaStatus } from '@/shared/enums';
 
 export const initialState: IAppState = {
-  currentFilter: MediaStatus.All,
+  currentFilter: MediaItemStatus.All,
   list: null,
   isCreateSheetOpen: false,
   genreFilter: undefined,
