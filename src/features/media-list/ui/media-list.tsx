@@ -1,10 +1,11 @@
 'use client';
 
 import { Loader } from '@/shared/ui/loader';
-import { Button } from '@/shared/ui/button';
 import { useMediaList } from '../model';
 import { EmptyListPlaceholder } from './components/empty-list-placeholder';
 import { MediaCard } from './media-card';
+import { useInfiniteScroll } from '@/shared/lib';
+import { Skeleton } from '@/shared/ui/skeleton';
 
 const MediaList = () => {
   const {
@@ -15,6 +16,14 @@ const MediaList = () => {
     currentFilter,
     isEndOfPages,
   } = useMediaList();
+
+  const loadMoreFn = () => loadMore(20);
+
+  const sentinelRef = useInfiniteScroll(
+    loadMoreFn,
+    isLoadingMore,
+    isEndOfPages
+  );
 
   if (isFirstLoading) return <Loader variant='absolute' />;
 
@@ -27,18 +36,11 @@ const MediaList = () => {
         <MediaCard itemIdx={idx} key={item._id} mediaData={item} />
       ))}
       {!isEndOfPages && (
-        <div className='col-span-2 flex w-full items-center justify-center border-none md:col-auto md:border-2 md:border-dashed'>
-          {isLoadingMore ? (
-            <Loader variant='small' />
-          ) : (
-            <Button
-              onClick={() => loadMore(20)}
-              variant='secondary'
-              className='w-full max-w-48'
-            >
-              Завантажити ще
-            </Button>
-          )}
+        <div
+          ref={sentinelRef}
+          className='col-span-2 flex w-full items-center justify-center md:col-auto'
+        >
+          {isLoadingMore && <Skeleton className='h-full w-full' />}
         </div>
       )}
     </div>

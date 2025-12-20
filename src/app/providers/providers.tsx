@@ -12,7 +12,7 @@ export const Providers = ({ children }: PropsWithChildren) => (
       <ThemeProvider>
         <TooltipProvider>
           <AppStateProvider>
-            <Toaster position='top-center' richColors />
+            <Toaster position='top-left' richColors />
             {children}
           </AppStateProvider>
         </TooltipProvider>
