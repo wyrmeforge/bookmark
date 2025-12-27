@@ -1,11 +1,11 @@
 import { defineSchema, defineTable } from 'convex/server';
 import { v } from 'convex/values';
-import { listItemFields } from './validators/list_item';
 import { mediaItemFields } from './validators/media_item';
 import { ListIndexes, MediaIndexes } from './shared/enums';
+import { defaultListItemFields } from './validators/list_item';
 
 export default defineSchema({
-  lists: defineTable(listItemFields)
+  lists: defineTable(defaultListItemFields)
     .index(ListIndexes.UserIndex, ['user'])
     .searchIndex(ListIndexes.NameSearchIndex, {
       searchField: 'name',

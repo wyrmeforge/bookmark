@@ -8,6 +8,27 @@ export enum MediaItemStatus {
   Favorite = 'favorite',
 }
 
+export const mediaStatusValues = [
+  'all',
+  'scheduled',
+  'watching',
+  'postponed',
+  'abandoned',
+  'completed',
+  'favorite',
+] as const;
+
+export type TMediaStatusValues = (typeof mediaStatusValues)[number];
+
+export type TMediaStatus =
+  | 'all'
+  | 'scheduled'
+  | 'watching'
+  | 'postponed'
+  | 'abandoned'
+  | 'completed'
+  | 'favorite';
+
 export enum ListIndexes {
   UserIndex = 'by_user',
   NameSearchIndex = 'by_item_name',

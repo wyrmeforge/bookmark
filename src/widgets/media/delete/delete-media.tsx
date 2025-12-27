@@ -13,13 +13,15 @@ import {
 } from '@/shared/ui/alert-dialog';
 import { DropdownMenuItem } from '@/shared/ui/dropdown-menu';
 import { TrashIcon } from 'lucide-react';
-import { useDeleteMediaItem } from '../model';
 import { ListMediaId } from '@/entities/media';
+import { useDeleteMedia } from './model/use-delete-media';
 
-const DeleteMediaItem = ({ id }: { id: ListMediaId }) => {
-  const { deleteMedia } = useDeleteMediaItem();
+interface IDeleteMediaProps {
+  id: ListMediaId;
+}
 
-  const handleDelete = () => deleteMedia(id);
+const DeleteMedia = ({ id }: IDeleteMediaProps) => {
+  const { deleteMedia } = useDeleteMedia();
 
   return (
     <AlertDialog>
@@ -41,7 +43,10 @@ const DeleteMediaItem = ({ id }: { id: ListMediaId }) => {
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Скасувати</AlertDialogCancel>
-          <AlertDialogAction className='destructive' onClick={handleDelete}>
+          <AlertDialogAction
+            className='destructive'
+            onClick={() => deleteMedia(id)}
+          >
             Видалити
           </AlertDialogAction>
         </AlertDialogFooter>
@@ -50,4 +55,4 @@ const DeleteMediaItem = ({ id }: { id: ListMediaId }) => {
   );
 };
 
-export { DeleteMediaItem };
+export { DeleteMedia };

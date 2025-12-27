@@ -23,14 +23,14 @@ const DashboardLayout = ({ children }: PropsWithChildren) => {
       >
         <ShaderGradient
           animate='off'
-          brightness={2.2} // grain-friendly brightness
+          brightness={2.2}
           cAzimuthAngle={160}
           cDistance={2}
           cPolarAngle={95}
           cameraZoom={0.5}
-          color1='#1a1a1a' // deep blackish base
-          color2='#1F1A1E' // dark warm slate
-          color3='#352525' // subtle warm highlight
+          color1='#1a1a1a'
+          color2='#1F1A1E'
+          color3='#352525'
           grain='on'
           lightType='3d'
           positionX={0}

@@ -85,7 +85,10 @@ export const getListItem = query({
 
 // Update
 export const updateListItem = mutation({
-  args: { id: v.id('lists'), newData: v.any() },
+  args: {
+    id: v.id('lists'),
+    newData: v.optional(v.object(createListItemArgs)),
+  },
   handler: async (ctx, args) => {
     const { id, newData } = args;
 
@@ -126,8 +129,14 @@ export const getListModulesCount = query({
 
     allLists.forEach((item) => {
       if (item.isFavorite) statusCounts[MediaItemStatus.Favorite]++;
-      if (item.status && item.status !== MediaItemStatus.All)
-        statusCounts[item.status]++;
+
+      if (
+        item.status &&
+        item.status !== MediaItemStatus.All &&
+        Object.values(MediaItemStatus).includes(item.status as MediaItemStatus)
+      ) {
+        statusCounts[item.status as MediaItemStatus]++;
+      }
     });
 
     statusCounts[MediaItemStatus.All] = allLists.length;

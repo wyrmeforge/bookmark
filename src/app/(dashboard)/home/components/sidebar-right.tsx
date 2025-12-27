@@ -1,4 +1,4 @@
-import { CreateMedia } from '@/features/media-modify';
+import { CreateMedia } from '@/widgets/media/create/create-media';
 
 const SidebarRight = () => {
   return (

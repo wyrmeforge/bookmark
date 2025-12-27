@@ -193,6 +193,11 @@ export interface MediaStats {
 
 export type ListMedia = Doc<'lists'>;
 
+export type OmittedListMedia = Omit<
+  ListMedia,
+  '_id' | '_creationTime' | 'user'
+>;
+
 export type ListMediaId = Id<'lists'>;
 
 export type ListMediaStatus = ListMedia['status'];

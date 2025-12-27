@@ -13,7 +13,6 @@ import type {
   FilterApi,
   FunctionReference,
 } from "convex/server";
-import type * as enums from "../enums.js";
 import type * as helpers from "../helpers.js";
 import type * as lists from "../lists.js";
 import type * as shared_enums from "../shared/enums.js";
@@ -30,7 +29,6 @@ import type * as validators_media_item from "../validators/media_item.js";
  * ```
  */
 declare const fullApi: ApiFromModules<{
-  enums: typeof enums;
   helpers: typeof helpers;
   lists: typeof lists;
   "shared/enums": typeof shared_enums;
