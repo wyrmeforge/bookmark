@@ -14,7 +14,7 @@ import { useCreateMedia } from '../model';
 import { useAppState } from '@/shared/lib';
 import { Dialog, DialogTrigger } from '@/shared/ui/dialog';
 
-const CreateMedia = ({ initialStatus, customTrigger }: CreateMediaProps) => {
+const CreateMedia = ({ customTrigger }: CreateMediaProps) => {
   const { isCreateSheetOpen, toggleCreateSheet } = useAppState();
   const { createNewMedia } = useCreateMedia();
 
@@ -23,7 +23,7 @@ const CreateMedia = ({ initialStatus, customTrigger }: CreateMediaProps) => {
   };
 
   const initialValues: Partial<ModifyFormValues> = {
-    [FormFields.Status]: initialStatus || MediaStatus.Scheduled,
+    [FormFields.Status]: MediaStatus.Scheduled,
   };
 
   const trigger = customTrigger || (

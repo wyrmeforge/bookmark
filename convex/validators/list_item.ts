@@ -16,10 +16,24 @@ export const listItemFields = {
   isFavorite: v.optional(v.boolean()),
   name: v.string(),
   rate: v.optional(v.number()),
+  image: v.string(),
   status: statusValidator,
   viewedCount: v.optional(v.number()),
   episodesCount: v.optional(v.number()),
   website: v.optional(v.string()),
   comment: v.optional(v.string()),
   user: v.id('users'),
+};
+
+export const createListItemArgs = {
+  mediaApiId: v.string(),
+  isFavorite: v.optional(v.boolean()),
+  name: v.string(),
+  rate: v.optional(v.number()),
+  status: statusValidator,
+  viewedCount: v.optional(v.number()),
+  image: v.string(),
+  episodesCount: v.optional(v.number()),
+  website: v.optional(v.string()),
+  comment: v.optional(v.string()),
 };

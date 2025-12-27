@@ -2,11 +2,11 @@ import { mutation, query } from './_generated/server';
 import { v } from 'convex/values';
 import { getUserId } from './helpers';
 import { paginationOptsValidator } from 'convex/server';
-import { listItemFields } from './validators/list_item';
+import { createListItemArgs } from './validators/list_item';
 import { ListIndexes, MediaItemStatus } from './shared/enums';
 
 export const createListItem = mutation({
-  args: listItemFields,
+  args: createListItemArgs,
   handler: async (ctx, args) => {
     const userId = await getUserId(ctx);
 

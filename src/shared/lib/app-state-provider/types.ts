@@ -1,8 +1,8 @@
 import { ListMedia } from '@/entities/media';
-import { MediaItemStatus } from 'convex/shared/enums';
+import { MediaStatus } from '@/shared/enums';
 
 export interface IAppState {
-  currentFilter: MediaItemStatus;
+  currentFilter: MediaStatus;
   list: ListMedia[] | null;
   isCreateSheetOpen: boolean;
 
@@ -13,7 +13,7 @@ export interface IAppState {
 }
 
 export interface IAppStateContextProps extends IAppState {
-  updateFilter: (filter: MediaItemStatus) => void;
+  updateFilter: (filter: MediaStatus) => void;
   updateList: (list: ListMedia[] | null) => void;
   toggleCreateSheet: () => void;
 
@@ -23,7 +23,7 @@ export interface IAppStateContextProps extends IAppState {
 }
 
 export type AppStateAction =
-  | { type: 'UPDATE_FILTER'; payload: MediaItemStatus }
+  | { type: 'UPDATE_FILTER'; payload: MediaStatus }
   | { type: 'UPDATE_LIST'; payload: ListMedia[] | null }
   | { type: 'TOGGLE_CREATE_SHEET'; payload: boolean }
   | { type: 'UPDATE_GENRE_FILTER'; payload: string | undefined }

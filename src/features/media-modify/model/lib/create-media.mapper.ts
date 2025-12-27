@@ -8,19 +8,17 @@ export const createMediaMapper = (formData: ModifyFormValues) => {
   }
 
   return {
-    mediaId: unityInfo.id,
+    mediaApiId: String(unityInfo.id),
     isFavorite: formData.isFavorite ?? false,
     name: formData.name || unityInfo.name,
-    bannerImage: unityInfo.bannerImage,
-    totalEpisodes: unityInfo.episodes,
     rate: formData.rate,
-    imageUrl: unityInfo.image,
+    image: unityInfo.image,
     status: formData.status,
-    episode: formData.episode,
+    episodesCount: formData.episode,
     website: formData.website,
     viewedCount: formData.viewedCount,
     comment: formData.comment,
-    genres: unityInfo.genres,
-    seasonYear: String(unityInfo.seasonYear),
+    // genres: unityInfo.genres,
+    // seasonYear: String(unityInfo.seasonYear),
   };
 };

@@ -9,8 +9,8 @@ import {
 
 import { IAppStateContextProps } from './types';
 import { appStateReducer, initialState } from './utils';
-import { MediaStatus } from '@/shared/enums';
 import { ListMedia } from '@/entities/media';
+import { MediaStatus } from '@/shared/enums';
 
 const AppStateContext = createContext<IAppStateContextProps>({
   updateFilter: () => {},

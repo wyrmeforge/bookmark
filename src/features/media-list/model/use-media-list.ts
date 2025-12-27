@@ -22,6 +22,7 @@ export const useMediaList = () => {
     { initialNumItems }
   );
 
+  console.log(list);
   return {
     list,
     loadMore,
