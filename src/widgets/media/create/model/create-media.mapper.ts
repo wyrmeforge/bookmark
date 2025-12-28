@@ -1,12 +1,12 @@
-import { OmittedListMedia } from '@/entities/media';
-import { TMediaModifyFormValues } from '@/features/media-modify/model/helpers';
+import type { OmittedListMedia } from "@/entities/media";
+import type { TMediaModifyFormValues } from "@/features/media-modify/model/helpers";
 
 export const mapCreateMediaPayload = (
   formData: TMediaModifyFormValues
 ): OmittedListMedia => {
   const { unity_info: unityInfo } = formData;
 
-  if (!unityInfo) throw new Error('Missing unity_info in form data');
+  if (!unityInfo) throw new Error("Missing unity_info in form data");
 
   const { id: mediaApiId, name: unityName, image } = unityInfo;
 

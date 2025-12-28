@@ -1,5 +1,5 @@
-import { MEDIA_STATUS_FILTERS } from '@/shared/config';
-import { MediaStatus } from '@/shared/enums';
+import { MEDIA_STATUS_FILTERS } from "@/shared/config";
+import { MediaStatus } from "@/shared/enums";
 
 export const MENU_MEDIA_FILTERS = MEDIA_STATUS_FILTERS.filter(({ key }) =>
   [

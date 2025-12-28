@@ -1,15 +1,15 @@
+import { FilterIcon } from "lucide-react";
+import type { MediaItemId, MediaItemStatus } from "@/shared/api";
+import { cn } from "@/shared/lib/utils";
 import {
   DropdownMenuItem,
   DropdownMenuPortal,
   DropdownMenuSub,
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
-} from '@/shared/ui/dropdown-menu';
-import { FilterIcon } from 'lucide-react';
-import { cn } from '@/shared/lib/utils';
-import { useMediaActions } from '../../model/use-media-actions';
-import { MediaItemId, MediaItemStatus } from '@/shared/api';
-import { MENU_MEDIA_FILTERS } from '../../config';
+} from "@/shared/ui/dropdown-menu";
+import { MENU_MEDIA_FILTERS } from "../../config";
+import { useMediaActions } from "../../model/use-media-actions";
 
 interface IStatusSubMenuProps {
   mediaItemId: MediaItemId;
@@ -22,17 +22,17 @@ const StatusSubMenu = ({ mediaItemId, currentStatus }: IStatusSubMenuProps) => {
   return (
     <DropdownMenuSub>
       <DropdownMenuSubTrigger>
-        <FilterIcon className='mr-2 h-4 w-4' />
+        <FilterIcon className="mr-2 h-4 w-4" />
         Змінити статус на
       </DropdownMenuSubTrigger>
       <DropdownMenuPortal>
-        <DropdownMenuSubContent className='px-2'>
+        <DropdownMenuSubContent className="px-2">
           {MENU_MEDIA_FILTERS.map(({ label, key, icon: Icon }) => (
             <DropdownMenuItem
-              key={key}
-              className={cn('flex gap-3 hover:cursor-pointer', {
-                'bg-gray-700': key === currentStatus,
+              className={cn("flex gap-3 hover:cursor-pointer", {
+                "bg-gray-700": key === currentStatus,
               })}
+              key={key}
               onClick={() => changeStatus(key)}
             >
               <Icon size={16} />

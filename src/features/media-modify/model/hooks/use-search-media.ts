@@ -1,8 +1,8 @@
-import { fetcher } from '@/shared/lib';
-import { useMemo } from 'react';
-import useSWR from 'swr';
-import { SEARCH_MEDIA_QUERY } from '../api/search-media-query';
-import { SearchMediaResponse } from '../dto/search-media.dto';
+import { useMemo } from "react";
+import useSWR from "swr";
+import { fetcher } from "@/shared/lib";
+import { SEARCH_MEDIA_QUERY } from "../api/search-media-query";
+import type { SearchMediaResponse } from "../dto/search-media.dto";
 
 export const useSearchMedia = (searchValue?: string) => {
   const { data, isLoading } = useSWR<SearchMediaResponse>(

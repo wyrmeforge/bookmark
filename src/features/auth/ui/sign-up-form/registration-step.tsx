@@ -1,18 +1,16 @@
-'use client';
+"use client";
 
-import { Button } from '@/shared/ui/button';
-import { useFormContext } from 'react-hook-form';
-import { FormFooter, FormHeader, PasswordInput } from '../components';
-import { useRegistration } from '../../lib/use-registration';
-
+import { useFormContext } from "react-hook-form";
+import { Routes } from "@/shared/enums";
+import { Button } from "@/shared/ui/button";
+import { FormInput } from "@/shared/ui/form-input";
+import { useRegistration } from "../../lib/use-registration";
 import {
-  ISignUpStepProps,
+  type ISignUpStepProps,
   SignUpFormFields,
-  SignUpFormValues,
-} from '../../model';
-
-import { Routes } from '@/shared/enums';
-import { FormInput } from '@/shared/ui/form-input';
+  type SignUpFormValues,
+} from "../../model";
+import { FormFooter, FormHeader, PasswordInput } from "../components";
 
 const RegistrationStep = ({ setFlowStep }: ISignUpStepProps) => {
   const { handleSubmit } = useFormContext<SignUpFormValues>();
@@ -24,34 +22,34 @@ const RegistrationStep = ({ setFlowStep }: ISignUpStepProps) => {
   const onSubmit = handleSubmit(registerWithCredentials);
 
   return (
-    <form onSubmit={onSubmit} className='w-full px-4 py-6 md:px-10'>
+    <form className="w-full px-4 py-6 md:px-10" onSubmit={onSubmit}>
       <FormHeader
-        title='Ласкаво просимо!'
-        question='Уже маєте акаунт?'
-        ctaLabel='Увійти'
         ctaHref={Routes.SignIn}
+        ctaLabel="Увійти"
+        question="Уже маєте акаунт?"
+        title="Ласкаво просимо!"
       />
-      <div className='grid gap-6'>
-        <div className='grid gap-6'>
+      <div className="grid gap-6">
+        <div className="grid gap-6">
           <FormInput
-            required
-            type='email'
-            placeholder='Введіть вашу пошту'
+            label="Пошта"
             name={SignUpFormFields.Email}
-            label='Пошта'
+            placeholder="Введіть вашу пошту"
+            required
+            type="email"
           />
           <FormInput
-            placeholder='Введіть нікнейм'
+            label="Нікнейм"
             name={SignUpFormFields.Username}
-            label='Нікнейм'
+            placeholder="Введіть нікнейм"
           />
-          <PasswordInput label='Пароль' name={SignUpFormFields.Password} />
+          <PasswordInput label="Пароль" name={SignUpFormFields.Password} />
           <PasswordInput
-            label='Підтвердіть пароль'
+            label="Підтвердіть пароль"
             name={SignUpFormFields.ConfirmPassword}
           />
-          <div className='flex items-center justify-between gap-4'>
-            <Button type='submit' className='w-full '>
+          <div className="flex items-center justify-between gap-4">
+            <Button className="w-full" type="submit">
               Надіслати код підтвердження
             </Button>
           </div>

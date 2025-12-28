@@ -1,11 +1,11 @@
-import { OmittedListMedia } from '@/entities/media';
-import { TMediaModifyFormValues } from '@/features/media-modify/model/helpers';
+import type { OmittedListMedia } from "@/entities/media";
+import type { TMediaModifyFormValues } from "@/features/media-modify/model/helpers";
 
 export const mapEditMediaPayload = (
   mediaData: TMediaModifyFormValues
 ): OmittedListMedia => {
   if (!mediaData) {
-    throw new Error('Missing mediaData in form data');
+    throw new Error("Missing mediaData in form data");
   }
 
   return {

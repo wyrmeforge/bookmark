@@ -1,2 +1,2 @@
-export * from './media-meta';
-export * from './media-poster';
+export * from "./media-meta";
+export * from "./media-poster";

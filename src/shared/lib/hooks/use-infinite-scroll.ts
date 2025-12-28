@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef } from "react";
 
 export const useInfiniteScroll = (
   onLoadMore: () => void,
@@ -18,7 +18,7 @@ export const useInfiniteScroll = (
         const [entry] = entries;
         if (entry.isIntersecting) onLoadMore();
       },
-      { rootMargin: '100px' }
+      { rootMargin: "100px" }
     );
 
     const el = ref.current;

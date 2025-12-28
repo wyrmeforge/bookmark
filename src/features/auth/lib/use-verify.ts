@@ -1,14 +1,13 @@
-import { useSignUp } from '@clerk/nextjs';
-import { useRouter } from 'next/navigation';
-
+import { useSignUp } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { Routes } from "@/shared/enums";
 import {
-  ISignUpStepProps,
+  type ISignUpStepProps,
   SignUpFlowSteps,
-  SignUpFormValues,
-  UseVerifyReturn,
-} from '../model';
-import { toast } from 'sonner';
-import { Routes } from '@/shared/enums';
+  type SignUpFormValues,
+  type UseVerifyReturn,
+} from "../model";
 
 export const useVerify = ({
   setFlowStep,
@@ -18,32 +17,32 @@ export const useVerify = ({
   const router = useRouter();
 
   const verifyAccount = async ({ verificationCode }: SignUpFormValues) => {
-    if (!isLoaded || !signUp) return;
+    if (!(isLoaded && signUp)) return;
 
     try {
       const completeSignUp = await signUp.attemptEmailAddressVerification({
         code: verificationCode,
       });
 
-      if (completeSignUp.status === 'complete') {
+      if (completeSignUp.status === "complete") {
         setFlowStep(SignUpFlowSteps.Success);
 
         await setActive({ session: completeSignUp.createdSessionId });
 
         router.push(Routes.Home);
 
-        toast.success('Реєстрація пройшла успішно!');
+        toast.success("Реєстрація пройшла успішно!");
       } else {
         console.error(
-          'Unexpected sign-up verification result:',
+          "Unexpected sign-up verification result:",
           completeSignUp
         );
       }
     } catch (err) {
-      toast.error('Помилка підтвердження акаунта', {
-        description: 'Код неправильний або недійсний. Спробуйте ще раз.',
+      toast.error("Помилка підтвердження акаунта", {
+        description: "Код неправильний або недійсний. Спробуйте ще раз.",
       });
-      console.error('Verification error:', JSON.stringify(err, null, 2));
+      console.error("Verification error:", JSON.stringify(err, null, 2));
     }
   };
 

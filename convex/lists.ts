@@ -1,9 +1,9 @@
-import { mutation, query } from './_generated/server';
-import { v } from 'convex/values';
-import { getUserId } from './helpers';
-import { paginationOptsValidator } from 'convex/server';
-import { createListItemArgs } from './validators/list_item';
-import { ListIndexes, MediaItemStatus } from './shared/enums';
+import { paginationOptsValidator } from "convex/server";
+import { v } from "convex/values";
+import { mutation, query } from "./_generated/server";
+import { getUserId } from "./helpers";
+import { ListIndexes, MediaItemStatus } from "./shared/enums";
+import { createListItemArgs } from "./validators/list_item";
 
 export const createListItem = mutation({
   args: createListItemArgs,
@@ -11,15 +11,15 @@ export const createListItem = mutation({
     const userId = await getUserId(ctx);
 
     const existingItem = await ctx.db
-      .query('lists')
-      .filter((q) => q.eq(q.field('mediaApiId'), args.mediaApiId))
-      .filter((q) => q.eq(q.field('user'), userId))
+      .query("lists")
+      .filter((q) => q.eq(q.field("mediaApiId"), args.mediaApiId))
+      .filter((q) => q.eq(q.field("user"), userId))
       .first();
 
     if (existingItem) {
-      return { success: false, error: 'ITEM_ALREADY_EXISTS' };
+      return { success: false, error: "ITEM_ALREADY_EXISTS" };
     }
-    await ctx.db.insert('lists', { ...args, user: userId });
+    await ctx.db.insert("lists", { ...args, user: userId });
 
     return { success: true };
   },
@@ -35,14 +35,14 @@ export const getList = query({
 
     // Start query for the user's lists
     let listsQuery = ctx.db
-      .query('lists')
-      .withIndex(ListIndexes.UserIndex, (q) => q.eq('user', userId));
+      .query("lists")
+      .withIndex(ListIndexes.UserIndex, (q) => q.eq("user", userId));
 
     // Filter by favorite or status
     if (filter === MediaItemStatus.Favorite) {
-      listsQuery = listsQuery.filter((q) => q.eq(q.field('isFavorite'), true));
+      listsQuery = listsQuery.filter((q) => q.eq(q.field("isFavorite"), true));
     } else if (filter !== MediaItemStatus.All) {
-      listsQuery = listsQuery.filter((q) => q.eq(q.field('status'), filter));
+      listsQuery = listsQuery.filter((q) => q.eq(q.field("status"), filter));
     }
 
     // Paginate
@@ -60,9 +60,9 @@ export const searchMedia = mutation({
     const userId = await getUserId(ctx);
 
     const result = await ctx.db
-      .query('lists')
+      .query("lists")
       .withSearchIndex(ListIndexes.NameSearchIndex, (q) =>
-        q.search('name', value || '').eq('user', userId)
+        q.search("name", value || "").eq("user", userId)
       )
       .take(5);
 
@@ -76,9 +76,9 @@ export const getListItem = query({
     const userId = await getUserId(ctx);
 
     return await ctx.db
-      .query('lists')
-      .withIndex(ListIndexes.UserIndex, (q) => q.eq('user', userId))
-      .filter((q) => q.eq(q.field('mediaApiId'), mediaApiId))
+      .query("lists")
+      .withIndex(ListIndexes.UserIndex, (q) => q.eq("user", userId))
+      .filter((q) => q.eq(q.field("mediaApiId"), mediaApiId))
       .unique();
   },
 });
@@ -86,7 +86,7 @@ export const getListItem = query({
 // Update
 export const updateListItem = mutation({
   args: {
-    id: v.id('lists'),
+    id: v.id("lists"),
     newData: v.optional(v.object(createListItemArgs)),
   },
   handler: async (ctx, args) => {
@@ -100,7 +100,7 @@ export const updateListItem = mutation({
 
 // Delete
 export const deleteListItem = mutation({
-  args: { id: v.id('lists') },
+  args: { id: v.id("lists") },
   handler: async (ctx, args) => {
     await ctx.db.delete(args.id);
 
@@ -113,8 +113,8 @@ export const getListModulesCount = query({
     const userId = await getUserId(ctx);
 
     const allLists = await ctx.db
-      .query('lists')
-      .withIndex(ListIndexes.UserIndex, (q) => q.eq('user', userId))
+      .query("lists")
+      .withIndex(ListIndexes.UserIndex, (q) => q.eq("user", userId))
       .collect();
 
     const statusCounts: Record<MediaItemStatus, number> = Object.values(

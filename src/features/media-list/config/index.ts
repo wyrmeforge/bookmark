@@ -1,1 +1,1 @@
-export * from './menu-media-filters';
+export * from "./menu-media-filters";

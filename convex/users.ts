@@ -1,18 +1,18 @@
-import { mutation, query } from './_generated/server';
-import { v } from 'convex/values';
-import { getUserId } from './helpers';
+import { v } from "convex/values";
+import { mutation, query } from "./_generated/server";
+import { getUserId } from "./helpers";
 
 export const store = mutation(async ({ db, auth }) => {
   const identity = await auth.getUserIdentity();
 
   if (!identity) {
-    throw new Error('Called storeUser without authentication present');
+    throw new Error("Called storeUser without authentication present");
   }
 
   const user = await db
-    .query('users')
-    .withIndex('by_token', (q) =>
-      q.eq('tokenIdentifier', identity.tokenIdentifier)
+    .query("users")
+    .withIndex("by_token", (q) =>
+      q.eq("tokenIdentifier", identity.tokenIdentifier)
     )
     .unique();
 
@@ -25,7 +25,7 @@ export const store = mutation(async ({ db, auth }) => {
     return user._id;
   }
 
-  return db.insert('users', {
+  return db.insert("users", {
     name: userName!,
     avatar: identity.pictureUrl || identity?.profileUrl,
     nickname: identity.nickname,
@@ -60,27 +60,27 @@ export const searchUsersByName = query({
   args: { name: v.string() },
   handler: async (ctx, args) => {
     return ctx.db
-      .query('users')
-      .withSearchIndex('by_name', (q) => q.search('name', args.name))
+      .query("users")
+      .withSearchIndex("by_name", (q) => q.search("name", args.name))
       .collect();
   },
 });
 
 export const getUserById = query({
-  args: { id: v.id('users') },
+  args: { id: v.id("users") },
   handler: async (ctx, args) => {
     if (!args.id) return;
 
     return ctx.db
-      .query('users')
-      .filter((q) => q.eq(q.field('_id'), args.id))
+      .query("users")
+      .filter((q) => q.eq(q.field("_id"), args.id))
       .unique();
   },
 });
 
 export const getUsersNicknames = query({
   handler: async ({ db }) => {
-    const data = await db.query('users').collect();
+    const data = await db.query("users").collect();
 
     return data.map((item) => ({
       id: item._id,

@@ -1,9 +1,9 @@
-import { SignInForm } from '@/features/auth';
-import { Metadata } from 'next';
+import type { Metadata } from "next";
+import { SignInForm } from "@/features/auth";
 
 export const metadata: Metadata = {
-  title: 'Вхід | YOOKOSO',
-  description: 'Форма авторизації - YOKOSO',
+  title: "Вхід | YOOKOSO",
+  description: "Форма авторизації - YOKOSO",
 };
 
 const SignIn = () => {

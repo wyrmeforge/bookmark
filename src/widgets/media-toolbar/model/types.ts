@@ -1,6 +1,6 @@
-import { ListMediaStatus } from '@/entities/media';
-import { MediaStatus } from '@/shared/enums';
-import { ReactNode } from 'react';
+import type { ReactNode } from "react";
+import type { ListMediaStatus } from "@/entities/media";
+import type { MediaStatus } from "@/shared/enums";
 
 type MenuItem = {
   key: ListMediaStatus;

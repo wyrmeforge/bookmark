@@ -1,16 +1,15 @@
-'use client';
+"use client";
 
 import {
   createContext,
-  PropsWithChildren,
+  type PropsWithChildren,
   useContext,
   useReducer,
-} from 'react';
-
-import { IAppStateContextProps } from './types';
-import { appStateReducer, initialState } from './utils';
-import { ListMedia } from '@/entities/media';
-import { MediaStatus } from '@/shared/enums';
+} from "react";
+import type { ListMedia } from "@/entities/media";
+import type { MediaStatus } from "@/shared/enums";
+import type { IAppStateContextProps } from "./types";
+import { appStateReducer, initialState } from "./utils";
 
 const AppStateContext = createContext<IAppStateContextProps>({
   updateFilter: () => {},
@@ -27,17 +26,17 @@ const AppStateProvider = ({ children }: PropsWithChildren) => {
   const contextValue: IAppStateContextProps = {
     ...state,
     updateFilter: (filter: MediaStatus) =>
-      dispatch({ type: 'UPDATE_FILTER', payload: filter }),
+      dispatch({ type: "UPDATE_FILTER", payload: filter }),
     updateList: (list: ListMedia[] | null) =>
-      dispatch({ type: 'UPDATE_LIST', payload: list }),
+      dispatch({ type: "UPDATE_LIST", payload: list }),
     updateGenreFilter: (genre: string | undefined) =>
-      dispatch({ type: 'UPDATE_GENRE_FILTER', payload: genre }),
-    updateSort: (sortBy: 'date' | 'year', sortOrder: 'asc' | 'desc') =>
-      dispatch({ type: 'UPDATE_SORT', payload: { sortBy, sortOrder } }),
+      dispatch({ type: "UPDATE_GENRE_FILTER", payload: genre }),
+    updateSort: (sortBy: "date" | "year", sortOrder: "asc" | "desc") =>
+      dispatch({ type: "UPDATE_SORT", payload: { sortBy, sortOrder } }),
 
     toggleCreateSheet: () =>
       dispatch({
-        type: 'TOGGLE_CREATE_SHEET',
+        type: "TOGGLE_CREATE_SHEET",
         payload: !state.isCreateSheetOpen,
       }),
   };

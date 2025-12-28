@@ -1,10 +1,11 @@
-'use client';
+"use client";
 
-import { useCreateMediaShortcut, useStoreUser } from '@/shared/lib';
-import { Loader } from '@/shared/ui/loader';
-import { PropsWithChildren } from 'react';
-import MinimalNav from './home/components/menu';
-import { ShaderGradientCanvas, ShaderGradient } from '@shadergradient/react';
+import type { PropsWithChildren } from "react";
+import { useCreateMediaShortcut, useStoreUser } from "@/shared/lib";
+import { Loader } from "@/shared/ui/loader";
+import MinimalNav from "./home/components/menu";
+
+// import { ShaderGradientCanvas, ShaderGradient } from '@shadergradient/react';
 
 const DashboardLayout = ({ children }: PropsWithChildren) => {
   const { isLoading, isAuthenticated } = useStoreUser();
@@ -13,8 +14,8 @@ const DashboardLayout = ({ children }: PropsWithChildren) => {
   if (isLoading || !isAuthenticated) return <Loader />;
 
   return (
-    <div className='relative flex h-dvh flex-col overflow-x-hidden'>
-      <ShaderGradientCanvas
+    <div className="relative flex h-dvh flex-col overflow-x-hidden">
+      {/* <ShaderGradientCanvas
         style={{
           position: 'fixed',
           inset: 0,
@@ -54,9 +55,9 @@ const DashboardLayout = ({ children }: PropsWithChildren) => {
           uTime={0.2}
           wireframe={false}
         />
-      </ShaderGradientCanvas>
+      </ShaderGradientCanvas> */}
       <MinimalNav />
-      <main className='w-full flex-1 px-2 md:px-20'>{children}</main>
+      <main className="w-full flex-1 px-2 md:px-20">{children}</main>
     </div>
   );
 };

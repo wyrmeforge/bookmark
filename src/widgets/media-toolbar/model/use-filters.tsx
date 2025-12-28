@@ -1,10 +1,9 @@
-import { useQuery } from 'convex/react';
-import { useMemo } from 'react';
-
-import { api } from '@convex/api';
-import { MEDIA_STATUS_FILTERS } from '@/shared/config';
-import { useAppState } from '@/shared/lib';
-import { UseFiltersReturn } from './types';
+import { api } from "@convex/api";
+import { useQuery } from "convex/react";
+import { useMemo } from "react";
+import { MEDIA_STATUS_FILTERS } from "@/shared/config";
+import { useAppState } from "@/shared/lib";
+import type { UseFiltersReturn } from "./types";
 
 export const useFilters = (): UseFiltersReturn => {
   const { currentFilter, updateFilter } = useAppState();

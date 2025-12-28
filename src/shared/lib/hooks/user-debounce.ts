@@ -1,12 +1,9 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
-export const useDebounce = (
-  searchValue: string,
-  debounceMs: number = 500
-): string => {
-  const [debounceValue, setDebounceValue] = useState('');
+export const useDebounce = (searchValue: string, debounceMs = 500): string => {
+  const [debounceValue, setDebounceValue] = useState("");
 
   useEffect(() => {
     const handler = setTimeout(() => {

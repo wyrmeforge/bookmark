@@ -1,8 +1,8 @@
-import { useState, useCallback } from 'react';
-import { EyeIcon, EyeOffIcon } from 'lucide-react';
+import { EyeIcon, EyeOffIcon } from "lucide-react";
+import { useCallback, useState } from "react";
 
-import { Button } from '@/shared/ui/button';
-import { FormInput } from '@/shared/ui/form-input';
+import { Button } from "@/shared/ui/button";
+import { FormInput } from "@/shared/ui/form-input";
 
 interface IPasswordInputProps {
   name: string;
@@ -20,28 +20,28 @@ const PasswordInput = ({ name, label }: IPasswordInputProps) => {
     []
   );
 
-  const inputType = isPasswordVisible ? 'text' : 'password';
+  const inputType = isPasswordVisible ? "text" : "password";
   const visibilityIcon = isPasswordVisible ? <EyeOffIcon /> : <EyeIcon />;
 
   return (
-    <div className='grid gap-2'>
+    <div className="grid gap-2">
       <FormInput
-        label={label}
-        required
-        type={inputType}
-        placeholder='*******'
-        name={name}
         endAdornment={
           <Button
-            type='button'
+            aria-label={isPasswordVisible ? "Hide password" : "Show password"}
             onClick={togglePasswordVisibility}
-            variant='ghost'
-            size='icon'
-            aria-label={isPasswordVisible ? 'Hide password' : 'Show password'}
+            size="icon"
+            type="button"
+            variant="ghost"
           >
             {visibilityIcon}
           </Button>
         }
+        label={label}
+        name={name}
+        placeholder="*******"
+        required
+        type={inputType}
       />
     </div>
   );

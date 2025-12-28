@@ -1,19 +1,19 @@
-'use client';
+"use client";
 
-import { useEffect, useState, useCallback } from 'react';
-import { useDebounce } from '@/shared/lib';
-import { useMutation } from 'convex/react';
-import { ListMedia } from '@/entities/media';
-import { UseMediaSearchReturn } from './types';
-import { api } from '@convex/api';
-import { Routes, StorageKeys } from '@/shared/enums';
-import { useRouter } from 'next/navigation';
-import { useOpenShortcut } from './use-open-shortcut';
+import { api } from "@convex/api";
+import { useMutation } from "convex/react";
+import { useRouter } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
+import type { ListMedia } from "@/entities/media";
+import { Routes, StorageKeys } from "@/shared/enums";
+import { useDebounce } from "@/shared/lib";
+import type { UseMediaSearchReturn } from "./types";
+import { useOpenShortcut } from "./use-open-shortcut";
 
 export const useMediaSearch = (): UseMediaSearchReturn => {
   const router = useRouter();
 
-  const [searchValue, setSearchValue] = useState('');
+  const [searchValue, setSearchValue] = useState("");
   const debouncedValue = useDebounce(searchValue, 300);
 
   const [results, setResults] = useState<ListMedia[] | null>(null); // null = loading
@@ -21,7 +21,7 @@ export const useMediaSearch = (): UseMediaSearchReturn => {
 
   // Recent search items, persisted in localStorage
   const [recent, setRecentState] = useState<ListMedia[]>(() => {
-    if (typeof window === 'undefined') return []; // SSR check
+    if (typeof window === "undefined") return []; // SSR check
     try {
       const stored = localStorage.getItem(StorageKeys.RecentSearchItem);
       return stored ? JSON.parse(stored) : [];
@@ -74,7 +74,7 @@ export const useMediaSearch = (): UseMediaSearchReturn => {
       });
 
       setIsSearchOpen(false);
-      setSearchValue('');
+      setSearchValue("");
       goToMediaDetailsPage(item.mediaId);
     },
     [setRecentState, setSearchValue, goToMediaDetailsPage]
@@ -83,7 +83,7 @@ export const useMediaSearch = (): UseMediaSearchReturn => {
   const onRecentSelect = useCallback(
     (mediaId: number) => {
       setIsSearchOpen(false);
-      setSearchValue('');
+      setSearchValue("");
       goToMediaDetailsPage(mediaId);
     },
     [goToMediaDetailsPage, setSearchValue]
@@ -114,7 +114,7 @@ export const useMediaSearch = (): UseMediaSearchReturn => {
     setIsSearchOpen,
     isLoading: hasSearchInput && noResultsYet,
     isResultsEmpty: hasSearchInput && !noResultsYet && !hasResults,
-    isInitEmpty: !hasSearchInput && !hasResults && !hasRecentItems,
+    isInitEmpty: !(hasSearchInput || hasResults || hasRecentItems),
     showRecentItems: !hasSearchInput && hasRecentItems,
     showResults: hasResults,
   };

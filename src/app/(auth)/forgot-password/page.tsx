@@ -1,9 +1,9 @@
-import { ForgotPasswordForm } from '@/features/auth';
-import { Metadata } from 'next';
+import type { Metadata } from "next";
+import { ForgotPasswordForm } from "@/features/auth";
 
 export const metadata: Metadata = {
-  title: 'Відновлення паролю | YOOKOSO',
-  description: 'Форма відновлення паролю - YOKOSO',
+  title: "Відновлення паролю | YOOKOSO",
+  description: "Форма відновлення паролю - YOKOSO",
 };
 
 const SignUp = () => {

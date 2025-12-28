@@ -1,5 +1,5 @@
-import { ListMediaId } from '@/entities/media';
-import { MediaStatus } from '@/shared/enums';
+import type { ListMediaId } from "@/entities/media";
+import type { MediaStatus } from "@/shared/enums";
 
 export type UseMediaActionsProps = {
   mediaItemId: ListMediaId;

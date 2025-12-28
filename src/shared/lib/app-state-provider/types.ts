@@ -1,5 +1,5 @@
-import { ListMedia } from '@/entities/media';
-import { MediaStatus } from '@/shared/enums';
+import type { ListMedia } from "@/entities/media";
+import type { MediaStatus } from "@/shared/enums";
 
 export interface IAppState {
   currentFilter: MediaStatus;
@@ -8,8 +8,8 @@ export interface IAppState {
 
   // нові поля
   genreFilter: string | undefined;
-  sortBy: 'date' | 'year';
-  sortOrder: 'asc' | 'desc';
+  sortBy: "date" | "year";
+  sortOrder: "asc" | "desc";
 }
 
 export interface IAppStateContextProps extends IAppState {
@@ -19,15 +19,15 @@ export interface IAppStateContextProps extends IAppState {
 
   // нові методи
   updateGenreFilter: (genre: string | undefined) => void;
-  updateSort: (sortBy: 'date' | 'year', sortOrder: 'asc' | 'desc') => void;
+  updateSort: (sortBy: "date" | "year", sortOrder: "asc" | "desc") => void;
 }
 
 export type AppStateAction =
-  | { type: 'UPDATE_FILTER'; payload: MediaStatus }
-  | { type: 'UPDATE_LIST'; payload: ListMedia[] | null }
-  | { type: 'TOGGLE_CREATE_SHEET'; payload: boolean }
-  | { type: 'UPDATE_GENRE_FILTER'; payload: string | undefined }
+  | { type: "UPDATE_FILTER"; payload: MediaStatus }
+  | { type: "UPDATE_LIST"; payload: ListMedia[] | null }
+  | { type: "TOGGLE_CREATE_SHEET"; payload: boolean }
+  | { type: "UPDATE_GENRE_FILTER"; payload: string | undefined }
   | {
-      type: 'UPDATE_SORT';
-      payload: { sortBy: 'date' | 'year'; sortOrder: 'asc' | 'desc' };
+      type: "UPDATE_SORT";
+      payload: { sortBy: "date" | "year"; sortOrder: "asc" | "desc" };
     };

@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
 export const useMobile = (breakpoint = 768) => {
   const [isMobile, setIsMobile] = useState(false);
@@ -11,9 +11,9 @@ export const useMobile = (breakpoint = 768) => {
     }
 
     onResize();
-    window.addEventListener('resize', onResize);
+    window.addEventListener("resize", onResize);
 
-    return () => window.removeEventListener('resize', onResize);
+    return () => window.removeEventListener("resize", onResize);
   }, [breakpoint]);
 
   return { isMobile };

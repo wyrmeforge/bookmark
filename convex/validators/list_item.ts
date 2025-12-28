@@ -1,5 +1,5 @@
-import { v } from 'convex/values';
-import { mediaStatusValues } from '../shared/enums';
+import { v } from "convex/values";
+import { mediaStatusValues } from "../shared/enums";
 
 export const statusValidator = v.union(...mediaStatusValues.map(v.literal));
 
@@ -18,7 +18,7 @@ const commonListItemFields = {
 
 export const defaultListItemFields = {
   ...commonListItemFields,
-  user: v.id('users'),
+  user: v.id("users"),
 };
 
 export const createListItemArgs = commonListItemFields;

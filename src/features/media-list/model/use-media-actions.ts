@@ -1,8 +1,8 @@
-import { useMutation } from 'convex/react';
-import { api } from '@convex/api';
-import { toast } from 'sonner';
-import { UseMediaActionsProps, UseMediaActionsReturn } from './types';
-import { TMediaStatusValues } from '@/entities/media/model/convex/constants';
+import { api } from "@convex/api";
+import { useMutation } from "convex/react";
+import { toast } from "sonner";
+import type { TMediaStatusValues } from "@/entities/media/model/convex/constants";
+import type { UseMediaActionsProps, UseMediaActionsReturn } from "./types";
 
 export const useMediaActions = ({
   mediaItemId,
@@ -19,7 +19,7 @@ export const useMediaActions = ({
 
   const changeStatus = async (status: TMediaStatusValues) => {
     await updateItem({ id: mediaItemId, newData: { status } });
-    toast.success('Статус успішно змінено!');
+    toast.success("Статус успішно змінено!");
   };
 
   return { toggleFavorite, changeStatus };

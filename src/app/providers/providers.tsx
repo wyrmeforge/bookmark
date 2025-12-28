@@ -1,10 +1,10 @@
-import { PropsWithChildren } from 'react';
-import { ThemeProvider } from './theme-provider';
-import { ConvexClientProvider } from './convex-client-provider';
-import { ClerkProvider } from './clerk-provider';
-import { TooltipProvider } from '@/shared/ui/tooltip';
-import { Toaster } from '@/shared/ui/sonner';
-import { AppStateProvider } from '@/shared/lib';
+import type { PropsWithChildren } from "react";
+import { AppStateProvider } from "@/shared/lib";
+import { Toaster } from "@/shared/ui/sonner";
+import { TooltipProvider } from "@/shared/ui/tooltip";
+import { ClerkProvider } from "./clerk-provider";
+import { ConvexClientProvider } from "./convex-client-provider";
+import { ThemeProvider } from "./theme-provider";
 
 export const Providers = ({ children }: PropsWithChildren) => (
   <ClerkProvider>
@@ -12,7 +12,7 @@ export const Providers = ({ children }: PropsWithChildren) => (
       <ThemeProvider>
         <TooltipProvider>
           <AppStateProvider>
-            <Toaster position='top-left' richColors />
+            <Toaster position="top-left" richColors />
             {children}
           </AppStateProvider>
         </TooltipProvider>

@@ -1,17 +1,17 @@
-import { SignUpFormValues } from '../schema';
+import type { SignUpFormValues } from "../schema";
 
 export enum SignUpFormFields {
-  Email = 'email',
-  Password = 'password',
-  Username = 'username',
-  ConfirmPassword = 'confirmPassword',
-  VerificationCode = 'verificationCode',
+  Email = "email",
+  Password = "password",
+  Username = "username",
+  ConfirmPassword = "confirmPassword",
+  VerificationCode = "verificationCode",
 }
 
 export enum SignUpFlowSteps {
-  Registration = 'registration',
-  Verification = 'verification',
-  Success = 'success',
+  Registration = "registration",
+  Verification = "verification",
+  Success = "success",
 }
 
 export type ISignUpStepProps = {

@@ -1,5 +1,5 @@
-import { MediaStatus } from '@/shared/enums';
-import { Doc, Id } from '@convex/dataModel';
+import type { Doc, Id } from "@convex/dataModel";
+import { MediaStatus } from "@/shared/enums";
 
 // ==========================================================
 // This file contains two distinct sets of types:
@@ -27,36 +27,36 @@ export interface MediaDetailsDto {
 }
 
 export enum MediaFormat {
-  TV = 'TV',
-  TV_SHORT = 'TV_SHORT',
-  MOVIE = 'MOVIE',
-  SPECIAL = 'SPECIAL',
-  OVA = 'OVA',
-  ONA = 'ONA',
-  MUSIC = 'MUSIC',
-  MANGA = 'MANGA',
-  NOVEL = 'NOVEL',
-  ONE_SHOT = 'ONE_SHOT',
+  TV = "TV",
+  TV_SHORT = "TV_SHORT",
+  MOVIE = "MOVIE",
+  SPECIAL = "SPECIAL",
+  OVA = "OVA",
+  ONA = "ONA",
+  MUSIC = "MUSIC",
+  MANGA = "MANGA",
+  NOVEL = "NOVEL",
+  ONE_SHOT = "ONE_SHOT",
 }
 
 export enum MediaGenre {
-  Action = 'Action',
-  Adventure = 'Adventure',
-  Comedy = 'Comedy',
-  Drama = 'Drama',
-  Ecchi = 'Ecchi',
-  Fantasy = 'Fantasy',
-  Horror = 'Horror',
-  'Mahou Shoujo' = 'Mahou Shoujo',
-  Mecha = 'Mecha',
-  Music = 'Music',
-  Mystery = 'Mystery',
-  Psychological = 'Psychological',
-  Romance = 'Romance',
-  'Sci-Fi' = 'Sci-Fi',
-  'Slice of Life' = 'Slice of Life',
-  Sports = 'Sports',
-  Supernatural = 'Supernatural',
+  Action = "Action",
+  Adventure = "Adventure",
+  Comedy = "Comedy",
+  Drama = "Drama",
+  Ecchi = "Ecchi",
+  Fantasy = "Fantasy",
+  Horror = "Horror",
+  "Mahou Shoujo" = "Mahou Shoujo",
+  Mecha = "Mecha",
+  Music = "Music",
+  Mystery = "Mystery",
+  Psychological = "Psychological",
+  Romance = "Romance",
+  "Sci-Fi" = "Sci-Fi",
+  "Slice of Life" = "Slice of Life",
+  Sports = "Sports",
+  Supernatural = "Supernatural",
 }
 
 export interface Media {
@@ -191,13 +191,13 @@ export interface MediaStats {
   };
 }
 
-export type ListMedia = Doc<'lists'>;
+export type ListMedia = Doc<"lists">;
 
 export type OmittedListMedia = Omit<
   ListMedia,
-  '_id' | '_creationTime' | 'user'
+  "_id" | "_creationTime" | "user"
 >;
 
-export type ListMediaId = Id<'lists'>;
+export type ListMediaId = Id<"lists">;
 
-export type ListMediaStatus = ListMedia['status'];
+export type ListMediaStatus = ListMedia["status"];

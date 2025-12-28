@@ -1,6 +1,6 @@
-import { Media } from '@/entities/media';
+import type { Media } from "@/entities/media";
 
-export type SearchMediaItem = Pick<Media, 'id' | 'title' | 'coverImage'>;
+export type SearchMediaItem = Pick<Media, "id" | "title" | "coverImage">;
 
 export interface SearchMediaResponse {
   Page: {

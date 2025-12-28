@@ -1,14 +1,13 @@
-import { useMutation } from 'convex/react';
-import { api } from '@convex/api';
-import { toast } from 'sonner';
-import { useCallback } from 'react';
-
-import { mapCreateMediaPayload } from './create-media.mapper';
-import { TMediaModifyFormValues } from '@/features/media-modify/model/helpers';
+import { api } from "@convex/api";
+import { useMutation } from "convex/react";
+import { useCallback } from "react";
+import { toast } from "sonner";
+import type { TMediaModifyFormValues } from "@/features/media-modify/model/helpers";
+import { mapCreateMediaPayload } from "./create-media.mapper";
 
 interface CreateListItemResponse {
   success?: boolean;
-  error?: string | 'ITEM_ALREADY_EXISTS';
+  error?: string | "ITEM_ALREADY_EXISTS";
 }
 
 interface IUseCreateMediaReturn {
@@ -21,19 +20,19 @@ export const useCreateMedia = (): IUseCreateMediaReturn => {
   const handleMutationResult = useCallback(
     (response: CreateListItemResponse, mediaName: string) => {
       if (response?.success) {
-        toast.success('Успішно додано!', { description: mediaName });
+        toast.success("Успішно додано!", { description: mediaName });
         return;
       }
 
-      if (response?.error === 'ITEM_ALREADY_EXISTS') {
-        toast.error('Не вдалось додати!', {
-          description: 'Це аніме вже є у вашому списку.',
+      if (response?.error === "ITEM_ALREADY_EXISTS") {
+        toast.error("Не вдалось додати!", {
+          description: "Це аніме вже є у вашому списку.",
         });
         return;
       }
 
-      toast.error('Не вдалось додати!', {
-        description: 'Сталася невідома помилка.',
+      toast.error("Не вдалось додати!", {
+        description: "Сталася невідома помилка.",
       });
     },
     []
@@ -47,8 +46,8 @@ export const useCreateMedia = (): IUseCreateMediaReturn => {
 
         handleMutationResult(response, payload.name);
       } catch (error) {
-        toast.error('Не вдалось додати!', {
-          description: (error as Error)?.message ?? 'Сталася невідома помилка.',
+        toast.error("Не вдалось додати!", {
+          description: (error as Error)?.message ?? "Сталася невідома помилка.",
         });
       }
     },

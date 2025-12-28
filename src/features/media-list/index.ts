@@ -1,1 +1,1 @@
-export * from './ui/media-list';
+export * from "./ui/media-list";

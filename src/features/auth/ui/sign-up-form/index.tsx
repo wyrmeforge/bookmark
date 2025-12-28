@@ -1,18 +1,17 @@
-'use client';
+"use client";
 
-import { useForm } from 'react-hook-form';
-import { RegistrationStep } from './registration-step';
-import { VerificationStep } from './verification-step';
-import { useState } from 'react';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Form } from '@/shared/ui/form';
-
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { Form } from "@/shared/ui/form";
 import {
   SignUpFlowSteps,
   SignUpFormFields,
   SignUpFormSchema,
-  SignUpFormValues,
-} from '../../model';
+  type SignUpFormValues,
+} from "../../model";
+import { RegistrationStep } from "./registration-step";
+import { VerificationStep } from "./verification-step";
 
 const SignUpForm = () => {
   const [flowStep, setFlowStep] = useState<SignUpFlowSteps>(
@@ -22,13 +21,13 @@ const SignUpForm = () => {
   const form = useForm<SignUpFormValues>({
     resolver: zodResolver(SignUpFormSchema),
     defaultValues: {
-      [SignUpFormFields.Email]: '',
-      [SignUpFormFields.Password]: '',
-      [SignUpFormFields.ConfirmPassword]: '',
-      [SignUpFormFields.Username]: '',
-      [SignUpFormFields.VerificationCode]: '',
+      [SignUpFormFields.Email]: "",
+      [SignUpFormFields.Password]: "",
+      [SignUpFormFields.ConfirmPassword]: "",
+      [SignUpFormFields.Username]: "",
+      [SignUpFormFields.VerificationCode]: "",
     },
-    mode: 'onChange',
+    mode: "onChange",
   });
 
   const isRegistrationStep = flowStep === SignUpFlowSteps.Registration;

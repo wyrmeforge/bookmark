@@ -1,7 +1,7 @@
-import { CircleMinusIcon, CirclePlusIcon } from 'lucide-react';
-import { useCallback } from 'react';
-import { Button } from './button';
-import { Input } from './input';
+import { CircleMinusIcon, CirclePlusIcon } from "lucide-react";
+import { useCallback } from "react";
+import { Button } from "./button";
+import { Input } from "./input";
 
 type NumberInputProps = {
   value: number;
@@ -20,9 +20,9 @@ export function NumberInput({
   onChange,
   min = 0,
   hideMaxValue,
-  max = Infinity,
+  max = Number.POSITIVE_INFINITY,
   step = 1,
-  placeholder = '-',
+  placeholder = "-",
   disabled,
 }: NumberInputProps) {
   const changeValue = useCallback(
@@ -34,46 +34,46 @@ export function NumberInput({
   );
 
   return (
-    <div className='flex items-center gap-1'>
+    <div className="flex items-center gap-1">
       <Input
-        type='text'
-        hideMaxValue={hideMaxValue}
-        max={max}
-        startAdornment={
-          <Button
-            type='button'
-            variant='secondary'
-            size='icon'
-            disabled={value === min}
-            className='m-0 h-10 w-10 rounded-full bg-transparent p-0 [&_svg]:size-6'
-            onClick={() => changeValue(-step)}
-          >
-            <CircleMinusIcon />
-          </Button>
-        }
+        className="h-12 rounded-3xl text-center"
+        disabled={disabled}
         endAdornment={
           <div>
             <Button
-              type='button'
-              variant='secondary'
-              size='icon'
+              className="m-0 h-10 w-10 rounded-full bg-transparent p-0 [&_svg]:size-6"
               disabled={value === max}
-              className='m-0 h-10 w-10 rounded-full bg-transparent p-0 [&_svg]:size-6'
               onClick={() => changeValue(step)}
+              size="icon"
+              type="button"
+              variant="secondary"
             >
               <CirclePlusIcon />
             </Button>
           </div>
         }
-        inputMode='numeric'
-        value={value}
-        disabled={disabled}
-        placeholder={placeholder}
-        className='h-12 rounded-3xl text-center'
+        hideMaxValue={hideMaxValue}
+        inputMode="numeric"
+        max={max}
         onChange={(e) => {
           const num = Number(e.target.value);
           if (!isNaN(num)) onChange(num);
         }}
+        placeholder={placeholder}
+        startAdornment={
+          <Button
+            className="m-0 h-10 w-10 rounded-full bg-transparent p-0 [&_svg]:size-6"
+            disabled={value === min}
+            onClick={() => changeValue(-step)}
+            size="icon"
+            type="button"
+            variant="secondary"
+          >
+            <CircleMinusIcon />
+          </Button>
+        }
+        type="text"
+        value={value}
       />
     </div>
   );

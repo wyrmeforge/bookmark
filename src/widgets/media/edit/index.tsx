@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import { useMemo } from 'react';
-import { DropdownMenuItem } from '@/shared/ui/dropdown-menu';
-import { PenIcon } from 'lucide-react';
-import { ListMedia } from '@/entities/media';
-import { Dialog, DialogTrigger } from '@/shared/ui/dialog';
-import { MediaModifyForm } from '@/features/media-modify/ui/media-modify-form';
-import { useEditMedia } from './model/use-edit-media';
-import { TMediaModifyFormValues } from '@/features/media-modify/model/helpers';
+import { PenIcon } from "lucide-react";
+import { useMemo } from "react";
+import type { ListMedia } from "@/entities/media";
+import type { TMediaModifyFormValues } from "@/features/media-modify/model/helpers";
+import { MediaModifyForm } from "@/features/media-modify/ui/media-modify-form";
+import { Dialog, DialogTrigger } from "@/shared/ui/dialog";
+import { DropdownMenuItem } from "@/shared/ui/dropdown-menu";
+import { useEditMedia } from "./model/use-edit-media";
 
 interface IEditMediaProps {
   mediaItem: ListMedia;
@@ -46,18 +46,18 @@ const EditMedia = ({ mediaItem }: IEditMediaProps) => {
     <Dialog>
       <DialogTrigger asChild>
         <DropdownMenuItem
-          aria-label='Редагувати медіа'
+          aria-label="Редагувати медіа"
+          className="cursor-pointer"
           onSelect={(e) => e.preventDefault()}
-          className='cursor-pointer'
         >
-          <PenIcon className='mr-2 h-4 w-4' />
+          <PenIcon className="mr-2 h-4 w-4" />
           Редагувати
         </DropdownMenuItem>
       </DialogTrigger>
       <MediaModifyForm
         initialValues={initialValues}
-        variant='edit'
         onSubmit={onSubmit}
+        variant="edit"
       />
     </Dialog>
   );

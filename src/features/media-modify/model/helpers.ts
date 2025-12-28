@@ -1,5 +1,5 @@
-import { z as u } from 'zod';
-import { convexMediaStatusValues } from '@/entities/media/model/convex/constants';
+import { z as u } from "zod";
+import { convexMediaStatusValues } from "@/entities/media/model/convex/constants";
 
 export const ModifyFormSchema = u.object({
   unity_info: u.object({
@@ -24,17 +24,17 @@ export type TMediaModifyFormValues = u.infer<typeof ModifyFormSchema>;
 export const formDefaultValues = {
   unity_info: {
     id: 0,
-    name: '',
-    image: '',
-    bannerImage: '',
+    name: "",
+    image: "",
+    bannerImage: "",
     episodes: undefined,
   },
-  name: '',
+  name: "",
   viewedCount: undefined,
   rate: undefined,
-  status: 'scheduled',
+  status: "scheduled",
   isFavorite: false,
   episode: undefined,
-  website: '',
-  comment: '',
+  website: "",
+  comment: "",
 } as const satisfies TMediaModifyFormValues;

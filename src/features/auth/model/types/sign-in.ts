@@ -1,9 +1,9 @@
-import { SignInFormValues } from '../schema';
+import type { SignInFormValues } from "../schema";
 
 export enum SignInFormFields {
-  Email = 'email',
-  Password = 'password',
-  Remember = 'remember',
+  Email = "email",
+  Password = "password",
+  Remember = "remember",
 }
 
 export type UseLoginReturn = {

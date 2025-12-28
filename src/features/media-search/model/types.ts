@@ -1,4 +1,4 @@
-import { ListMedia } from '@/entities/media';
+import type { ListMedia } from "@/entities/media";
 
 export interface UseMediaSearchReturn {
   searchValue: string;

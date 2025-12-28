@@ -1,16 +1,16 @@
-'use client';
+"use client";
 
-import { Routes } from '@/shared/enums';
-import { ClerkProvider as ClerkNextProvider } from '@clerk/nextjs';
-import { PropsWithChildren } from 'react';
+import { ClerkProvider as ClerkNextProvider } from "@clerk/nextjs";
+import type { PropsWithChildren } from "react";
+import { Routes } from "@/shared/enums";
 
 export const ClerkProvider = ({ children }: PropsWithChildren) => (
   <ClerkNextProvider
     publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
-    signInUrl={Routes.SignIn}
-    signUpUrl={Routes.SignUp}
     signInFallbackRedirectUrl={Routes.Home}
+    signInUrl={Routes.SignIn}
     signUpFallbackRedirectUrl={Routes.Home}
+    signUpUrl={Routes.SignUp}
   >
     {children}
   </ClerkNextProvider>
