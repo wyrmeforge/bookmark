@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import useSWR from "swr";
-import { fetcher } from "@/shared/lib";
+import { fetcher } from "@/shared/api/graphql-client";
 import { SEARCH_MEDIA_QUERY } from "../api/search-media-query";
 import type { SearchMediaResponse } from "../dto/search-media.dto";
 

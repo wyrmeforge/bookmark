@@ -1,26 +1,24 @@
 import { Heart } from "lucide-react";
-import type { ListMedia } from "@/entities/media";
-import { MEDIA_STATUS_FILTERS } from "@/shared/config";
-import { MediaStatus } from "@/shared/enums";
-import { useAppState } from "@/shared/lib";
+import type { IListItem } from "@/entities/media/model/convex/constants";
+import { MEDIA_STATUS_FILTERS } from "@/shared/config/media-filters";
+import { useAppState } from "@/shared/lib/app-state-provider";
 import { cn } from "@/shared/lib/utils";
 import { Badge } from "@/shared/ui/badge";
 
 export type CardBadgesProps = Pick<
-  ListMedia,
-  "episode" | "isFavorite" | "status" | "totalEpisodes"
+  IListItem,
+  "episodesCount" | "isFavorite" | "status"
 > & { isHovered: boolean };
 
 const CardBadges = ({
-  episode,
+  episodesCount: episodeCount,
   isFavorite,
   status,
   isHovered,
-  totalEpisodes,
 }: CardBadgesProps) => {
   const { currentFilter } = useAppState();
 
-  const isAllFilter = currentFilter === MediaStatus.All;
+  const isAllFilter = currentFilter === "all";
 
   const currentMediaStatusConfig = MEDIA_STATUS_FILTERS.find(
     ({ key }) => key === status
@@ -30,23 +28,24 @@ const CardBadges = ({
 
   const badges = [
     {
+      key: "status",
       isVisible: !!MediaStatusIcon && isAllFilter,
       value: MediaStatusIcon ? (
         <MediaStatusIcon className="h-4 w-4 md:h-5 md:w-5" />
       ) : null,
     },
     {
-      isVisible: !!episode,
+      key: "episodes",
+      isVisible: !!episodeCount,
       value: (
         <div className="flex w-12 flex-col items-center text-xs">
-          <span>
-            {episode}/{totalEpisodes}
-          </span>
+          <span>{episodeCount}</span>
           <span>серій</span>
         </div>
       ),
     },
     {
+      key: "favorite",
       isVisible: isFavorite,
       value: (
         <Heart className="h-4 w-4 md:h-5 md:w-5" fill="white" stroke="red" />
@@ -56,8 +55,10 @@ const CardBadges = ({
 
   return (
     <div className="flex items-center justify-center gap-1.5">
-      {badges.map(({ isVisible = true, value }, index) => {
-        if (!isVisible) return null;
+      {badges.map(({ isVisible = true, value, key }, index) => {
+        if (!isVisible) {
+          return null;
+        }
 
         return (
           <Badge
@@ -67,7 +68,7 @@ const CardBadges = ({
                 "translate-y-0 opacity-100": !isAllFilter || isHovered,
               }
             )}
-            key={index}
+            key={key}
             style={{ transitionDelay: `${index * 75}ms` }}
           >
             {value}

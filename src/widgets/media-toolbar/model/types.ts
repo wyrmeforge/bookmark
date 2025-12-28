@@ -1,9 +1,8 @@
 import type { ReactNode } from "react";
-import type { ListMediaStatus } from "@/entities/media";
-import type { MediaStatus } from "@/shared/enums";
+import type { TMediaStatus } from "@/entities/media/model/convex/constants";
 
-type MenuItem = {
-  key: ListMediaStatus;
+interface MenuItem {
+  key: TMediaStatus;
   title: string;
   icon: ReactNode;
   value: number;
@@ -12,10 +11,10 @@ type MenuItem = {
     border: string;
     text: string;
   };
-};
+}
 
 export interface UseFiltersReturn {
   menu: MenuItem[];
-  currentFilter: MediaStatus;
-  updateFilter: (newFilter: MediaStatus) => void;
+  currentFilter: TMediaStatus;
+  updateFilter: (newFilter: TMediaStatus) => void;
 }

@@ -6,10 +6,10 @@ import {
   CommandSeparator,
 } from "@/shared/ui/command";
 
-type RecentItemsProps = {
+interface RecentItemsProps {
   recent: ListMedia[];
   onRecentSelect: (mediaId: number) => void;
-};
+}
 
 const RecentItems = ({ recent, onRecentSelect }: RecentItemsProps) => (
   <>

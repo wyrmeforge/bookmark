@@ -1,6 +1,6 @@
 import { z as u } from "zod";
 import { emailField, passwordField } from "../../lib/validators";
-import { SignUpFormFields } from "../types";
+import { SignUpFormFields } from "../types/sign-up";
 
 export const SignUpFormSchema = u
   .object({

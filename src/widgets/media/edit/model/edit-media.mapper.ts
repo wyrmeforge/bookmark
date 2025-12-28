@@ -1,9 +1,9 @@
-import type { OmittedListMedia } from "@/entities/media";
+import type { IUpdateListItem } from "@/entities/media/model/convex/constants";
 import type { TMediaModifyFormValues } from "@/features/media-modify/model/helpers";
 
 export const mapEditMediaPayload = (
   mediaData: TMediaModifyFormValues
-): OmittedListMedia => {
+): IUpdateListItem => {
   if (!mediaData) {
     throw new Error("Missing mediaData in form data");
   }
@@ -13,7 +13,6 @@ export const mapEditMediaPayload = (
     isFavorite: Boolean(mediaData.isFavorite),
     name: String(mediaData.name),
     rate: mediaData.rate,
-    image: mediaData?.unity_info.image,
     status: mediaData.status,
     episodesCount: mediaData.episode,
     viewedCount: mediaData.viewedCount,

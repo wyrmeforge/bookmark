@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import type { ListMediaStatus } from "@/entities/media";
-import { StorageKeys } from "@/shared/enums";
-import { useMobile } from "@/shared/lib";
+import type { TMediaStatus } from "@/entities/media/model/convex/constants";
+import { StorageKeys } from "@/shared/enums/storage";
+import { useMobile } from "@/shared/lib/hooks/use-mobile";
 import { cn } from "@/shared/lib/utils";
 import {
   Carousel,
@@ -12,7 +12,7 @@ import {
   CarouselItem,
 } from "@/shared/ui/carousel";
 import { ToggleGroup, ToggleGroupItem } from "@/shared/ui/toggle-group";
-import { useFilters } from "../model";
+import { useFilters } from "../model/use-filters";
 
 const FiltersToggleGroup = () => {
   const { menu, currentFilter, updateFilter } = useFilters();
@@ -21,13 +21,17 @@ const FiltersToggleGroup = () => {
   const [carouselApi, setCarouselApi] = useState<CarouselApi | null>(null);
 
   const onSelect = (idx: number) => {
-    if (!carouselApi) return null;
+    if (!carouselApi) {
+      return null;
+    }
 
     carouselApi?.scrollTo(idx);
   };
 
-  const handleChange = (value: ListMediaStatus) => {
-    if (!value) return;
+  const handleChange = (value: TMediaStatus) => {
+    if (!value) {
+      return;
+    }
 
     updateFilter(value);
     localStorage.setItem(StorageKeys.LastStatusFilter, value);

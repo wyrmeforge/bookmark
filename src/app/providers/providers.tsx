@@ -1,5 +1,5 @@
 import type { PropsWithChildren } from "react";
-import { AppStateProvider } from "@/shared/lib";
+import { AppStateProvider } from "@/shared/lib/app-state-provider";
 import { Toaster } from "@/shared/ui/sonner";
 import { TooltipProvider } from "@/shared/ui/tooltip";
 import { ClerkProvider } from "./clerk-provider";

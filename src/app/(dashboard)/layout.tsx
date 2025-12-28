@@ -1,7 +1,8 @@
 "use client";
 
 import type { PropsWithChildren } from "react";
-import { useCreateMediaShortcut, useStoreUser } from "@/shared/lib";
+import { useStoreUser } from "@/shared/lib/auth/use-store-user";
+import { useCreateMediaShortcut } from "@/shared/lib/hooks/use-create-media-shortcut";
 import { Loader } from "@/shared/ui/loader";
 import MinimalNav from "./home/components/menu";
 
@@ -11,7 +12,9 @@ const DashboardLayout = ({ children }: PropsWithChildren) => {
   const { isLoading, isAuthenticated } = useStoreUser();
   useCreateMediaShortcut();
 
-  if (isLoading || !isAuthenticated) return <Loader />;
+  if (isLoading || !isAuthenticated) {
+    return <Loader />;
+  }
 
   return (
     <div className="relative flex h-dvh flex-col overflow-x-hidden">

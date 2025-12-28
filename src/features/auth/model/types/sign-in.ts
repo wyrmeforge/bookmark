@@ -1,15 +1,15 @@
-import type { SignInFormValues } from "../schema";
+import type { SignInFormValues } from "../schema/sign-in";
 
-export enum SignInFormFields {
-  Email = "email",
-  Password = "password",
-  Remember = "remember",
-}
+export const SignInFormFields = {
+  Email: "email",
+  Password: "password",
+  Remember: "remember",
+} as const;
 
-export type UseLoginReturn = {
+export interface UseLoginReturn {
   loginWithCredentials: ({
     email,
     password,
   }: SignInFormValues) => Promise<void>;
   loginWithGoogle: () => Promise<void> | undefined;
-};
+}

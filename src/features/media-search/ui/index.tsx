@@ -1,7 +1,7 @@
 "use client";
 
 import { Search } from "lucide-react";
-import { useAppState } from "@/shared/lib";
+import { useAppState } from "@/shared/lib/app-state-provider";
 import { Button } from "@/shared/ui/button";
 import {
   Command,
@@ -19,13 +19,11 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/shared/ui/dialog";
-import { useMediaSearch } from "../model";
-import {
-  FooterInfo,
-  RecentItems,
-  SearchCommandItem,
-  SearchEmptyStates,
-} from "./components";
+import { useMediaSearch } from "../model/use-media-search";
+import { FooterInfo } from "./components/footer-info";
+import { RecentItems } from "./components/recent-items";
+import { SearchCommandItem } from "./components/search-command-item";
+import { SearchEmptyStates } from "./components/search-empty-states";
 
 export const MediaSearch = () => {
   const { toggleCreateSheet } = useAppState();

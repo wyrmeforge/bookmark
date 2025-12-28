@@ -1,16 +1,18 @@
 import { api } from "@convex/api";
 import { usePaginatedQuery } from "convex/react";
 import { useMemo } from "react";
-import { useAppState } from "@/shared/lib";
+import { useAppState } from "@/shared/lib/app-state-provider";
 import { useItemsPerPage } from "./use-items-per-page";
 
 export const useMediaList = () => {
-  const { currentFilter, genreFilter, sortBy, sortOrder } = useAppState();
+  const { currentFilter } = useAppState();
 
   const initialNumItems = useItemsPerPage();
 
   const queryArgs = useMemo(() => {
-    if (initialNumItems === 0) return "skip";
+    if (initialNumItems === 0) {
+      return "skip";
+    }
     return { filter: currentFilter };
   }, [currentFilter, initialNumItems]);
 
@@ -24,9 +26,6 @@ export const useMediaList = () => {
     list,
     loadMore,
     currentFilter,
-    genreFilter,
-    sortBy,
-    sortOrder,
     isFirstLoading: status === "LoadingFirstPage",
     isLoadingMore: status === "LoadingMore",
     isEndOfPages: status === "Exhausted",

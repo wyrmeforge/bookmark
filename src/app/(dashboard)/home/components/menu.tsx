@@ -4,8 +4,8 @@ import clsx from "clsx";
 import { Home, PlusIcon, WebhookIcon } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
-import { MediaSearch } from "@/features/media-search";
-import { Routes } from "@/shared/enums";
+import { MediaSearch } from "@/features/media-search/ui";
+import { Routes } from "@/shared/enums/routes";
 import { Button } from "@/shared/ui/button";
 import { CreateMedia } from "@/widgets/media/create/create-media";
 
@@ -19,7 +19,9 @@ export default function MinimalNav() {
   const pathname = usePathname();
 
   const handleItemClick = ({ href, id }: { href: Routes; id: string }) => {
-    if (active === id) return;
+    if (active === id) {
+      return;
+    }
 
     setActive(id);
     router.push(href);

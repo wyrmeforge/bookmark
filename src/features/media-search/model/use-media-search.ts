@@ -4,9 +4,10 @@ import { api } from "@convex/api";
 import { useMutation } from "convex/react";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
-import type { ListMedia } from "@/entities/media";
-import { Routes, StorageKeys } from "@/shared/enums";
-import { useDebounce } from "@/shared/lib";
+import type { IListItem } from "@/entities/media/model/convex/constants";
+import { Routes } from "@/shared/enums/routes";
+import { StorageKeys } from "@/shared/enums/storage";
+import { useDebounce } from "@/shared/lib/hooks/user-debounce";
 import type { UseMediaSearchReturn } from "./types";
 import { useOpenShortcut } from "./use-open-shortcut";
 
@@ -16,12 +17,14 @@ export const useMediaSearch = (): UseMediaSearchReturn => {
   const [searchValue, setSearchValue] = useState("");
   const debouncedValue = useDebounce(searchValue, 300);
 
-  const [results, setResults] = useState<ListMedia[] | null>(null); // null = loading
+  const [results, setResults] = useState<IListItem[] | null>(null); // null = loading
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   // Recent search items, persisted in localStorage
-  const [recent, setRecentState] = useState<ListMedia[]>(() => {
-    if (typeof window === "undefined") return []; // SSR check
+  const [recent, setRecentState] = useState<IListItem[]>(() => {
+    if (typeof window === "undefined") {
+      return []; // SSR check
+    }
     try {
       const stored = localStorage.getItem(StorageKeys.RecentSearchItem);
       return stored ? JSON.parse(stored) : [];
@@ -56,29 +59,27 @@ export const useMediaSearch = (): UseMediaSearchReturn => {
     [searchMutation]
   );
 
-  const handleSelect = useCallback(
-    (item: ListMedia) => {
-      // Update recent items, persist in localStorage
-      setRecentState((prev) => {
-        const updated = [item, ...prev.filter((r) => r._id !== item._id)].slice(
-          0,
-          5
+  const handleSelect = useCallback((item: IListItem) => {
+    // Update recent items, persist in localStorage
+    setRecentState((prev) => {
+      const updated = [item, ...prev.filter((r) => r._id !== item._id)].slice(
+        0,
+        5
+      );
+      try {
+        localStorage.setItem(
+          StorageKeys.RecentSearchItem,
+          JSON.stringify(updated)
         );
-        try {
-          localStorage.setItem(
-            StorageKeys.RecentSearchItem,
-            JSON.stringify(updated)
-          );
-        } catch {}
-        return updated;
-      });
+      } catch {
+        // Silently ignore localStorage errors (e.g., private browsing)
+      }
+      return updated;
+    });
 
-      setIsSearchOpen(false);
-      setSearchValue("");
-      goToMediaDetailsPage(item.mediaId);
-    },
-    [setRecentState, setSearchValue, goToMediaDetailsPage]
-  );
+    setIsSearchOpen(false);
+    setSearchValue("");
+  }, []);
 
   const onRecentSelect = useCallback(
     (mediaId: number) => {
@@ -86,7 +87,7 @@ export const useMediaSearch = (): UseMediaSearchReturn => {
       setSearchValue("");
       goToMediaDetailsPage(mediaId);
     },
-    [goToMediaDetailsPage, setSearchValue]
+    [goToMediaDetailsPage]
   );
 
   useEffect(() => {

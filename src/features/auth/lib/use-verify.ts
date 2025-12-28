@@ -1,13 +1,13 @@
 import { useSignUp } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { Routes } from "@/shared/enums";
+import { Routes } from "@/shared/enums/routes";
+import type { SignUpFormValues } from "../model/schema/sign-up";
 import {
   type ISignUpStepProps,
   SignUpFlowSteps,
-  type SignUpFormValues,
   type UseVerifyReturn,
-} from "../model";
+} from "../model/types/sign-up";
 
 export const useVerify = ({
   setFlowStep,
@@ -17,7 +17,9 @@ export const useVerify = ({
   const router = useRouter();
 
   const verifyAccount = async ({ verificationCode }: SignUpFormValues) => {
-    if (!(isLoaded && signUp)) return;
+    if (!(isLoaded && signUp)) {
+      return;
+    }
 
     try {
       const completeSignUp = await signUp.attemptEmailAddressVerification({

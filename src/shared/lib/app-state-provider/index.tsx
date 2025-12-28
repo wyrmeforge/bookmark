@@ -6,34 +6,26 @@ import {
   useContext,
   useReducer,
 } from "react";
-import type { ListMedia } from "@/entities/media";
-import type { MediaStatus } from "@/shared/enums";
+import type {
+  IListItem,
+  TMediaStatus,
+} from "@/entities/media/model/convex/constants";
 import type { IAppStateContextProps } from "./types";
 import { appStateReducer, initialState } from "./utils";
 
-const AppStateContext = createContext<IAppStateContextProps>({
-  updateFilter: () => {},
-  updateList: () => {},
-  updateGenreFilter: () => {},
-  toggleCreateSheet: () => {},
-  updateSort: () => {},
-  ...initialState,
-});
+const AppStateContext = createContext<IAppStateContextProps | undefined>(
+  undefined
+);
 
 const AppStateProvider = ({ children }: PropsWithChildren) => {
   const [state, dispatch] = useReducer(appStateReducer, initialState);
 
   const contextValue: IAppStateContextProps = {
     ...state,
-    updateFilter: (filter: MediaStatus) =>
+    updateFilter: (filter: TMediaStatus) =>
       dispatch({ type: "UPDATE_FILTER", payload: filter }),
-    updateList: (list: ListMedia[] | null) =>
+    updateList: (list: IListItem[] | null) =>
       dispatch({ type: "UPDATE_LIST", payload: list }),
-    updateGenreFilter: (genre: string | undefined) =>
-      dispatch({ type: "UPDATE_GENRE_FILTER", payload: genre }),
-    updateSort: (sortBy: "date" | "year", sortOrder: "asc" | "desc") =>
-      dispatch({ type: "UPDATE_SORT", payload: { sortBy, sortOrder } }),
-
     toggleCreateSheet: () =>
       dispatch({
         type: "TOGGLE_CREATE_SHEET",
@@ -50,4 +42,10 @@ const AppStateProvider = ({ children }: PropsWithChildren) => {
 
 export { AppStateProvider };
 
-export const useAppState = () => useContext(AppStateContext);
+export const useAppState = () => {
+  const ctx = useContext(AppStateContext);
+  if (!ctx) {
+    throw new Error("useAppState must be used within AppStateProvider");
+  }
+  return ctx;
+};

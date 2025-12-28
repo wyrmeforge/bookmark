@@ -1,12 +1,12 @@
 import { InfoIcon, Loader2Icon } from "lucide-react";
 import { CommandEmpty } from "@/shared/ui/command";
 
-type SearchEmptyStatesProps = {
+interface SearchEmptyStatesProps {
   isLoading: boolean;
   isResultsEmpty: boolean;
   isInitEmpty: boolean;
   searchValue: string;
-};
+}
 
 const SearchEmptyStates = ({
   isLoading,

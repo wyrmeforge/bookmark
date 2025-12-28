@@ -2,16 +2,16 @@
 
 import { SquarePlusIcon } from "lucide-react";
 import type { ReactNode } from "react";
-import type { ListMediaStatus } from "@/entities/media";
+import type { TMediaStatus } from "@/entities/media/model/convex/constants";
 import type { TMediaModifyFormValues } from "@/features/media-modify/model/helpers";
 import { MediaModifyForm } from "@/features/media-modify/ui/media-modify-form";
-import { useAppState } from "@/shared/lib";
+import { useAppState } from "@/shared/lib/app-state-provider";
 import { Button } from "@/shared/ui/button";
 import { Dialog, DialogTrigger } from "@/shared/ui/dialog";
 import { useCreateMedia } from "./model/use-create-media";
 
 interface ICreateMediaProps {
-  initialStatus?: ListMediaStatus;
+  initialStatus?: TMediaStatus;
   customTrigger?: ReactNode;
 }
 

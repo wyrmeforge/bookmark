@@ -1,15 +1,17 @@
 import { useState } from "react";
-import { type ListMedia, MediaMeta, MediaPoster } from "@/entities/media";
-import { formatDate } from "@/shared/lib";
+import type { IListItem } from "@/entities/media/model/convex/constants";
+import { MediaMeta } from "@/entities/media/ui/media-meta";
+import { MediaPoster } from "@/entities/media/ui/media-poster";
+import { formatDate } from "@/shared/lib/helpers/format-date";
 import { cn } from "@/shared/lib/utils";
 import { Card, CardContent, CardHeader } from "@/shared/ui/card";
 import { CardBadges } from "./card-badges";
 import { CardMenu } from "./card-menu";
 
-type MediaCardProps = {
-  mediaData: ListMedia;
+interface MediaCardProps {
+  mediaData: IListItem;
   itemIdx: number;
-};
+}
 
 const MediaCard = ({ mediaData, itemIdx }: MediaCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
@@ -38,11 +40,10 @@ const MediaCard = ({ mediaData, itemIdx }: MediaCardProps) => {
       <CardHeader className="absolute -top-[2px] z-10 w-full p-0">
         <div className="flex w-full flex-row justify-between pl-2">
           <CardBadges
-            episode={episodesCount}
+            episodesCount={episodesCount}
             isFavorite={isFavorite}
             isHovered={isHovered}
             status={status}
-            totalEpisodes={0}
           />
           <CardMenu
             handleOpen={(isOpen: boolean) => setIsHovered(isOpen)}
@@ -58,7 +59,6 @@ const MediaCard = ({ mediaData, itemIdx }: MediaCardProps) => {
           episode={episodesCount}
           rate={rate}
           title={name}
-          totalEpisodes={0}
         />
       </CardContent>
     </Card>

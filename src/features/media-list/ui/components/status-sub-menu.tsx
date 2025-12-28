@@ -1,5 +1,10 @@
 import { FilterIcon } from "lucide-react";
-import type { MediaItemId, MediaItemStatus } from "@/shared/api";
+import { useMemo } from "react";
+import type {
+  TMediaId,
+  TMediaStatus,
+} from "@/entities/media/model/convex/constants";
+import { MEDIA_STATUS_FILTERS } from "@/shared/config/media-filters";
 import { cn } from "@/shared/lib/utils";
 import {
   DropdownMenuItem,
@@ -8,16 +13,23 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
 } from "@/shared/ui/dropdown-menu";
-import { MENU_MEDIA_FILTERS } from "../../config";
 import { useMediaActions } from "../../model/use-media-actions";
 
 interface IStatusSubMenuProps {
-  mediaItemId: MediaItemId;
-  currentStatus: MediaItemStatus;
+  mediaItemId: TMediaId;
+  currentStatus: TMediaStatus;
 }
 
 const StatusSubMenu = ({ mediaItemId, currentStatus }: IStatusSubMenuProps) => {
   const { changeStatus } = useMediaActions({ mediaItemId });
+
+  const mediaStatusFilter = useMemo(
+    () =>
+      MEDIA_STATUS_FILTERS.filter(
+        ({ key }) => key !== "all" && key !== "favorite"
+      ),
+    []
+  );
 
   return (
     <DropdownMenuSub>
@@ -27,7 +39,7 @@ const StatusSubMenu = ({ mediaItemId, currentStatus }: IStatusSubMenuProps) => {
       </DropdownMenuSubTrigger>
       <DropdownMenuPortal>
         <DropdownMenuSubContent className="px-2">
-          {MENU_MEDIA_FILTERS.map(({ label, key, icon: Icon }) => (
+          {mediaStatusFilter.map(({ label, key, icon: Icon }) => (
             <DropdownMenuItem
               className={cn("flex gap-3 hover:cursor-pointer", {
                 "bg-gray-700": key === currentStatus,

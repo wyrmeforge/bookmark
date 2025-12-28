@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { MediaList } from "@/features/media-list";
-import { MediaToolbar } from "@/widgets/media-toolbar";
+import { MediaList } from "@/features/media-list/ui/media-list";
+import { MediaToolbar } from "@/widgets/media-toolbar/ui/media-toolbar";
 import { SidebarLeft } from "./components/sidebar-left";
 import { SidebarRight } from "./components/sidebar-right";
 

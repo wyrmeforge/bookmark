@@ -17,7 +17,9 @@ const EditMedia = ({ mediaItem }: IEditMediaProps) => {
   const editUnity = useEditMedia();
 
   const initialValues: TMediaModifyFormValues = useMemo(() => {
-    if (!mediaItem) return {} as TMediaModifyFormValues;
+    if (!mediaItem) {
+      return {} as TMediaModifyFormValues;
+    }
 
     return {
       unity_info: {

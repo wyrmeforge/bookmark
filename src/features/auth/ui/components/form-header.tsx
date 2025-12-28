@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { Routes } from "@/shared/enums";
+import type { Routes } from "@/shared/enums/routes";
 import { CardHeader, CardTitle } from "@/shared/ui/card";
 
 interface IFormHeaderProps {

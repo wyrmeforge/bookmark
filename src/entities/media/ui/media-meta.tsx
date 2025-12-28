@@ -1,13 +1,12 @@
 import { CardDescription, CardTitle } from "@/shared/ui/card";
-import type { ListMedia } from "../model";
+import type { IListItem } from "../model/convex/constants";
 
-type MediaMetaProps = {
-  title: ListMedia["name"];
-  rate: ListMedia["rate"];
+interface MediaMetaProps {
+  title: IListItem["name"];
+  rate: IListItem["rate"];
   createdDate: string;
   episode?: number;
-  totalEpisodes?: number;
-};
+}
 
 export const MediaMeta = ({ title, rate, createdDate }: MediaMetaProps) => {
   return (

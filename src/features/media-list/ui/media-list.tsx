@@ -1,9 +1,9 @@
 "use client";
 
-import { useInfiniteScroll } from "@/shared/lib";
+import { useInfiniteScroll } from "@/shared/lib/hooks/use-infinite-scroll";
 import { Loader } from "@/shared/ui/loader";
 import { Skeleton } from "@/shared/ui/skeleton";
-import { useMediaList } from "../model";
+import { useMediaList } from "../model/use-media-list";
 import { EmptyListPlaceholder } from "./components/empty-list-placeholder";
 import { MediaCard } from "./media-card";
 
@@ -25,10 +25,13 @@ const MediaList = () => {
     isEndOfPages
   );
 
-  if (isFirstLoading) return <Loader variant="absolute" />;
+  if (isFirstLoading) {
+    return <Loader variant="absolute" />;
+  }
 
-  if (!list?.length)
+  if (!list?.length) {
     return <EmptyListPlaceholder currentFilter={currentFilter} />;
+  }
 
   return (
     <div className="grid grid-cols-2 flex-col justify-center gap-4 pt-16 pb-[100px] md:grid md:grid-cols-container md:pt-0 md:pr-2 md:pb-4">

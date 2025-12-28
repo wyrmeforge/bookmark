@@ -9,22 +9,26 @@ import {
   SwordIcon,
 } from "lucide-react";
 import type { ForwardRefExoticComponent, RefAttributes } from "react";
-import type { TMediaStatusValues } from "@/entities/media/model/convex/constants";
+import type { TMediaStatus } from "@/entities/media/model/convex/constants";
 
-export type MediaStatusFilterItem = {
-  key: TMediaStatusValues;
+type IconComponent = ForwardRefExoticComponent<
+  Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>
+>;
+
+interface ColorClasses {
+  bg: string;
+  border: string;
+  text: string;
+}
+
+export interface IMediaStatusFilterItem {
+  key: TMediaStatus;
   label: string;
-  icon: ForwardRefExoticComponent<
-    Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>
-  >;
-  color: {
-    bg: string;
-    border: string;
-    text: string;
-  };
-};
+  icon: IconComponent;
+  color: ColorClasses;
+}
 
-export const MEDIA_STATUS_FILTERS: MediaStatusFilterItem[] = [
+export const MEDIA_STATUS_FILTERS: readonly IMediaStatusFilterItem[] = [
   {
     key: "all",
     label: "Всі",
@@ -95,4 +99,4 @@ export const MEDIA_STATUS_FILTERS: MediaStatusFilterItem[] = [
       text: "text-pink-800",
     },
   },
-] as const;
+];

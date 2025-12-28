@@ -1,6 +1,6 @@
 import { z as u } from "zod";
 import { emailField, passwordField } from "../../lib/validators";
-import { ForgotPasswordFormFields } from "../types";
+import { ForgotPasswordFormFields } from "../types/forgot-password";
 
 export const ForgotPasswordStep1Schema = u.object({
   [ForgotPasswordFormFields.Email]: emailField,

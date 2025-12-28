@@ -9,7 +9,6 @@ export const useCreateMediaShortcut = () => {
     const down = (e: KeyboardEvent) => {
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "d") {
         e.preventDefault();
-        console.log("g");
         toggleCreateSheet();
       }
     };

@@ -1,10 +1,10 @@
 import Image from "next/image";
 
-type MediaPosterProps = {
+interface MediaPosterProps {
   alt: string;
   src: string;
   priority: boolean;
-};
+}
 
 export const MediaPoster = ({ alt, src, priority }: MediaPosterProps) => (
   <div className="absolute h-full w-full">

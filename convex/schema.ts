@@ -1,17 +1,17 @@
 import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
-import { ListIndexes, MediaIndexes } from "./shared/enums";
+import { INDEX_NAMES } from "./shared/enums";
 import { defaultListItemFields } from "./validators/list_item";
 import { mediaItemFields } from "./validators/media_item";
 
 export default defineSchema({
   lists: defineTable(defaultListItemFields)
-    .index(ListIndexes.UserIndex, ["user"])
-    .searchIndex(ListIndexes.NameSearchIndex, {
+    .index(INDEX_NAMES.LISTS_BY_USER, ["user"])
+    .searchIndex(INDEX_NAMES.LISTS_BY_ITEM_NAME, {
       searchField: "name",
       filterFields: ["user"],
     }),
-  media: defineTable(mediaItemFields).index(MediaIndexes.MediaApiIdIndex, [
+  media: defineTable(mediaItemFields).index(INDEX_NAMES.MEDIA_BY_API_ID, [
     "mediaApiId",
   ]),
   users: defineTable({

@@ -2,9 +2,10 @@ import { useSignIn } from "@clerk/nextjs";
 import { isClerkAPIResponseError } from "@clerk/nextjs/errors";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { Routes } from "@/shared/enums";
-import { SIGN_IN_ERROR_MESSAGES } from "../config";
-import type { SignInFormValues, UseLoginReturn } from "../model";
+import { Routes } from "@/shared/enums/routes";
+import { SIGN_IN_ERROR_MESSAGES } from "../config/sign-in";
+import type { SignInFormValues } from "../model/schema/sign-in";
+import type { UseLoginReturn } from "../model/types/sign-in";
 
 const getErrorMessage = (code?: string) =>
   SIGN_IN_ERROR_MESSAGES[code ?? ""] ?? "Сталася помилка. Спробуйте ще раз.";
@@ -17,7 +18,9 @@ export const useLogin = (): UseLoginReturn => {
     email,
     password,
   }: SignInFormValues) => {
-    if (!(isLoaded && signIn)) return;
+    if (!(isLoaded && signIn)) {
+      return;
+    }
 
     try {
       const signInAttempt = await signIn.create({
@@ -43,7 +46,9 @@ export const useLogin = (): UseLoginReturn => {
   };
 
   const loginWithGoogle = () => {
-    if (!signIn) return;
+    if (!signIn) {
+      return;
+    }
 
     return signIn.authenticateWithRedirect({
       strategy: "oauth_google",

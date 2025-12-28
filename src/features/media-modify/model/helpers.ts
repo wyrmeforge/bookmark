@@ -1,5 +1,5 @@
 import { z as u } from "zod";
-import { convexMediaStatusValues } from "@/entities/media/model/convex/constants";
+import { MEDIA_STATUS_VALUES } from "@/entities/media/model/convex/constants";
 
 export const ModifyFormSchema = u.object({
   unity_info: u.object({
@@ -13,7 +13,7 @@ export const ModifyFormSchema = u.object({
   viewedCount: u.number().optional(),
   website: u.string().optional(),
   rate: u.number().optional(),
-  status: u.enum(convexMediaStatusValues),
+  status: u.enum(MEDIA_STATUS_VALUES),
   isFavorite: u.boolean().optional(),
   episode: u.number().optional(),
   comment: u.string().optional(),

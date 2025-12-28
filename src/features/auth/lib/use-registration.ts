@@ -2,14 +2,14 @@ import { useSignUp } from "@clerk/nextjs";
 
 import { isClerkAPIResponseError } from "@clerk/nextjs/errors";
 import { toast } from "sonner";
-import { Routes } from "@/shared/enums";
-import { SIGN_UP_ERROR_MESSAGES } from "../config";
+import { Routes } from "@/shared/enums/routes";
+import { SIGN_UP_ERROR_MESSAGES } from "../config/sign-up";
+import type { SignUpFormValues } from "../model/schema/sign-up";
 import {
   type ISignUpStepProps,
   SignUpFlowSteps,
-  type SignUpFormValues,
   type UseRegistrationReturn,
-} from "../model";
+} from "../model/types/sign-up";
 
 const getErrorMessage = (code?: string) =>
   SIGN_UP_ERROR_MESSAGES[code ?? ""] ?? "Сталася помилка. Спробуйте ще раз.";
@@ -37,7 +37,9 @@ export const useRegistration = ({
     password,
     username,
   }: SignUpFormValues) => {
-    if (!(isLoaded && signUp)) return;
+    if (!(isLoaded && signUp)) {
+      return;
+    }
 
     try {
       await signUp.create({
@@ -57,7 +59,9 @@ export const useRegistration = ({
   };
 
   const registerWithGoogle = () => {
-    if (!(isLoaded && signUp)) return;
+    if (!(isLoaded && signUp)) {
+      return;
+    }
 
     return signUp.authenticateWithRedirect({
       strategy: "oauth_google",

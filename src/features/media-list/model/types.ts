@@ -1,12 +1,12 @@
 import type { ListMediaId } from "@/entities/media";
 import type { MediaStatus } from "@/shared/enums";
 
-export type UseMediaActionsProps = {
+export interface UseMediaActionsProps {
   mediaItemId: ListMediaId;
   isFavorite?: boolean;
-};
+}
 
-export type UseMediaActionsReturn = {
+export interface UseMediaActionsReturn {
   toggleFavorite: () => Promise<void>;
   changeStatus: (newStatus: MediaStatus) => Promise<void>;
-};
+}

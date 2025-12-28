@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useDebounce } from "@/shared/lib";
+import { useDebounce } from "@/shared/lib/hooks/user-debounce";
 import { FormCommandBox } from "@/shared/ui/form-command-box";
 import { useSearchMedia } from "../../model/hooks/use-search-media";
 

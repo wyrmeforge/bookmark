@@ -5,7 +5,9 @@ const isProtectedRoute = createRouteMatcher(["/home(.*)", "/friends(.*)"]);
 export default clerkMiddleware(async (auth, req) => {
   const { protect } = await auth();
 
-  if (isProtectedRoute(req)) await protect();
+  if (isProtectedRoute(req)) {
+    protect();
+  }
 });
 
 export const config = {

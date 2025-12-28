@@ -14,7 +14,7 @@ export const getUserId = async (ctx: QueryCtx) => {
     )
     .unique();
 
-  if (!(user && user?._id)) {
+  if (!user?._id) {
     throw new Error("Unauthenticated call!");
   }
 

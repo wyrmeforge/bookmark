@@ -2,7 +2,7 @@
 
 import { ClerkProvider as ClerkNextProvider } from "@clerk/nextjs";
 import type { PropsWithChildren } from "react";
-import { Routes } from "@/shared/enums";
+import { Routes } from "@/shared/enums/routes";
 
 export const ClerkProvider = ({ children }: PropsWithChildren) => (
   <ClerkNextProvider

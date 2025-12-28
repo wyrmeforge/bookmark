@@ -1,14 +1,14 @@
-export enum MediaItemStatus {
-  All = "all",
-  Scheduled = "scheduled",
-  Watching = "watching",
-  Postponed = "postponed",
-  Abandoned = "abandoned",
-  Completed = "completed",
-  Favorite = "favorite",
-}
+export const MEDIA_STATUSES = {
+  ALL: "all",
+  SCHEDULED: "scheduled",
+  WATCHING: "watching",
+  POSTPONED: "postponed",
+  ABANDONED: "abandoned",
+  COMPLETED: "completed",
+  FAVORITE: "favorite",
+} as const;
 
-export const mediaStatusValues = [
+export const MEDIA_STATUS_VALUES = [
   "all",
   "scheduled",
   "watching",
@@ -18,22 +18,12 @@ export const mediaStatusValues = [
   "favorite",
 ] as const;
 
-export type TMediaStatusValues = (typeof mediaStatusValues)[number];
+export type MediaStatus = (typeof MEDIA_STATUS_VALUES)[number];
 
-export type TMediaStatus =
-  | "all"
-  | "scheduled"
-  | "watching"
-  | "postponed"
-  | "abandoned"
-  | "completed"
-  | "favorite";
+export const INDEX_NAMES = {
+  LISTS_BY_USER: "by_user",
+  LISTS_BY_ITEM_NAME: "by_item_name",
+  MEDIA_BY_API_ID: "by_media_api_id",
+} as const;
 
-export enum ListIndexes {
-  UserIndex = "by_user",
-  NameSearchIndex = "by_item_name",
-}
-
-export enum MediaIndexes {
-  MediaApiIdIndex = "by_media_api_id",
-}
+export type FilterType = MediaStatus;

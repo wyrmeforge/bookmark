@@ -1,16 +1,16 @@
 import dayjs from "dayjs";
 import Image from "next/image";
-import type { ListMedia } from "@/entities/media";
-import { getTranslatedMediaUserStatus } from "@/shared/lib";
+import type { IListItem } from "@/entities/media/model/convex/constants";
+import { getTranslatedMediaUserStatus } from "@/shared/lib/helpers/get-translated-media-user-status";
 import { CommandItem } from "@/shared/ui/command";
 
-type SearchCommandItemProps = {
-  item: ListMedia;
+interface SearchCommandItemProps {
+  item: IListItem;
   handleClick: () => void;
-};
+}
 
 const SearchCommandItem = ({ item, handleClick }: SearchCommandItemProps) => {
-  const { imageUrl, name, status, _creationTime } = item;
+  const { image, name, status, _creationTime } = item;
 
   return (
     <CommandItem
@@ -18,13 +18,13 @@ const SearchCommandItem = ({ item, handleClick }: SearchCommandItemProps) => {
       onSelect={handleClick}
       tabIndex={0}
     >
-      {imageUrl && (
+      {image && (
         <div className="relative h-24 w-16 flex-shrink-0 overflow-hidden rounded-md border">
           <Image
             alt={name}
             className="object-cover"
             fill
-            src={imageUrl}
+            src={image}
             unoptimized
           />
         </div>

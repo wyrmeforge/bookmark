@@ -1,5 +1,5 @@
 import { Heart, HeartCrack, MenuIcon } from "lucide-react";
-import type { ListMedia } from "@/entities/media";
+import type { IListItem } from "@/entities/media/model/convex/constants";
 import { cn } from "@/shared/lib/utils";
 import { Badge } from "@/shared/ui/badge";
 import {
@@ -12,18 +12,16 @@ import {
 } from "@/shared/ui/dropdown-menu";
 import { DeleteMedia } from "@/widgets/media/delete/delete-media";
 import { EditMedia } from "@/widgets/media/edit";
-import { useMediaActions } from "../model";
+import { useMediaActions } from "../model/use-media-actions";
 import { StatusSubMenu } from "./components/status-sub-menu";
 
-const CardMenu = ({
-  mediaItem,
-  isHovered,
-  handleOpen,
-}: {
-  mediaItem: ListMedia;
+interface ICardMenuProps {
+  mediaItem: IListItem;
   handleOpen: (isOpen: boolean) => void;
   isHovered: boolean;
-}) => {
+}
+
+const CardMenu = ({ mediaItem, isHovered, handleOpen }: ICardMenuProps) => {
   const { name, _id: id, isFavorite, status } = mediaItem;
 
   const { toggleFavorite } = useMediaActions({ mediaItemId: id, isFavorite });

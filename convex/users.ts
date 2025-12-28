@@ -18,6 +18,10 @@ export const store = mutation(async ({ db, auth }) => {
 
   const userName = identity.name || identity.nickname || identity.email;
 
+  if (!userName) {
+    throw new Error("User name is required");
+  }
+
   if (user !== null) {
     if (user.name !== userName) {
       await db.patch(user._id, { name: userName });
@@ -26,7 +30,7 @@ export const store = mutation(async ({ db, auth }) => {
   }
 
   return db.insert("users", {
-    name: userName!,
+    name: userName,
     avatar: identity.pictureUrl || identity?.profileUrl,
     nickname: identity.nickname,
     friends: [],
@@ -46,7 +50,9 @@ export const getUserFriends = query({
     const userId = await getUserId(ctx);
     const user = await ctx.db.get(userId);
 
-    if (!user?.friends || user.friends.length === 0) return [];
+    if (!user?.friends || user.friends.length === 0) {
+      return [];
+    }
 
     const friends = await Promise.all(
       user.friends.map((friendId) => ctx.db.get(friendId))
@@ -58,7 +64,7 @@ export const getUserFriends = query({
 
 export const searchUsersByName = query({
   args: { name: v.string() },
-  handler: async (ctx, args) => {
+  handler: (ctx, args) => {
     return ctx.db
       .query("users")
       .withSearchIndex("by_name", (q) => q.search("name", args.name))
@@ -69,9 +75,11 @@ export const searchUsersByName = query({
 export const getUserById = query({
   args: { id: v.id("users") },
   handler: async (ctx, args) => {
-    if (!args.id) return;
+    if (!args.id) {
+      return;
+    }
 
-    return ctx.db
+    return await ctx.db
       .query("users")
       .filter((q) => q.eq(q.field("_id"), args.id))
       .unique();

@@ -2,14 +2,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { HeartIcon } from "lucide-react";
 import { useMemo } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
-import { MEDIA_STATUS_FILTERS } from "@/shared/config";
-import { MediaStatus } from "@/shared/enums";
-import { useAppState } from "@/shared/lib";
+import { MEDIA_STATUS_FILTERS } from "@/shared/config/media-filters";
+import { useAppState } from "@/shared/lib/app-state-provider";
 import { DialogContent } from "@/shared/ui/dialog";
 import { Form } from "@/shared/ui/form";
 import { FormCheckbox } from "@/shared/ui/form-checkbox";
 import { FormInput } from "@/shared/ui/form-input";
-
 import { FormSelect } from "@/shared/ui/form-select";
 import { FormTextarea } from "@/shared/ui/form-textarea";
 import {
@@ -73,7 +71,7 @@ export const MediaModifyForm = ({
   const isCreateForm = useMemo(() => variant === "create", [variant]);
 
   const isCompleted = useMemo(
-    () => currentStatus === MediaStatus.Completed,
+    () => currentStatus === "completed",
     [currentStatus]
   );
 
