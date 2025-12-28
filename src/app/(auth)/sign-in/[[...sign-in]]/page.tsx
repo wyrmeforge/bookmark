@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { SignInForm } from "@/features/auth";
+import { SignInForm } from "@/features/auth/ui/sign-in-form";
 
 export const metadata: Metadata = {
   title: "Вхід | YOOKOSO",

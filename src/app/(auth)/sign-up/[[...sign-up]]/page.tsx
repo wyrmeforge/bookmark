@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { SignUpForm } from "@/features/auth";
+import { SignUpForm } from "@/features/auth/ui/sign-up-form";
 
 export const metadata: Metadata = {
   title: "Реєстрація | YOOKOSO",
