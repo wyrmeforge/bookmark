@@ -6,12 +6,12 @@ import { Button } from "@/shared/ui/button";
 import { CardHeader, CardTitle } from "@/shared/ui/card";
 import { FormInputOTP } from "@/shared/ui/form-input-otp";
 import { useVerify } from "../../lib/use-verify";
+import type { SignUpFormValues } from "../../model/schema/sign-up";
 import {
   type ISignUpStepProps,
   SignUpFlowSteps,
   SignUpFormFields,
-  type SignUpFormValues,
-} from "../../model";
+} from "../../model/types/sign-up";
 
 const VerificationStep = ({ setFlowStep }: ISignUpStepProps) => {
   const { handleSubmit } = useFormContext<SignUpFormValues>();

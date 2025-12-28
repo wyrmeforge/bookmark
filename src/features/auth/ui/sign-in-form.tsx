@@ -3,18 +3,20 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
-import { Routes } from "@/shared/enums";
+import { Routes } from "@/shared/enums/routes";
 import { Button } from "@/shared/ui/button";
 import { Form } from "@/shared/ui/form";
 import { FormCheckbox } from "@/shared/ui/form-checkbox";
 import { FormInput } from "@/shared/ui/form-input";
 import { useLogin } from "../lib/use-login";
 import {
-  SignInFormFields,
   SignInFormSchema,
   type SignInFormValues,
-} from "../model";
-import { FormFooter, FormHeader, PasswordInput } from "./components";
+} from "../model/schema/sign-in";
+import { SignInFormFields } from "../model/types/sign-in";
+import { FormFooter } from "./components/form-footer";
+import { FormHeader } from "./components/form-header";
+import { PasswordInput } from "./components/password-input";
 
 const SignInForm = () => {
   const { loginWithCredentials, loginWithGoogle } = useLogin();

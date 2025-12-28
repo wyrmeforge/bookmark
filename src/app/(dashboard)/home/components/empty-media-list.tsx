@@ -1,12 +1,12 @@
 import { PlusCircleIcon } from "lucide-react";
 import Image from "next/image";
-import type { TMediaStatusValues } from "@/entities/media/model/convex/constants";
+import type { TMediaStatus } from "@/entities/media/model/convex/constants";
 import { Button } from "@/shared/ui/button";
 import { CreateMedia } from "@/widgets/media/create/create-media";
 import empty_list_image from "../../../../../public/empty_list.png";
 
 interface IEmptyMediaListProps {
-  currentFilter: TMediaStatusValues;
+  currentFilter: TMediaStatus;
 }
 
 const EmptyMediaList = ({ currentFilter }: IEmptyMediaListProps) => (

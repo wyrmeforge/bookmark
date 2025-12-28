@@ -1,5 +1,5 @@
 import { HomeIcon, Users2Icon } from "lucide-react";
-import { Routes } from "@/shared/enums";
+import { Routes } from "@/shared/enums/routes";
 
 export const navLinks = [
   {

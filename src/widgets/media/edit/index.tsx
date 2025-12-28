@@ -2,7 +2,7 @@
 
 import { PenIcon } from "lucide-react";
 import { useMemo } from "react";
-import type { ListMedia } from "@/entities/media";
+import type { IListItem } from "@/entities/media/model/convex/constants";
 import type { TMediaModifyFormValues } from "@/features/media-modify/model/helpers";
 import { MediaModifyForm } from "@/features/media-modify/ui/media-modify-form";
 import { Dialog, DialogTrigger } from "@/shared/ui/dialog";
@@ -10,7 +10,7 @@ import { DropdownMenuItem } from "@/shared/ui/dropdown-menu";
 import { useEditMedia } from "./model/use-edit-media";
 
 interface IEditMediaProps {
-  mediaItem: ListMedia;
+  mediaItem: IListItem;
 }
 
 const EditMedia = ({ mediaItem }: IEditMediaProps) => {

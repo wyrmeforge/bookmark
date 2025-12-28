@@ -1,5 +1,5 @@
 import Image from "next/image";
-import type { ListMedia } from "@/entities/media";
+import type { IListItem } from "@/entities/media/model/convex/constants";
 import {
   CommandGroup,
   CommandItem,
@@ -7,8 +7,8 @@ import {
 } from "@/shared/ui/command";
 
 interface RecentItemsProps {
-  recent: ListMedia[];
-  onRecentSelect: (mediaId: number) => void;
+  recent: IListItem[];
+  onRecentSelect: (mediaId: string) => void;
 }
 
 const RecentItems = ({ recent, onRecentSelect }: RecentItemsProps) => (
@@ -18,15 +18,15 @@ const RecentItems = ({ recent, onRecentSelect }: RecentItemsProps) => (
         <CommandItem
           className="flex items-center gap-2 rounded-md p-2 hover:cursor-pointer hover:bg-muted/50"
           key={item._id}
-          onSelect={() => onRecentSelect(item.mediaId)}
+          onSelect={() => onRecentSelect(item.mediaApiId)}
           tabIndex={0}
         >
-          {item.imageUrl && (
+          {item.image && (
             <Image
               alt={item.name}
               className="h-8 w-8 rounded object-cover"
               height={32}
-              src={item.imageUrl}
+              src={item.image}
               unoptimized
               width={32}
             />

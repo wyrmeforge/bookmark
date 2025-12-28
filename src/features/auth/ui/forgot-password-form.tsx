@@ -4,20 +4,19 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Routes } from "@/shared/enums";
+import { Routes } from "@/shared/enums/routes";
 import { Button } from "@/shared/ui/button";
 import { CardHeader, CardTitle } from "@/shared/ui/card";
 import { Form } from "@/shared/ui/form";
 import { FormInput } from "@/shared/ui/form-input";
 import { useResetPass } from "../lib/use-reset-pass";
-
 import {
-  ForgotPasswordFormFields,
   type ForgotPasswordFormValues,
   ForgotPasswordStep1Schema,
   ForgotPasswordStep2Schema,
-} from "../model";
-import { PasswordInput } from "./components";
+} from "../model/schema/forgot-password";
+import { ForgotPasswordFormFields } from "../model/types/forgot-password";
+import { PasswordInput } from "./components/password-input";
 
 const ForgotPasswordForm = () => {
   const router = useRouter();

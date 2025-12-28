@@ -6,6 +6,7 @@ import { Routes } from "@/shared/enums/routes";
 
 export const ClerkProvider = ({ children }: PropsWithChildren) => (
   <ClerkNextProvider
+    dynamic
     publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
     signInFallbackRedirectUrl={Routes.Home}
     signInUrl={Routes.SignIn}

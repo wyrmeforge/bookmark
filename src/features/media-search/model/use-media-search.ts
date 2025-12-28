@@ -2,18 +2,14 @@
 
 import { api } from "@convex/api";
 import { useMutation } from "convex/react";
-import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import type { IListItem } from "@/entities/media/model/convex/constants";
-import { Routes } from "@/shared/enums/routes";
 import { StorageKeys } from "@/shared/enums/storage";
 import { useDebounce } from "@/shared/lib/hooks/user-debounce";
 import type { UseMediaSearchReturn } from "./types";
 import { useOpenShortcut } from "./use-open-shortcut";
 
 export const useMediaSearch = (): UseMediaSearchReturn => {
-  const router = useRouter();
-
   const [searchValue, setSearchValue] = useState("");
   const debouncedValue = useDebounce(searchValue, 300);
 
@@ -34,11 +30,6 @@ export const useMediaSearch = (): UseMediaSearchReturn => {
   });
 
   const searchMutation = useMutation(api.lists.searchMedia);
-
-  const goToMediaDetailsPage = useCallback(
-    (mediaId: number) => router.push(`${Routes.Home}/${mediaId}`),
-    [router]
-  );
 
   // Perform search query
   const search = useCallback(
@@ -81,14 +72,10 @@ export const useMediaSearch = (): UseMediaSearchReturn => {
     setSearchValue("");
   }, []);
 
-  const onRecentSelect = useCallback(
-    (mediaId: number) => {
-      setIsSearchOpen(false);
-      setSearchValue("");
-      goToMediaDetailsPage(mediaId);
-    },
-    [goToMediaDetailsPage]
-  );
+  const onRecentSelect = useCallback(() => {
+    setIsSearchOpen(false);
+    setSearchValue("");
+  }, []);
 
   useEffect(() => {
     search(debouncedValue);

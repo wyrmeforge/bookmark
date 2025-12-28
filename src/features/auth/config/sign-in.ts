@@ -1,4 +1,4 @@
-import { AuthErrorCodes } from "../model";
+import { AuthErrorCodes } from "../model/types/global";
 
 export const SIGN_IN_ERROR_MESSAGES: Record<string, string> = {
   [AuthErrorCodes.ACCOUNT_NOT_FOUND]: "Такого облікового запису не знайдено.",

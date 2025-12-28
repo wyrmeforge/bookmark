@@ -1,12 +1,14 @@
-import type { ListMediaId } from "@/entities/media";
-import type { MediaStatus } from "@/shared/enums";
+import type {
+  TMediaId,
+  TMediaStatus,
+} from "@/entities/media/model/convex/constants";
 
 export interface UseMediaActionsProps {
-  mediaItemId: ListMediaId;
+  mediaItemId: TMediaId;
   isFavorite?: boolean;
 }
 
 export interface UseMediaActionsReturn {
   toggleFavorite: () => Promise<void>;
-  changeStatus: (newStatus: MediaStatus) => Promise<void>;
+  changeStatus: (newStatus: TMediaStatus) => Promise<void>;
 }

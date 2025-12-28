@@ -1,16 +1,18 @@
 "use client";
 
 import { useFormContext } from "react-hook-form";
-import { Routes } from "@/shared/enums";
+import { Routes } from "@/shared/enums/routes";
 import { Button } from "@/shared/ui/button";
 import { FormInput } from "@/shared/ui/form-input";
 import { useRegistration } from "../../lib/use-registration";
+import type { SignUpFormValues } from "../../model/schema/sign-up";
 import {
   type ISignUpStepProps,
   SignUpFormFields,
-  type SignUpFormValues,
-} from "../../model";
-import { FormFooter, FormHeader, PasswordInput } from "../components";
+} from "../../model/types/sign-up";
+import { FormFooter } from "../components/form-footer";
+import { FormHeader } from "../components/form-header";
+import { PasswordInput } from "../components/password-input";
 
 const RegistrationStep = ({ setFlowStep }: ISignUpStepProps) => {
   const { handleSubmit } = useFormContext<SignUpFormValues>();

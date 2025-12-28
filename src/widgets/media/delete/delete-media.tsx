@@ -1,7 +1,7 @@
 "use client";
 
 import { TrashIcon } from "lucide-react";
-import type { ListMediaId } from "@/entities/media";
+import type { TMediaId } from "@/entities/media/model/convex/constants";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -17,7 +17,7 @@ import { DropdownMenuItem } from "@/shared/ui/dropdown-menu";
 import { useDeleteMedia } from "./model/use-delete-media";
 
 interface IDeleteMediaProps {
-  id: ListMediaId;
+  id: TMediaId;
 }
 
 const DeleteMedia = ({ id }: IDeleteMediaProps) => {

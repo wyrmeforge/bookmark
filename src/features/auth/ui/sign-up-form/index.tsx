@@ -5,18 +5,17 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Form } from "@/shared/ui/form";
 import {
-  SignUpFlowSteps,
-  SignUpFormFields,
   SignUpFormSchema,
   type SignUpFormValues,
-} from "../../model";
+} from "../../model/schema/sign-up";
+import { SignUpFlowSteps, SignUpFormFields } from "../../model/types/sign-up";
 import { RegistrationStep } from "./registration-step";
 import { VerificationStep } from "./verification-step";
 
 const SignUpForm = () => {
-  const [flowStep, setFlowStep] = useState<SignUpFlowSteps>(
-    SignUpFlowSteps.Registration
-  );
+  const [flowStep, setFlowStep] = useState<
+    (typeof SignUpFlowSteps)[keyof typeof SignUpFlowSteps]
+  >(SignUpFlowSteps.Registration);
 
   const form = useForm<SignUpFormValues>({
     resolver: zodResolver(SignUpFormSchema),
@@ -35,9 +34,9 @@ const SignUpForm = () => {
   return (
     <Form {...form}>
       {isRegistrationStep ? (
-        <RegistrationStep setFlowStep={setFlowStep} />
+        <RegistrationStep setFlowStep={(step) => setFlowStep(step)} />
       ) : (
-        <VerificationStep setFlowStep={setFlowStep} />
+        <VerificationStep setFlowStep={(step) => setFlowStep(step)} />
       )}
     </Form>
   );

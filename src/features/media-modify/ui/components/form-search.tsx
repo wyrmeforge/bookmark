@@ -9,10 +9,15 @@ export const FormSearch = () => {
 
   const { animeList, isAnimeListLoading } = useSearchMedia(debouncedSearch);
 
+  const transformedAnimeList = animeList.map((item) => ({
+    ...item,
+    id: String(item.id),
+  }));
+
   return (
     <FormCommandBox
       isLoading={isAnimeListLoading}
-      items={animeList}
+      items={transformedAnimeList}
       name="unity_info"
       onSearchChange={setSearchValue}
       placeholder="Виберіть зі списку"
