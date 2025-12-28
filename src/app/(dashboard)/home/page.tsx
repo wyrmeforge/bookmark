@@ -3,6 +3,7 @@ import { MediaToolbar } from '@/widgets/media-toolbar';
 import { MediaList } from '@/features/media-list';
 import { SidebarLeft } from './components/sidebar-left';
 import { SidebarRight } from './components/sidebar-right';
+
 export const metadata: Metadata = {
   title: 'Головна | YOOKOSO',
   description: 'Головна сторінка | YOOKOSO',
@@ -17,7 +18,6 @@ const HomePage = async () => {
         <MediaList />
       </div>
       <SidebarRight />
-      {/* <SidebarRight /> */}
     </div>
   );
 };

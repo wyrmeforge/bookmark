@@ -5,6 +5,7 @@ import { Loader } from '@/shared/ui/loader';
 import { PropsWithChildren } from 'react';
 import MinimalNav from './home/components/menu';
 import { ShaderGradientCanvas, ShaderGradient } from '@shadergradient/react';
+
 const DashboardLayout = ({ children }: PropsWithChildren) => {
   const { isLoading, isAuthenticated } = useStoreUser();
   useCreateMediaShortcut();

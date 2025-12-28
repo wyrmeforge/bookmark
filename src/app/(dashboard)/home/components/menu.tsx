@@ -1,16 +1,9 @@
 'use client';
 
-import {
-  Home,
-  // LibraryIcon,
-  PlusIcon,
-  // Users2Icon,
-  WebhookIcon,
-} from 'lucide-react';
+import { Home, PlusIcon, WebhookIcon } from 'lucide-react';
 import { useState } from 'react';
 import clsx from 'clsx';
 import { Button } from '@/shared/ui/button';
-import { UserButton } from '@clerk/nextjs';
 import { MediaSearch } from '@/features/media-search';
 import { usePathname, useRouter } from 'next/navigation';
 import { Routes } from '@/shared/enums';
@@ -18,8 +11,6 @@ import { CreateMedia } from '@/widgets/media/create/create-media';
 
 const navItems = [
   { id: '/home', icon: Home, label: 'Головна', href: Routes.Home },
-  // { id: 'friends', icon: Users2Icon, label: 'Друзі' },
-  // { id: 'stats', icon: LibraryIcon, label: 'Статистика' },
 ];
 
 export default function MinimalNav() {
@@ -64,24 +55,8 @@ export default function MinimalNav() {
               )}
             </Button>
           ))}
-
-          <div
-            onClick={() => setActive('profile')}
-            className={clsx(
-              'relative flex items-center gap-2 rounded-full px-4 py-2 transition-all duration-200',
-              active === 'profile'
-                ? 'scale-105 bg-white text-black shadow-md'
-                : 'text-gray-400 hover:text-white'
-            )}
-          >
-            <UserButton />
-            {active === 'profile' && (
-              <span className='hidden text-sm md:block'>Профіль</span>
-            )}
-          </div>
         </div>
       </div>
-
       <div className='flex flex-row items-center gap-2 rounded-full border border-white/10 bg-black/70 p-2  shadow-xl backdrop-blur-md'>
         <MediaSearch />
         <CreateMedia

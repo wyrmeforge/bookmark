@@ -1,8 +1,8 @@
 import { useMutation } from 'convex/react';
 import { api } from '@convex/api';
 import { toast } from 'sonner';
-import { MediaStatus } from '@/shared/enums';
 import { UseMediaActionsProps, UseMediaActionsReturn } from './types';
+import { TMediaStatusValues } from '@/entities/media/model/convex/constants';
 
 export const useMediaActions = ({
   mediaItemId,
@@ -17,7 +17,7 @@ export const useMediaActions = ({
     });
   };
 
-  const changeStatus = async (status: MediaStatus) => {
+  const changeStatus = async (status: TMediaStatusValues) => {
     await updateItem({ id: mediaItemId, newData: { status } });
     toast.success('Статус успішно змінено!');
   };
