@@ -1,14 +1,8 @@
-'use client';
+"use client";
 
-import { Button } from '@/shared/ui/button';
-import { Search } from 'lucide-react';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogTitle,
-  DialogTrigger,
-} from '@/shared/ui/dialog';
+import { Search } from "lucide-react";
+import { useAppState } from "@/shared/lib/app-state-provider";
+import { Button } from "@/shared/ui/button";
 import {
   Command,
   CommandGroup,
@@ -17,15 +11,19 @@ import {
   CommandList,
   CommandSeparator,
   CommandShortcut,
-} from '@/shared/ui/command';
-import { useMediaSearch } from '../model';
+} from "@/shared/ui/command";
 import {
-  FooterInfo,
-  RecentItems,
-  SearchCommandItem,
-  SearchEmptyStates,
-} from './components';
-import { useAppState } from '@/shared/lib';
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+  DialogTrigger,
+} from "@/shared/ui/dialog";
+import { useMediaSearch } from "../model/use-media-search";
+import { FooterInfo } from "./components/footer-info";
+import { RecentItems } from "./components/recent-items";
+import { SearchCommandItem } from "./components/search-command-item";
+import { SearchEmptyStates } from "./components/search-empty-states";
 
 export const MediaSearch = () => {
   const { toggleCreateSheet } = useAppState();
@@ -46,34 +44,34 @@ export const MediaSearch = () => {
   } = useMediaSearch();
 
   return (
-    <Dialog open={isSearchOpen} onOpenChange={setIsSearchOpen}>
+    <Dialog onOpenChange={setIsSearchOpen} open={isSearchOpen}>
       <DialogTrigger asChild>
         <Button
-          variant='outline'
-          className='flex items-center gap-2 rounded-full'
+          className="flex items-center gap-2 rounded-full"
+          variant="outline"
         >
           <Search size={16} />
           Пошук...
-          <kbd className='ml-auto hidden rounded border px-1 text-xs text-muted-foreground sm:inline-block'>
+          <kbd className="ml-auto hidden rounded border px-1 text-muted-foreground text-xs sm:inline-block">
             Ctrl+K
           </kbd>
         </Button>
       </DialogTrigger>
-      <DialogContent className='left-1/2 top-10 w-full max-w-2xl -translate-x-1/2 translate-y-0 overflow-hidden p-0'>
-        <DialogTitle className='sr-only'>Пошук медіа</DialogTitle>
-        <DialogDescription className='sr-only'>
+      <DialogContent className="top-10 left-1/2 w-full max-w-2xl -translate-x-1/2 translate-y-0 overflow-hidden p-0">
+        <DialogTitle className="sr-only">Пошук медіа</DialogTitle>
+        <DialogDescription className="sr-only">
           Відкрийте цей діалог для пошуку медіа за назвою та перегляду
           результатів.
         </DialogDescription>
-        <Command loop shouldFilter={false} className='w-full'>
+        <Command className="w-full" loop shouldFilter={false}>
           <CommandInput
-            placeholder='Почніть вводити назву…'
-            value={searchValue}
             onValueChange={setSearchValue}
+            placeholder="Почніть вводити назву…"
+            value={searchValue}
           />
-          <CommandList className='max-h-[500px] overflow-y-auto'>
+          <CommandList className="max-h-[500px] overflow-y-auto">
             {showRecentItems && (
-              <RecentItems recent={recent} onRecentSelect={onRecentSelect} />
+              <RecentItems onRecentSelect={onRecentSelect} recent={recent} />
             )}
             <SearchEmptyStates
               isInitEmpty={isInitEmpty}
@@ -82,22 +80,22 @@ export const MediaSearch = () => {
               searchValue={searchValue}
             />
             {showResults && (
-              <CommandGroup heading='Результат'>
+              <CommandGroup heading="Результат">
                 {results.map((item) => (
                   <SearchCommandItem
-                    key={item._id}
-                    item={item}
                     handleClick={() => handleSelect(item)}
+                    item={item}
+                    key={item._id}
                   />
                 ))}
               </CommandGroup>
             )}
             <CommandSeparator />
-            {!showResults && !isLoading && (
-              <CommandGroup heading='Швидкі дії'>
+            {!(showResults || isLoading) && (
+              <CommandGroup heading="Швидкі дії">
                 <CommandItem
+                  className="flex w-full justify-between rounded-md px-2 py-1 hover:cursor-pointer hover:bg-gray-100"
                   onSelect={toggleCreateSheet}
-                  className='flex w-full justify-between rounded-md px-2 py-1 hover:cursor-pointer hover:bg-gray-100'
                 >
                   <div>Додати аніме</div>
                   <CommandShortcut>Ctrl+D</CommandShortcut>

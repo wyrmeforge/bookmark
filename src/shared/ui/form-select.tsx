@@ -1,18 +1,19 @@
-'use client';
+"use client";
 
-import { useId, useMemo } from 'react';
-
-import { FormControl, FormField, FormItem, FormLabel } from '@/shared/ui/form';
-
+import { useId, useMemo } from "react";
+import {
+  type FieldPath,
+  type FieldValues,
+  useFormContext,
+} from "react-hook-form";
+import { FormControl, FormField, FormItem, FormLabel } from "@/shared/ui/form";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/shared/ui/select';
-
-import { FieldValues, FieldPath, useFormContext } from 'react-hook-form';
+} from "@/shared/ui/select";
 
 export interface ISelectItem {
   value: string;
@@ -44,9 +45,9 @@ const FormSelect = <T extends FieldValues = FieldValues>({
     () =>
       items.map(({ value, label }) => (
         <SelectItem
+          className="hover:cursor-pointer hover:bg-slate-900"
           key={value}
           value={value}
-          className='hover:cursor-pointer hover:bg-slate-900'
         >
           {label}
         </SelectItem>
@@ -59,20 +60,20 @@ const FormSelect = <T extends FieldValues = FieldValues>({
       control={control}
       name={name}
       render={({ field }) => (
-        <FormItem className={`flex flex-col ${className ?? ''}`}>
+        <FormItem className={`flex flex-col ${className ?? ""}`}>
           <FormLabel
+            className={disabled ? "text-muted" : undefined}
             htmlFor={id}
-            className={disabled ? 'text-muted' : undefined}
           >
             {label}
           </FormLabel>
           <Select
+            disabled={disabled}
             onValueChange={field.onChange}
             value={field.value}
-            disabled={disabled}
           >
             <FormControl>
-              <SelectTrigger id={id} aria-describedby={`${id}-description`}>
+              <SelectTrigger aria-describedby={`${id}-description`} id={id}>
                 <SelectValue placeholder={placeholder} />
               </SelectTrigger>
             </FormControl>

@@ -1,19 +1,21 @@
-'use client';
+"use client";
 
-import { FieldPath, FieldValues, useFormContext } from 'react-hook-form';
-import { cn } from '@/shared/lib/utils';
-import { Input } from '@/shared/ui/input';
+import { InfoIcon } from "lucide-react";
+import {
+  type FieldPath,
+  type FieldValues,
+  useFormContext,
+} from "react-hook-form";
+import { cn } from "@/shared/lib/utils";
 import {
   FormControl,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/shared/ui/form';
-
-import { InputProps } from '@/shared/ui/input';
-import { Tooltip, TooltipContent, TooltipTrigger } from './tooltip';
-import { InfoIcon } from 'lucide-react';
+} from "@/shared/ui/form";
+import { Input, type InputProps } from "@/shared/ui/input";
+import { Tooltip, TooltipContent, TooltipTrigger } from "./tooltip";
 
 export interface IFormInputProps<T extends FieldValues> extends InputProps {
   name: FieldPath<T>;
@@ -41,14 +43,13 @@ const FormInput = <T extends FieldValues>({
     <FormField
       control={control}
       name={name}
-      rules={{ required }}
       render={({ field }) => (
-        <FormItem className='flex w-full flex-col'>
+        <FormItem className="flex w-full flex-col">
           {label && (
-            <div className='flex items-center gap-1'>
+            <div className="flex items-center gap-1">
               <FormLabel
+                className={cn({ "text-muted": disabled })}
                 htmlFor={name}
-                className={cn({ 'text-muted': disabled })}
               >
                 {label}
               </FormLabel>
@@ -57,7 +58,7 @@ const FormInput = <T extends FieldValues>({
                   <TooltipTrigger>
                     <InfoIcon size={16} />
                   </TooltipTrigger>
-                  <TooltipContent side='right' align='end'>
+                  <TooltipContent align="end" side="right">
                     Введіть назву українською
                   </TooltipContent>
                 </Tooltip>
@@ -66,17 +67,18 @@ const FormInput = <T extends FieldValues>({
           )}
           <FormControl>
             <Input
-              id={name}
-              className={cn({ 'border-red-500': haveError })}
-              required={required}
+              className={cn({ "border-red-500": haveError })}
               disabled={disabled}
+              id={name}
+              required={required}
               {...field}
               {...inputProps}
             />
           </FormControl>
-          <FormMessage className='text-destructive' />
+          <FormMessage className="text-destructive" />
         </FormItem>
       )}
+      rules={{ required }}
     />
   );
 };

@@ -1,26 +1,26 @@
-'use client';
+"use client";
 
+import { InfoIcon } from "lucide-react";
+import { useCallback } from "react";
 import {
-  FieldPath,
-  FieldValues,
-  useFormContext,
   Controller,
-} from 'react-hook-form';
-import { cn } from '@/shared/lib/utils';
+  type FieldPath,
+  type FieldValues,
+  useFormContext,
+} from "react-hook-form";
+import { cn } from "@/shared/lib/utils";
 import {
   FormControl,
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/shared/ui/form';
-import { InputProps } from '@/shared/ui/input';
-import { useCallback } from 'react';
-import { NumberInput } from './number-input';
-import { Tooltip, TooltipContent, TooltipTrigger } from './tooltip';
-import { InfoIcon } from 'lucide-react';
+} from "@/shared/ui/form";
+import type { InputProps } from "@/shared/ui/input";
+import { NumberInput } from "./number-input";
+import { Tooltip, TooltipContent, TooltipTrigger } from "./tooltip";
 
 export interface IFormStepperInputProps<T extends FieldValues>
-  extends Omit<InputProps, 'onChange' | 'value'> {
+  extends Omit<InputProps, "onChange" | "value"> {
   name: FieldPath<T>;
   label?: string;
   required?: boolean;
@@ -62,26 +62,25 @@ export function FormStepperInput<T extends FieldValues>({
     <Controller
       control={control}
       name={name}
-      rules={{ required }}
       render={({ field }) => {
         const value = Number(field.value) || 0;
 
         return (
-          <FormItem className='flex w-full flex-col'>
+          <FormItem className="flex w-full flex-col">
             {label && (
-              <div className='flex items-center gap-1'>
+              <div className="flex items-center gap-1">
                 <FormLabel
+                  className={cn({ "text-muted": disabled })}
                   htmlFor={name}
-                  className={cn({ 'text-muted': disabled })}
                 >
                   {label}
                 </FormLabel>
                 {tooltipDescription && (
                   <Tooltip delayDuration={300}>
-                    <TooltipTrigger type='button' className='-mt-2'>
+                    <TooltipTrigger className="-mt-2" type="button">
                       <InfoIcon size={16} />
                     </TooltipTrigger>
-                    <TooltipContent side='top' align='end'>
+                    <TooltipContent align="end" side="top">
                       {tooltipDescription}
                     </TooltipContent>
                   </Tooltip>
@@ -90,19 +89,20 @@ export function FormStepperInput<T extends FieldValues>({
             )}
             <FormControl>
               <NumberInput
-                value={value}
-                onChange={(v) => field.onChange(clampValue(v))}
-                min={min}
+                disabled={disabled}
                 hideMaxValue={hideMaxValue}
                 max={max}
+                min={min}
+                onChange={(v) => field.onChange(clampValue(v))}
                 step={step}
-                disabled={disabled}
+                value={value}
               />
             </FormControl>
-            {haveError && <FormMessage className='text-destructive' />}
+            {haveError && <FormMessage className="text-destructive" />}
           </FormItem>
         );
       }}
+      rules={{ required }}
     />
   );
 }

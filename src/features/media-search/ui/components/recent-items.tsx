@@ -1,37 +1,37 @@
-import { ListMedia } from '@/entities/media';
+import Image from "next/image";
+import type { IListItem } from "@/entities/media/model/convex/constants";
 import {
   CommandGroup,
   CommandItem,
   CommandSeparator,
-} from '@/shared/ui/command';
-import Image from 'next/image';
+} from "@/shared/ui/command";
 
-type RecentItemsProps = {
-  recent: ListMedia[];
-  onRecentSelect: (mediaId: number) => void;
-};
+interface RecentItemsProps {
+  recent: IListItem[];
+  onRecentSelect: (mediaId: string) => void;
+}
 
 const RecentItems = ({ recent, onRecentSelect }: RecentItemsProps) => (
   <>
-    <CommandGroup heading='Останні'>
+    <CommandGroup heading="Останні">
       {recent.map((item) => (
         <CommandItem
+          className="flex items-center gap-2 rounded-md p-2 hover:cursor-pointer hover:bg-muted/50"
           key={item._id}
+          onSelect={() => onRecentSelect(item.mediaApiId)}
           tabIndex={0}
-          onSelect={() => onRecentSelect(item.mediaId)}
-          className='flex items-center gap-2 rounded-md p-2 hover:cursor-pointer hover:bg-muted/50'
         >
-          {item.imageUrl && (
+          {item.image && (
             <Image
-              src={item.imageUrl}
-              width={32}
-              height={32}
               alt={item.name}
-              className='h-8 w-8 rounded object-cover'
+              className="h-8 w-8 rounded object-cover"
+              height={32}
+              src={item.image}
               unoptimized
+              width={32}
             />
           )}
-          <span className='truncate'>{item.name}</span>
+          <span className="truncate">{item.name}</span>
         </CommandItem>
       ))}
     </CommandGroup>

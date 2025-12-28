@@ -1,43 +1,34 @@
-'use client';
+"use client";
 
 import {
   createContext,
-  PropsWithChildren,
+  type PropsWithChildren,
   useContext,
   useReducer,
-} from 'react';
+} from "react";
+import type {
+  IListItem,
+  TMediaStatus,
+} from "@/entities/media/model/convex/constants";
+import type { IAppStateContextProps } from "./types";
+import { appStateReducer, initialState } from "./utils";
 
-import { IAppStateContextProps } from './types';
-import { appStateReducer, initialState } from './utils';
-import { ListMedia } from '@/entities/media';
-import { MediaStatus } from '@/shared/enums';
-
-const AppStateContext = createContext<IAppStateContextProps>({
-  updateFilter: () => {},
-  updateList: () => {},
-  updateGenreFilter: () => {},
-  toggleCreateSheet: () => {},
-  updateSort: () => {},
-  ...initialState,
-});
+const AppStateContext = createContext<IAppStateContextProps | undefined>(
+  undefined
+);
 
 const AppStateProvider = ({ children }: PropsWithChildren) => {
   const [state, dispatch] = useReducer(appStateReducer, initialState);
 
   const contextValue: IAppStateContextProps = {
     ...state,
-    updateFilter: (filter: MediaStatus) =>
-      dispatch({ type: 'UPDATE_FILTER', payload: filter }),
-    updateList: (list: ListMedia[] | null) =>
-      dispatch({ type: 'UPDATE_LIST', payload: list }),
-    updateGenreFilter: (genre: string | undefined) =>
-      dispatch({ type: 'UPDATE_GENRE_FILTER', payload: genre }),
-    updateSort: (sortBy: 'date' | 'year', sortOrder: 'asc' | 'desc') =>
-      dispatch({ type: 'UPDATE_SORT', payload: { sortBy, sortOrder } }),
-
+    updateFilter: (filter: TMediaStatus) =>
+      dispatch({ type: "UPDATE_FILTER", payload: filter }),
+    updateList: (list: IListItem[] | null) =>
+      dispatch({ type: "UPDATE_LIST", payload: list }),
     toggleCreateSheet: () =>
       dispatch({
-        type: 'TOGGLE_CREATE_SHEET',
+        type: "TOGGLE_CREATE_SHEET",
         payload: !state.isCreateSheetOpen,
       }),
   };
@@ -51,4 +42,10 @@ const AppStateProvider = ({ children }: PropsWithChildren) => {
 
 export { AppStateProvider };
 
-export const useAppState = () => useContext(AppStateContext);
+export const useAppState = () => {
+  const ctx = useContext(AppStateContext);
+  if (!ctx) {
+    throw new Error("useAppState must be used within AppStateProvider");
+  }
+  return ctx;
+};

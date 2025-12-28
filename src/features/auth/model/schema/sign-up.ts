@@ -1,6 +1,6 @@
-import { z as u } from 'zod';
-import { emailField, passwordField } from '../../lib/validators';
-import { SignUpFormFields } from '../types';
+import { z as u } from "zod";
+import { emailField, passwordField } from "../../lib/validators";
+import { SignUpFormFields } from "../types/sign-up";
 
 export const SignUpFormSchema = u
   .object({
@@ -16,7 +16,7 @@ export const SignUpFormSchema = u
       data[SignUpFormFields.ConfirmPassword],
     {
       path: [SignUpFormFields.ConfirmPassword],
-      message: 'Паролі не співпадають',
+      message: "Паролі не співпадають",
     }
   );
 

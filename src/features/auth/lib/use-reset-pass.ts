@@ -1,15 +1,13 @@
-import { Routes } from '@/shared/enums';
-
-import { useSignIn } from '@clerk/nextjs';
-import { useRouter } from 'next/navigation';
-
+import { useSignIn } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { Routes } from "@/shared/enums/routes";
+import type { ForgotPasswordFormValues } from "../model/schema/forgot-password";
 import {
-  ForgotPasswordFormValues,
   RESET_STRATEGY,
-  UseResetPassProps,
-  UseResetPassReturn,
-} from '../model';
-import { toast } from 'sonner';
+  type UseResetPassProps,
+  type UseResetPassReturn,
+} from "../model/types/forgot-password";
 
 export const useResetPass = ({
   setIsResetInitiated,
@@ -21,7 +19,9 @@ export const useResetPass = ({
   const createAndSendResetMail = async ({
     email,
   }: ForgotPasswordFormValues) => {
-    if (!isLoaded || !signIn) return;
+    if (!(isLoaded && signIn)) {
+      return;
+    }
 
     try {
       await signIn.create({
@@ -29,15 +29,18 @@ export const useResetPass = ({
         identifier: email,
       });
 
-      toast.success('Відправлено успішно!', {
+      toast.success("Відправлено успішно!", {
         description: `На пошту ${email} було відправлено код для скидання паролю`,
       });
 
       setIsResetInitiated(true);
-    } catch (err: any) {
+    } catch (err: unknown) {
       const message =
-        err?.errors?.[0]?.longMessage || 'Failed to send reset email.';
-      console.error('Reset mail error:', message);
+        (err instanceof Error && "errors" in err
+          ? (err as { errors?: Array<{ longMessage?: string }> }).errors?.[0]
+              ?.longMessage
+          : undefined) || "Failed to send reset email.";
+      console.error("Reset mail error:", message);
     }
   };
 
@@ -45,7 +48,9 @@ export const useResetPass = ({
     verificationCode,
     password,
   }: ForgotPasswordFormValues) => {
-    if (!isLoaded || !signIn) return;
+    if (!(isLoaded && signIn)) {
+      return;
+    }
 
     try {
       const result = await signIn.attemptFirstFactor({
@@ -54,16 +59,20 @@ export const useResetPass = ({
         password,
       });
 
-      if (result.status === 'complete') {
+      if (result.status === "complete") {
         setActive({ session: result.createdSessionId });
-        toast.success('Пароль змінено успішно!');
+        toast.success("Пароль змінено успішно!");
         router.push(Routes.SignIn);
       } else {
-        console.log('Unexpected result:', result);
+        console.log("Unexpected result:", result);
       }
-    } catch (err: any) {
-      const message = err?.errors?.[0]?.longMessage || 'Password reset failed.';
-      console.error('Reset error:', message);
+    } catch (err: unknown) {
+      const message =
+        (err instanceof Error && "errors" in err
+          ? (err as { errors?: Array<{ longMessage?: string }> }).errors?.[0]
+              ?.longMessage
+          : undefined) || "Password reset failed.";
+      console.error("Reset error:", message);
     }
   };
 

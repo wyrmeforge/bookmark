@@ -1,23 +1,23 @@
-import { useMutation } from 'convex/react';
-import { api } from '@convex/api';
-import { toast } from 'sonner';
-import { ListMediaId } from '@/entities/media';
-import { useCallback } from 'react';
+import { api } from "@convex/api";
+import { useMutation } from "convex/react";
+import { useCallback } from "react";
+import { toast } from "sonner";
+import type { TMediaId } from "@/entities/media/model/convex/constants";
 
 interface IUseDeleteMediaItemReturn {
-  deleteMedia: (id: ListMediaId) => Promise<void>;
+  deleteMedia: (id: TMediaId) => Promise<void>;
 }
 
 export const useDeleteMedia = (): IUseDeleteMediaItemReturn => {
   const deleteListItem = useMutation(api.lists.deleteListItem);
 
   const deleteMedia = useCallback(
-    async (id: ListMediaId) => {
+    async (id: TMediaId) => {
       try {
         await deleteListItem({ id });
-        toast.success('Видалено успішно');
+        toast.success("Видалено успішно");
       } catch (err) {
-        toast.error('Не вдалось видалити!', {
+        toast.error("Не вдалось видалити!", {
           description: `Помилка ${err}`,
         });
       }

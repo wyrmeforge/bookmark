@@ -1,34 +1,32 @@
-'use client';
+"use client";
 
-import { useForm } from 'react-hook-form';
-import { RegistrationStep } from './registration-step';
-import { VerificationStep } from './verification-step';
-import { useState } from 'react';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Form } from '@/shared/ui/form';
-
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { Form } from "@/shared/ui/form";
 import {
-  SignUpFlowSteps,
-  SignUpFormFields,
   SignUpFormSchema,
-  SignUpFormValues,
-} from '../../model';
+  type SignUpFormValues,
+} from "../../model/schema/sign-up";
+import { SignUpFlowSteps, SignUpFormFields } from "../../model/types/sign-up";
+import { RegistrationStep } from "./registration-step";
+import { VerificationStep } from "./verification-step";
 
 const SignUpForm = () => {
-  const [flowStep, setFlowStep] = useState<SignUpFlowSteps>(
-    SignUpFlowSteps.Registration
-  );
+  const [flowStep, setFlowStep] = useState<
+    (typeof SignUpFlowSteps)[keyof typeof SignUpFlowSteps]
+  >(SignUpFlowSteps.Registration);
 
   const form = useForm<SignUpFormValues>({
     resolver: zodResolver(SignUpFormSchema),
     defaultValues: {
-      [SignUpFormFields.Email]: '',
-      [SignUpFormFields.Password]: '',
-      [SignUpFormFields.ConfirmPassword]: '',
-      [SignUpFormFields.Username]: '',
-      [SignUpFormFields.VerificationCode]: '',
+      [SignUpFormFields.Email]: "",
+      [SignUpFormFields.Password]: "",
+      [SignUpFormFields.ConfirmPassword]: "",
+      [SignUpFormFields.Username]: "",
+      [SignUpFormFields.VerificationCode]: "",
     },
-    mode: 'onChange',
+    mode: "onChange",
   });
 
   const isRegistrationStep = flowStep === SignUpFlowSteps.Registration;
@@ -36,9 +34,9 @@ const SignUpForm = () => {
   return (
     <Form {...form}>
       {isRegistrationStep ? (
-        <RegistrationStep setFlowStep={setFlowStep} />
+        <RegistrationStep setFlowStep={(step) => setFlowStep(step)} />
       ) : (
-        <VerificationStep setFlowStep={setFlowStep} />
+        <VerificationStep setFlowStep={(step) => setFlowStep(step)} />
       )}
     </Form>
   );

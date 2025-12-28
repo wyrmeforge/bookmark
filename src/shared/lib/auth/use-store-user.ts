@@ -1,21 +1,20 @@
-'use client';
+"use client";
 
-import { useUser } from '@clerk/clerk-react';
-import { useConvexAuth } from 'convex/react';
-import { useEffect, useState } from 'react';
-import { useMutation } from 'convex/react';
-import { api } from '@convex/api';
-import { Id } from '@convex/dataModel';
+import { api } from "@convex/api";
+import type { Id } from "@convex/dataModel";
+import { useConvexAuth, useMutation } from "convex/react";
+import { useEffect, useState } from "react";
 
 export const useStoreUser = () => {
   const { isLoading, isAuthenticated } = useConvexAuth();
-  const { user } = useUser();
 
-  const [userId, setUserId] = useState<Id<'users'> | null>(null);
+  const [userId, setUserId] = useState<Id<"users"> | null>(null);
   const storeUser = useMutation(api.users.store);
 
   useEffect(() => {
-    if (!isAuthenticated) return;
+    if (!isAuthenticated) {
+      return;
+    }
 
     async function createUser() {
       const id = await storeUser();
@@ -26,7 +25,7 @@ export const useStoreUser = () => {
     createUser();
 
     return () => setUserId(null);
-  }, [isAuthenticated, storeUser, user?.id]);
+  }, [isAuthenticated, storeUser]);
 
   return {
     isLoading: isLoading || (isAuthenticated && userId === null),

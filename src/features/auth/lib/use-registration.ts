@@ -1,19 +1,18 @@
-import { useSignUp } from '@clerk/nextjs';
+import { useSignUp } from "@clerk/nextjs";
 
-import { isClerkAPIResponseError } from '@clerk/nextjs/errors';
-
+import { isClerkAPIResponseError } from "@clerk/nextjs/errors";
+import { toast } from "sonner";
+import { Routes } from "@/shared/enums/routes";
+import { SIGN_UP_ERROR_MESSAGES } from "../config/sign-up";
+import type { SignUpFormValues } from "../model/schema/sign-up";
 import {
-  ISignUpStepProps,
+  type ISignUpStepProps,
   SignUpFlowSteps,
-  UseRegistrationReturn,
-  SignUpFormValues,
-} from '../model';
-import { toast } from 'sonner';
-import { Routes } from '@/shared/enums';
-import { SIGN_UP_ERROR_MESSAGES } from '../config';
+  type UseRegistrationReturn,
+} from "../model/types/sign-up";
 
 const getErrorMessage = (code?: string) =>
-  SIGN_UP_ERROR_MESSAGES[code ?? ''] ?? 'Сталася помилка. Спробуйте ще раз.';
+  SIGN_UP_ERROR_MESSAGES[code ?? ""] ?? "Сталася помилка. Спробуйте ще раз.";
 
 export const useRegistration = ({
   setFlowStep,
@@ -24,7 +23,7 @@ export const useRegistration = ({
     const isClerkError = isClerkAPIResponseError(err);
 
     if (!isClerkError) {
-      console.error('Register error:', JSON.stringify(err, null, 2));
+      console.error("Register error:", JSON.stringify(err, null, 2));
       return;
     }
 
@@ -38,7 +37,9 @@ export const useRegistration = ({
     password,
     username,
   }: SignUpFormValues) => {
-    if (!isLoaded || !signUp) return;
+    if (!(isLoaded && signUp)) {
+      return;
+    }
 
     try {
       await signUp.create({
@@ -48,7 +49,7 @@ export const useRegistration = ({
       });
 
       await signUp.prepareEmailAddressVerification({
-        strategy: 'email_code',
+        strategy: "email_code",
       });
 
       setFlowStep(SignUpFlowSteps.Verification);
@@ -58,11 +59,13 @@ export const useRegistration = ({
   };
 
   const registerWithGoogle = () => {
-    if (!isLoaded || !signUp) return;
+    if (!(isLoaded && signUp)) {
+      return;
+    }
 
     return signUp.authenticateWithRedirect({
-      strategy: 'oauth_google',
-      redirectUrl: '/sign-up',
+      strategy: "oauth_google",
+      redirectUrl: "/sign-up",
       redirectUrlComplete: Routes.Home,
     });
   };

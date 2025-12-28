@@ -1,9 +1,9 @@
-import { SignUpForm } from '@/features/auth';
-import { Metadata } from 'next';
+import type { Metadata } from "next";
+import { SignUpForm } from "@/features/auth/ui/sign-up-form";
 
 export const metadata: Metadata = {
-  title: 'Реєстрація | YOOKOSO',
-  description: 'Форма реєстрації - YOKOSO',
+  title: "Реєстрація | YOOKOSO",
+  description: "Форма реєстрації - YOKOSO",
 };
 
 const SignUp = () => {

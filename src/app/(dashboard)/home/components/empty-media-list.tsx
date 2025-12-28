@@ -1,32 +1,31 @@
-import { MediaItemStatus } from '@/shared/api';
-import { Button } from '@/shared/ui/button';
-import { CreateMedia } from '@/widgets/media/create/create-media';
-import { PlusCircleIcon } from 'lucide-react';
-import Image from 'next/image';
+import { PlusCircleIcon } from "lucide-react";
+import Image from "next/image";
+import type { TMediaStatus } from "@/entities/media/model/convex/constants";
+import { Button } from "@/shared/ui/button";
+import { CreateMedia } from "@/widgets/media/create/create-media";
+import empty_list_image from "../../../../../public/empty_list.png";
 
-const EmptyMediaList = ({
-  currentFilter,
-}: {
-  currentFilter: MediaItemStatus;
-}) => (
-  <div className='relative flex h-full w-full flex-col items-center justify-center'>
+interface IEmptyMediaListProps {
+  currentFilter: TMediaStatus;
+}
+
+const EmptyMediaList = ({ currentFilter }: IEmptyMediaListProps) => (
+  <div className="relative flex h-full w-full flex-col items-center justify-center">
     <Image
-      src='/empty_list.png'
-      alt='Список порожній'
-      className='absolute -left-[16px] bottom-0 w-auto brightness-50 md:left-0'
-      width={500}
-      height={400}
-      priority
+      alt="Список порожній"
+      className="absolute bottom-0 -left-[16px] w-auto brightness-50 md:left-0"
+      loading="lazy"
+      src={empty_list_image}
     />
-    <div className='z-10 mb-6 flex flex-col items-center gap-2'>
-      <h2 className='animate-fade-in text-2xl font-semibold text-muted-foreground'>
+    <div className="z-10 mb-6 flex flex-col items-center gap-2">
+      <h2 className="animate-fade-in font-semibold text-2xl text-muted-foreground">
         Здається тут порожньо...
       </h2>
     </div>
-    <div className='flex flex-row items-center gap-2'>
+    <div className="flex flex-row items-center gap-2">
       <CreateMedia
         customTrigger={
-          <Button aria-label='Додати нове аніме'>
+          <Button aria-label="Додати нове аніме">
             <PlusCircleIcon /> Додати
           </Button>
         }

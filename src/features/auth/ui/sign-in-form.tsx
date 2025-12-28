@@ -1,17 +1,22 @@
-'use client';
+"use client";
 
-import { Button } from '@/shared/ui/button';
-import Link from 'next/link';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Form } from '@/shared/ui/form';
-import { useLogin } from '../lib/use-login';
-import { FormFooter, FormHeader, PasswordInput } from './components';
-
-import { SignInFormFields, SignInFormSchema, SignInFormValues } from '../model';
-import { Routes } from '@/shared/enums';
-import { FormInput } from '@/shared/ui/form-input';
-import { FormCheckbox } from '@/shared/ui/form-checkbox';
+import { zodResolver } from "@hookform/resolvers/zod";
+import Link from "next/link";
+import { useForm } from "react-hook-form";
+import { Routes } from "@/shared/enums/routes";
+import { Button } from "@/shared/ui/button";
+import { Form } from "@/shared/ui/form";
+import { FormCheckbox } from "@/shared/ui/form-checkbox";
+import { FormInput } from "@/shared/ui/form-input";
+import { useLogin } from "../lib/use-login";
+import {
+  SignInFormSchema,
+  type SignInFormValues,
+} from "../model/schema/sign-in";
+import { SignInFormFields } from "../model/types/sign-in";
+import { FormFooter } from "./components/form-footer";
+import { FormHeader } from "./components/form-header";
+import { PasswordInput } from "./components/password-input";
 
 const SignInForm = () => {
   const { loginWithCredentials, loginWithGoogle } = useLogin();
@@ -19,8 +24,8 @@ const SignInForm = () => {
   const form = useForm<SignInFormValues>({
     resolver: zodResolver(SignInFormSchema),
     defaultValues: {
-      [SignInFormFields.Email]: '',
-      [SignInFormFields.Password]: '',
+      [SignInFormFields.Email]: "",
+      [SignInFormFields.Password]: "",
       [SignInFormFields.Remember]: false,
     },
   });
@@ -29,37 +34,37 @@ const SignInForm = () => {
 
   return (
     <Form {...form}>
-      <form onSubmit={onSubmit} className='w-full px-4 md:px-10 md:py-6'>
+      <form className="w-full px-4 md:px-10 md:py-6" onSubmit={onSubmit}>
         <FormHeader
-          title='З поверненням!'
-          question='Не маєте акаунту?'
-          ctaLabel='Зареєструватись'
           ctaHref={Routes.SignUp}
+          ctaLabel="Зареєструватись"
+          question="Не маєте акаунту?"
+          title="З поверненням!"
         />
-        <div className='grid gap-6'>
-          <div className='grid gap-6'>
+        <div className="grid gap-6">
+          <div className="grid gap-6">
             <FormInput
-              required
-              placeholder='Введіть вашу пошту або нікнейм'
+              label="Логін"
               name={SignInFormFields.Email}
-              label='Логін'
+              placeholder="Введіть вашу пошту або нікнейм"
+              required
             />
-            <PasswordInput label='Пароль' name={SignInFormFields.Password} />
-            <div className='flex flex-row items-center justify-between'>
+            <PasswordInput label="Пароль" name={SignInFormFields.Password} />
+            <div className="flex flex-row items-center justify-between">
               <FormCheckbox
-                className='w-auto flex-row-reverse justify-end gap-2 border-none p-0'
-                name={SignInFormFields.Remember}
+                className="w-auto flex-row-reverse justify-end gap-2 border-none p-0"
                 label="Запам'ятати"
+                name={SignInFormFields.Remember}
               />
               <Link
+                className="ml-auto text-sm underline-offset-4 hover:underline"
                 href={Routes.ForgotPassword}
-                className='ml-auto text-sm underline-offset-4 hover:underline'
               >
                 Забули пароль?
               </Link>
             </div>
-            <div className='flex items-center justify-between gap-4'>
-              <Button type='submit' className='w-full '>
+            <div className="flex items-center justify-between gap-4">
+              <Button className="w-full" type="submit">
                 Увійти
               </Button>
             </div>

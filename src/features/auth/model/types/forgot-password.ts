@@ -1,17 +1,17 @@
-import { ForgotPasswordFormValues } from '../schema';
+import type { ForgotPasswordFormValues } from "../schema/forgot-password";
 
-export enum ForgotPasswordFormFields {
-  Email = 'email',
-  Password = 'password',
-  ConfirmPassword = 'confirmPassword',
-  VerificationCode = 'verificationCode',
+export const ForgotPasswordFormFields = {
+  Email: "email",
+  Password: "password",
+  ConfirmPassword: "confirmPassword",
+  VerificationCode: "verificationCode",
+} as const;
+
+export interface UseResetPassProps {
+  setIsResetInitiated: (isResetInitiated: boolean) => void;
 }
 
-export type UseResetPassProps = {
-  setIsResetInitiated: (isResetInitiated: boolean) => void;
-};
-
-export type UseResetPassReturn = {
+export interface UseResetPassReturn {
   createAndSendResetMail: ({
     email,
   }: ForgotPasswordFormValues) => Promise<void>;
@@ -19,6 +19,6 @@ export type UseResetPassReturn = {
     verificationCode,
     password,
   }: ForgotPasswordFormValues) => Promise<void>;
-};
+}
 
-export const RESET_STRATEGY = 'reset_password_email_code';
+export const RESET_STRATEGY = "reset_password_email_code";

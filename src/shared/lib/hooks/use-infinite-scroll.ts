@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef } from "react";
 
 export const useInfiniteScroll = (
   onLoadMore: () => void,
@@ -10,15 +10,21 @@ export const useInfiniteScroll = (
   const ref = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    if (!ref.current) return;
-    if (isLoading || isEnd) return;
+    if (!ref.current) {
+      return;
+    }
+    if (isLoading || isEnd) {
+      return;
+    }
 
     const observer = new IntersectionObserver(
       (entries) => {
         const [entry] = entries;
-        if (entry.isIntersecting) onLoadMore();
+        if (entry.isIntersecting) {
+          onLoadMore();
+        }
       },
-      { rootMargin: '100px' }
+      { rootMargin: "100px" }
     );
 
     const el = ref.current;

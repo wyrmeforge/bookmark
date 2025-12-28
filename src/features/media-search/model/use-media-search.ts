@@ -1,27 +1,26 @@
-'use client';
+"use client";
 
-import { useEffect, useState, useCallback } from 'react';
-import { useDebounce } from '@/shared/lib';
-import { useMutation } from 'convex/react';
-import { ListMedia } from '@/entities/media';
-import { UseMediaSearchReturn } from './types';
-import { api } from '@convex/api';
-import { Routes, StorageKeys } from '@/shared/enums';
-import { useRouter } from 'next/navigation';
-import { useOpenShortcut } from './use-open-shortcut';
+import { api } from "@convex/api";
+import { useMutation } from "convex/react";
+import { useCallback, useEffect, useState } from "react";
+import type { IListItem } from "@/entities/media/model/convex/constants";
+import { StorageKeys } from "@/shared/enums/storage";
+import { useDebounce } from "@/shared/lib/hooks/user-debounce";
+import type { UseMediaSearchReturn } from "./types";
+import { useOpenShortcut } from "./use-open-shortcut";
 
 export const useMediaSearch = (): UseMediaSearchReturn => {
-  const router = useRouter();
-
-  const [searchValue, setSearchValue] = useState('');
+  const [searchValue, setSearchValue] = useState("");
   const debouncedValue = useDebounce(searchValue, 300);
 
-  const [results, setResults] = useState<ListMedia[] | null>(null); // null = loading
+  const [results, setResults] = useState<IListItem[] | null>(null); // null = loading
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   // Recent search items, persisted in localStorage
-  const [recent, setRecentState] = useState<ListMedia[]>(() => {
-    if (typeof window === 'undefined') return []; // SSR check
+  const [recent, setRecentState] = useState<IListItem[]>(() => {
+    if (typeof window === "undefined") {
+      return []; // SSR check
+    }
     try {
       const stored = localStorage.getItem(StorageKeys.RecentSearchItem);
       return stored ? JSON.parse(stored) : [];
@@ -31,11 +30,6 @@ export const useMediaSearch = (): UseMediaSearchReturn => {
   });
 
   const searchMutation = useMutation(api.lists.searchMedia);
-
-  const goToMediaDetailsPage = useCallback(
-    (mediaId: number) => router.push(`${Routes.Home}/${mediaId}`),
-    [router]
-  );
 
   // Perform search query
   const search = useCallback(
@@ -56,38 +50,32 @@ export const useMediaSearch = (): UseMediaSearchReturn => {
     [searchMutation]
   );
 
-  const handleSelect = useCallback(
-    (item: ListMedia) => {
-      // Update recent items, persist in localStorage
-      setRecentState((prev) => {
-        const updated = [item, ...prev.filter((r) => r._id !== item._id)].slice(
-          0,
-          5
+  const handleSelect = useCallback((item: IListItem) => {
+    // Update recent items, persist in localStorage
+    setRecentState((prev) => {
+      const updated = [item, ...prev.filter((r) => r._id !== item._id)].slice(
+        0,
+        5
+      );
+      try {
+        localStorage.setItem(
+          StorageKeys.RecentSearchItem,
+          JSON.stringify(updated)
         );
-        try {
-          localStorage.setItem(
-            StorageKeys.RecentSearchItem,
-            JSON.stringify(updated)
-          );
-        } catch {}
-        return updated;
-      });
+      } catch {
+        // Silently ignore localStorage errors (e.g., private browsing)
+      }
+      return updated;
+    });
 
-      setIsSearchOpen(false);
-      setSearchValue('');
-      goToMediaDetailsPage(item.mediaId);
-    },
-    [setRecentState, setSearchValue, goToMediaDetailsPage]
-  );
+    setIsSearchOpen(false);
+    setSearchValue("");
+  }, []);
 
-  const onRecentSelect = useCallback(
-    (mediaId: number) => {
-      setIsSearchOpen(false);
-      setSearchValue('');
-      goToMediaDetailsPage(mediaId);
-    },
-    [goToMediaDetailsPage, setSearchValue]
-  );
+  const onRecentSelect = useCallback(() => {
+    setIsSearchOpen(false);
+    setSearchValue("");
+  }, []);
 
   useEffect(() => {
     search(debouncedValue);
@@ -114,7 +102,7 @@ export const useMediaSearch = (): UseMediaSearchReturn => {
     setIsSearchOpen,
     isLoading: hasSearchInput && noResultsYet,
     isResultsEmpty: hasSearchInput && !noResultsYet && !hasResults,
-    isInitEmpty: !hasSearchInput && !hasResults && !hasRecentItems,
+    isInitEmpty: !(hasSearchInput || hasResults || hasRecentItems),
     showRecentItems: !hasSearchInput && hasRecentItems,
     showResults: hasResults,
   };

@@ -1,6 +1,6 @@
-import { z as u } from 'zod';
-import { emailField, passwordField } from '../../lib/validators';
-import { ForgotPasswordFormFields } from '../types';
+import { z as u } from "zod";
+import { emailField, passwordField } from "../../lib/validators";
+import { ForgotPasswordFormFields } from "../types/forgot-password";
 
 export const ForgotPasswordStep1Schema = u.object({
   [ForgotPasswordFormFields.Email]: emailField,
@@ -18,7 +18,7 @@ export const ForgotPasswordStep2Schema = u
       data[ForgotPasswordFormFields.ConfirmPassword],
     {
       path: [ForgotPasswordFormFields.ConfirmPassword],
-      message: 'Паролі не співпадають',
+      message: "Паролі не співпадають",
     }
   );
 

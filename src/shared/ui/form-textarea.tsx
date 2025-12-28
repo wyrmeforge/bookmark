@@ -1,18 +1,22 @@
-'use client';
+"use client";
 
-import { FieldValues, FieldPath, useFormContext } from 'react-hook-form';
-import { cn } from '@/shared/lib/utils';
+import {
+  type FieldPath,
+  type FieldValues,
+  useFormContext,
+} from "react-hook-form";
+import { cn } from "@/shared/lib/utils";
 import {
   FormControl,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/shared/ui/form';
-import { Textarea } from '@/shared/ui/textarea';
+} from "@/shared/ui/form";
+import { Textarea } from "@/shared/ui/textarea";
 
 export interface IFormTextareaProps<T extends FieldValues>
-  extends React.ComponentProps<'textarea'> {
+  extends React.ComponentProps<"textarea"> {
   name: FieldPath<T>;
   label?: string;
   required?: boolean;
@@ -35,23 +39,23 @@ const FormTextarea = <T extends FieldValues>({
     <FormField
       control={control}
       name={name}
-      rules={{ required }}
       render={({ field }) => (
-        <FormItem className='flex w-full flex-col'>
+        <FormItem className="flex w-full flex-col">
           {label && <FormLabel htmlFor={name}>{label}</FormLabel>}
           <FormControl>
             <Textarea
-              maxLength={100}
+              className={cn({ "border-red-500": haveError }, "max-h-[100px]")}
               id={name}
-              className={cn({ 'border-red-500': haveError }, 'max-h-[100px]')}
+              maxLength={100}
               required={required}
               {...field}
               {...inputProps}
             />
           </FormControl>
-          <FormMessage className='text-destructive' />
+          <FormMessage className="text-destructive" />
         </FormItem>
       )}
+      rules={{ required }}
     />
   );
 };

@@ -1,18 +1,17 @@
-'use client';
+"use client";
 
-import { Button } from '@/shared/ui/button';
-import { SquarePlusIcon } from 'lucide-react';
-import { MediaStatus } from '@/shared/enums';
-import { useAppState } from '@/shared/lib';
-import { Dialog, DialogTrigger } from '@/shared/ui/dialog';
-import { ListMediaStatus } from '@/entities/media';
-import { ReactNode } from 'react';
-import { useCreateMedia } from './model/use-create-media';
-import { MediaModifyForm } from '@/features/media-modify/ui/media-modify-form';
-import { TMediaModifyFormValues } from '@/features/media-modify/model/helpers';
+import { SquarePlusIcon } from "lucide-react";
+import type { ReactNode } from "react";
+import type { TMediaStatus } from "@/entities/media/model/convex/constants";
+import type { TMediaModifyFormValues } from "@/features/media-modify/model/helpers";
+import { MediaModifyForm } from "@/features/media-modify/ui/media-modify-form";
+import { useAppState } from "@/shared/lib/app-state-provider";
+import { Button } from "@/shared/ui/button";
+import { Dialog, DialogTrigger } from "@/shared/ui/dialog";
+import { useCreateMedia } from "./model/use-create-media";
 
 interface ICreateMediaProps {
-  initialStatus?: ListMediaStatus;
+  initialStatus?: TMediaStatus;
   customTrigger?: ReactNode;
 }
 
@@ -25,26 +24,26 @@ const CreateMedia = ({ customTrigger }: ICreateMediaProps) => {
   };
 
   const initialValues: Partial<TMediaModifyFormValues> = {
-    status: 'scheduled',
+    status: "scheduled",
   };
 
   const trigger = customTrigger || (
     <Button
-      aria-label='Додати нове аніме'
-      size='icon'
-      className='m-0 size-8 bg-transparent p-0 [&_svg]:size-8'
+      aria-label="Додати нове аніме"
+      className="m-0 size-8 bg-transparent p-0 [&_svg]:size-8"
+      size="icon"
     >
-      <SquarePlusIcon color='white' />
+      <SquarePlusIcon color="white" />
     </Button>
   );
 
   return (
-    <Dialog open={isCreateSheetOpen} onOpenChange={toggleCreateSheet}>
+    <Dialog onOpenChange={toggleCreateSheet} open={isCreateSheetOpen}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
       <MediaModifyForm
         initialValues={initialValues}
-        variant='create'
         onSubmit={onSubmit}
+        variant="create"
       />
     </Dialog>
   );

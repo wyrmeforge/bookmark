@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
 export const useItemsPerPage = () => {
   const CARD_WIDTH = 300;
@@ -18,8 +18,8 @@ export const useItemsPerPage = () => {
     };
 
     calc();
-    window.addEventListener('resize', calc);
-    return () => window.removeEventListener('resize', calc);
+    window.addEventListener("resize", calc);
+    return () => window.removeEventListener("resize", calc);
   }, []);
 
   return items;

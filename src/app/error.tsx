@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useEffect } from 'react';
+import { useEffect } from "react";
 
-export default function Error({
+export default function ErrorPage({
   error,
   reset,
 }: {
@@ -14,9 +14,11 @@ export default function Error({
   }, [error]);
 
   return (
-    <div className='flex h-full w-full items-center justify-center gap-4'>
+    <div className="flex h-full w-full items-center justify-center gap-4">
       <h2>Щсь пішло не так!</h2>
-      <button onClick={() => reset()}>Спробуйте ще раз</button>
+      <button onClick={() => reset()} type="button">
+        Спробуйте ще раз
+      </button>
     </div>
   );
 }
