@@ -1,29 +1,31 @@
 'use client';
 
-import {
-  CreateMediaProps,
-  FormFields,
-  FormVariant,
-  ModifyFormValues,
-} from '../model/dto/types';
-import { MediaModifyForm } from './media-modify-form';
 import { Button } from '@/shared/ui/button';
 import { SquarePlusIcon } from 'lucide-react';
 import { MediaStatus } from '@/shared/enums';
-import { useCreateMedia } from '../model';
 import { useAppState } from '@/shared/lib';
 import { Dialog, DialogTrigger } from '@/shared/ui/dialog';
+import { ListMediaStatus } from '@/entities/media';
+import { ReactNode } from 'react';
+import { useCreateMedia } from './model/use-create-media';
+import { MediaModifyForm } from '@/features/media-modify/ui/media-modify-form';
+import { TMediaModifyFormValues } from '@/features/media-modify/model/helpers';
 
-const CreateMedia = ({ initialStatus, customTrigger }: CreateMediaProps) => {
+interface ICreateMediaProps {
+  initialStatus?: ListMediaStatus;
+  customTrigger?: ReactNode;
+}
+
+const CreateMedia = ({ customTrigger }: ICreateMediaProps) => {
   const { isCreateSheetOpen, toggleCreateSheet } = useAppState();
   const { createNewMedia } = useCreateMedia();
 
-  const onSubmit = (data: ModifyFormValues) => {
+  const onSubmit = (data: TMediaModifyFormValues) => {
     createNewMedia(data);
   };
 
-  const initialValues: Partial<ModifyFormValues> = {
-    [FormFields.Status]: initialStatus || MediaStatus.Scheduled,
+  const initialValues: Partial<TMediaModifyFormValues> = {
+    status: 'scheduled',
   };
 
   const trigger = customTrigger || (
@@ -41,7 +43,7 @@ const CreateMedia = ({ initialStatus, customTrigger }: CreateMediaProps) => {
       <DialogTrigger asChild>{trigger}</DialogTrigger>
       <MediaModifyForm
         initialValues={initialValues}
-        variant={FormVariant.Create}
+        variant='create'
         onSubmit={onSubmit}
       />
     </Dialog>

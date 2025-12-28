@@ -15,14 +15,13 @@ const MediaCard = ({ mediaData, itemIdx }: MediaCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
 
   const {
-    imageUrl,
+    image,
     name,
     _creationTime,
     isFavorite,
     rate,
-    episode,
+    episodesCount,
     status,
-    totalEpisodes,
   } = mediaData;
 
   const formattedDate = formatDate(_creationTime);
@@ -40,10 +39,10 @@ const MediaCard = ({ mediaData, itemIdx }: MediaCardProps) => {
         <div className='flex w-full flex-row justify-between pl-2'>
           <CardBadges
             isHovered={isHovered}
-            totalEpisodes={totalEpisodes}
             status={status}
-            episode={episode}
+            episode={episodesCount}
             isFavorite={isFavorite}
+            totalEpisodes={0}
           />
           <CardMenu
             isHovered={isHovered}
@@ -53,10 +52,10 @@ const MediaCard = ({ mediaData, itemIdx }: MediaCardProps) => {
         </div>
       </CardHeader>
       <CardContent className='relative h-full p-0 '>
-        <MediaPoster alt={name} src={imageUrl} priority={itemIdx < 3} />
+        <MediaPoster alt={name} src={image} priority={itemIdx < 3} />
         <MediaMeta
-          totalEpisodes={totalEpisodes}
-          episode={episode}
+          totalEpisodes={0}
+          episode={episodesCount}
           title={name}
           rate={rate}
           createdDate={formattedDate}

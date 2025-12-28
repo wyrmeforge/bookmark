@@ -9,12 +9,12 @@ import {
 } from 'lucide-react';
 import { useState } from 'react';
 import clsx from 'clsx';
-import { CreateMedia } from '@/features/media-modify';
 import { Button } from '@/shared/ui/button';
 import { UserButton } from '@clerk/nextjs';
 import { MediaSearch } from '@/features/media-search';
 import { usePathname, useRouter } from 'next/navigation';
 import { Routes } from '@/shared/enums';
+import { CreateMedia } from '@/widgets/media/create/create-media';
 
 const navItems = [
   { id: '/home', icon: Home, label: 'Головна', href: Routes.Home },

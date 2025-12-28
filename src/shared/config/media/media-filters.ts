@@ -1,5 +1,4 @@
-import { ListMediaStatus } from '@/entities/media';
-import { MediaStatus } from '@/shared/enums';
+import { TMediaStatusValues } from '@/entities/media/model/convex/constants';
 import {
   AlarmClockIcon,
   CalendarXIcon,
@@ -13,7 +12,7 @@ import {
 import { ForwardRefExoticComponent, RefAttributes } from 'react';
 
 export type MediaStatusFilterItem = {
-  key: ListMediaStatus;
+  key: TMediaStatusValues;
   label: string;
   icon: ForwardRefExoticComponent<
     Omit<LucideProps, 'ref'> & RefAttributes<SVGSVGElement>
@@ -27,7 +26,7 @@ export type MediaStatusFilterItem = {
 
 export const MEDIA_STATUS_FILTERS: MediaStatusFilterItem[] = [
   {
-    key: MediaStatus.All,
+    key: 'all',
     label: 'Всі',
     icon: SwordIcon,
     color: {
@@ -37,7 +36,7 @@ export const MEDIA_STATUS_FILTERS: MediaStatusFilterItem[] = [
     },
   },
   {
-    key: MediaStatus.Watching,
+    key: 'watching',
     label: 'Дивлюсь',
     icon: EyeIcon,
     color: {
@@ -47,7 +46,7 @@ export const MEDIA_STATUS_FILTERS: MediaStatusFilterItem[] = [
     },
   },
   {
-    key: MediaStatus.Scheduled,
+    key: 'scheduled',
     label: 'Заплановано',
     icon: GoalIcon,
     color: {
@@ -57,7 +56,7 @@ export const MEDIA_STATUS_FILTERS: MediaStatusFilterItem[] = [
     },
   },
   {
-    key: MediaStatus.Postponed,
+    key: 'postponed',
     label: 'Відкладено',
     icon: AlarmClockIcon,
     color: {
@@ -67,7 +66,7 @@ export const MEDIA_STATUS_FILTERS: MediaStatusFilterItem[] = [
     },
   },
   {
-    key: MediaStatus.Abandoned,
+    key: 'abandoned',
     label: 'Закинуто',
     icon: CalendarXIcon,
     color: {
@@ -77,7 +76,7 @@ export const MEDIA_STATUS_FILTERS: MediaStatusFilterItem[] = [
     },
   },
   {
-    key: MediaStatus.Completed,
+    key: 'completed',
     label: 'Завершено',
     icon: CheckCheckIcon,
     color: {
@@ -87,7 +86,7 @@ export const MEDIA_STATUS_FILTERS: MediaStatusFilterItem[] = [
     },
   },
   {
-    key: MediaStatus.Favorite,
+    key: 'favorite',
     label: 'Улюблені',
     icon: HeartIcon,
     color: {

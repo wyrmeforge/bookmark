@@ -1,6 +1,6 @@
-import { CreateMedia } from '@/features/media/modify';
 import { MediaItemStatus } from '@/shared/api';
 import { Button } from '@/shared/ui/button';
+import { CreateMedia } from '@/widgets/media/create/create-media';
 import { PlusCircleIcon } from 'lucide-react';
 import Image from 'next/image';
 

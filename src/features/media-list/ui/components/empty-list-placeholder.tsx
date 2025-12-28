@@ -1,5 +1,4 @@
 import { ListMediaStatus } from '@/entities/media';
-import { CreateMedia } from '@/features/media-modify';
 import { MEDIA_STATUS_FILTERS } from '@/shared/config';
 import { Button } from '@/shared/ui/button';
 import { PlusCircleIcon } from 'lucide-react';
@@ -10,6 +9,7 @@ type EmptyListPlaceholderProps = {
 };
 
 import placeholder from '../../../../../public/empty-placcecholder.png';
+import { CreateMedia } from '@/widgets/media/create/create-media';
 
 const EmptyListPlaceholder = ({ currentFilter }: EmptyListPlaceholderProps) => {
   const label = MEDIA_STATUS_FILTERS.find(

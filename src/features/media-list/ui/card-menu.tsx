@@ -12,9 +12,10 @@ import { Heart, HeartCrack, MenuIcon } from 'lucide-react';
 import { Badge } from '@/shared/ui/badge';
 import { useMediaActions } from '../model';
 import { StatusSubMenu } from './components/status-sub-menu';
-import { DeleteMediaItem, EditMedia } from '@/features/media-modify';
 import { ListMedia } from '@/entities/media';
 import { cn } from '@/shared/lib/utils';
+import { DeleteMedia } from '@/widgets/media/delete/delete-media';
+import { EditMedia } from '@/widgets/media/edit';
 
 const CardMenu = ({
   mediaItem,
@@ -76,7 +77,7 @@ const CardMenu = ({
           <span>{isFavorite ? 'Видалити з' : 'Додати до'} улюблених</span>
         </DropdownMenuItem>
         <StatusSubMenu currentStatus={status} mediaItemId={id} />
-        <DeleteMediaItem id={id} />
+        <DeleteMedia id={id} />
       </DropdownMenuContent>
     </DropdownMenu>
   );
